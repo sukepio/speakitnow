@@ -10,6 +10,10 @@ import SwiftUI
 struct HomeView: View {
     @EnvironmentObject var phraseStore: PhraseStore
     
+    var isEnabled: Bool {
+        phraseStore.selectedPhraseId != nil
+    }
+    
     var body: some View {
         ZStack {
             Color(Color.black.opacity(0.9))
@@ -43,12 +47,13 @@ struct HomeView: View {
                 } label: {
                     Text("今すぐアウトプット")
                         .fontWeight(.bold)
-                        .foregroundColor(.white)
+                        .foregroundColor(.white.opacity(isEnabled ? 1 : 0.8))
                 }
                     .frame(maxWidth: .infinity)
                     .padding(.vertical)
-                    .background(Color.blue)
+                    .background(Color.blue.opacity(isEnabled ? 1 : 0.35))
                     .cornerRadius(20)
+                    .disabled(!isEnabled)
                 
             }
                 .padding()
