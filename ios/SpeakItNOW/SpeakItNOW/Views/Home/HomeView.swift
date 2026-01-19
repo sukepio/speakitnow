@@ -28,7 +28,14 @@ struct HomeView: View {
                     }
                 }
                 
-                ForEach(phraseStore.recommendedPhrases){ phrase in PhraseRow(phrase: phrase, isSelected: phrase.id == phraseStore.selectedPhraseId)
+                ForEach(phraseStore.recommendedPhrases){ phrase in
+                    PhraseRow(phrase: phrase, isSelected: phrase.id == phraseStore.selectedPhraseId)
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                phraseStore.selectedPhraseId = phraseStore.selectedPhraseId != phrase.id ? phrase.id : nil
+                            }
+                        }
                 }
                 
                 Button {
