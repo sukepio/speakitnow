@@ -13,39 +13,33 @@ enum Tab {
 
 struct RootTabView: View {
     @State private var selectedTab: Tab = .home
+    
+    init() {
+        UITabBar.appearance().unselectedItemTintColor = .white
+    }
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            HomeView()
-                .tabItem {
-                    Label("Home", systemImage: "house")
-                }
-                .tag(Tab.home)
-
-            Text("My Phrases")
-                .tabItem {
-                    Label("My Phrases", systemImage: "bookmark")
-                }
-                .tag(Tab.myPhrases)
-
-            Text("Search")
-                .tabItem {
-                    Label("Search", systemImage: "magnifyingglass")
-                }
-                .tag(Tab.search)
-
-            Text("History")
-                .tabItem {
-                    Label("History", systemImage: "clock")
-                }
-                .tag(Tab.history)
+            tabItemView(destination: HomeView(), imageName: "house", title: "Home", tag: Tab.home)
+            tabItemView(destination: HomeView(), imageName: "bookmark", title: "My Phrases", tag: Tab.myPhrases)
+            tabItemView(destination: HomeView(), imageName: "magnifyingglass", title: "Search", tag: Tab.search)
+            tabItemView(destination: HomeView(), imageName: "clock", title: "History", tag: Tab.history)
         }
         .tint(.blue)
+    }
+    
+    @ViewBuilder
+    private func tabItemView<Destination: View>(destination: Destination, imageName: String, title: String, tag: Tab) -> some View {
+        destination
+            .tabItem {
+                Label(title, systemImage: imageName)
+            }
+            .tag(tag)
     }
 }
 
 
 #Preview {
-    RootTabView()
+    RootTabView().environmentObject(PhraseStore())
 }
 
