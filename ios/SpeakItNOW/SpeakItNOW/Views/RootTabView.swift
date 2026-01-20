@@ -21,8 +21,8 @@ struct RootTabView: View {
     var body: some View {
         TabView(selection: $selectedTab) {
             tabItemView(destination: HomeView(), imageName: "house", title: "Home", tag: Tab.home)
+            tabItemView(destination: SearchView(), imageName: "magnifyingglass", title: "Search", tag: Tab.search)
             tabItemView(destination: HomeView(), imageName: "bookmark", title: "My Phrases", tag: Tab.myPhrases)
-            tabItemView(destination: HomeView(), imageName: "magnifyingglass", title: "Search", tag: Tab.search)
             tabItemView(destination: HomeView(), imageName: "clock", title: "History", tag: Tab.history)
         }
         .tint(.blue)
