@@ -9,7 +9,6 @@ import SwiftUI
 
 struct PhraseRow: View {
     let phrase : Phrase
-    var isSelected : Bool
     
     var body: some View {
         HStack {
@@ -20,21 +19,18 @@ struct PhraseRow: View {
                     .font(.caption2)
             }
             Spacer()
-            Image(systemName: "checkmark")
-                .opacity(isSelected ? 1 : 0)
-                .foregroundStyle(isSelected ? Color.red : Color.clear)
+            
         }
 //        .padding(10)
-        .background(isSelected ? Color.red.opacity(0.08) : Color.clear)
+        .background(.white)
         .overlay {
             RoundedRectangle(cornerRadius: 12)
-                .stroke(style: StrokeStyle(lineWidth: isSelected ? 1 : 0))
-                .foregroundStyle(isSelected ? Color.red : Color.clear)
+                .stroke(style: StrokeStyle(lineWidth: 0))
         }
         
     }
 }
 
 #Preview {
-    PhraseRow(phrase: MockPhraseData.lowKey, isSelected: true)
+    PhraseRow(phrase: MockPhraseData.lowKey)
 }

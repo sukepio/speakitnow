@@ -8,10 +8,14 @@
 import SwiftUI
 
 struct SearchView: View {
-    @State private var query: String = ""
+    @State private var query: String = "low-key"
     @State private var isLoading: Bool = false
-    @State private var results: [Phrase] = []
+    @State private var results: [Phrase] = [MockPhraseData.lowKey]
     @State private var errorMessage: String? = nil
+    
+    private var trimmedQuery: String {
+        query.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
     
     var body: some View {
         ZStack {
@@ -29,6 +33,27 @@ struct SearchView: View {
                     TextField("", text: $query, prompt: Text("Enter phrase or word"))
                         .textInputAutocapitalization(.never)
                         .disableAutocorrection(true)
+                        .submitLabel(.search)
+                        .onSubmit {
+                            performSearch()
+                        }
+                    
+                    if !trimmedQuery.isEmpty {
+                        Button {
+                            query = ""
+                            results = []
+                            isLoading = false
+                            errorMessage = nil
+                        } label: {
+                            Image(systemName: "xmark")
+                                .foregroundStyle(.gray)
+                                .padding(2)
+                                .contentShape(Rectangle())
+                        }
+                            .buttonStyle(.plain)
+                    }
+                    
+
                 }
                 .padding(.horizontal, 12)
                 .padding(.vertical, 10)
@@ -36,15 +61,47 @@ struct SearchView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 14))
                 .padding(.top, 32)
                 
-                if results.isEmpty && query.isEmpty {
-                    Text("学びたい語句を入力して検索しましょう")
-                        .foregroundStyle(.white)
-                        .padding(.top, 24)
-                }
+                content
+                    .padding(.top, 24)
                 
             }
             .frame(maxHeight: .infinity, alignment: .top)
             .padding(.horizontal, 20)
+        }
+    }
+    
+    private func performSearch() {
+        guard !trimmedQuery.isEmpty else { return }
+        errorMessage = nil
+        results = []
+        isLoading = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+            if trimmedQuery == "low-key" {
+                results.append(MockPhraseData.lowKey)
+            } else if trimmedQuery == "neck and neck" {
+                results.append(MockPhraseData.neckAndNeck)
+            }
+            isLoading = false
+        }
+    }
+    
+    @ViewBuilder
+    private var content: some View {
+        if isLoading {
+            ProgressView()
+                .tint(.white)
+        } else if results.isEmpty && trimmedQuery.isEmpty {
+            Text("学びたい語句を入力して検索しましょう")
+                .foregroundStyle(.white)
+        } else if results.isEmpty {
+            Text("検索に該当する語句が見つかりませんでした")
+                .foregroundStyle(.white)
+        } else {
+            VStack(alignment: .leading, spacing: 12) {
+                ForEach(results) { phrase in
+                    PhraseRow(phrase: phrase)
+                }
+            }
         }
     }
 }
