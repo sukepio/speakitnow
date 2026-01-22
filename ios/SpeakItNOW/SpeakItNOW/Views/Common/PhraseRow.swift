@@ -15,18 +15,18 @@ struct PhraseRow: View {
             VStack(alignment: .leading) {
                 Text(phrase.text)
                     .font(.headline)
+                    .padding(.bottom, 2)
+                
                 Text(phrase.meaningJa)
                     .font(.caption2)
             }
             Spacer()
             
         }
-//        .padding(10)
+        .padding(12)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .background(.white)
-        .overlay {
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(style: StrokeStyle(lineWidth: 0))
-        }
+        .clipShape(RoundedRectangle(cornerRadius: 12))
         
     }
 }

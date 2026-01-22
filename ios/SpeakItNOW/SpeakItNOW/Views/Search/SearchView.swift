@@ -10,7 +10,7 @@ import SwiftUI
 struct SearchView: View {
     @State private var query: String = "low-key"
     @State private var isLoading: Bool = false
-    @State private var results: [Phrase] = [MockPhraseData.lowKey]
+    @State private var results: [Phrase] = [MockPhraseData.lowKey, MockPhraseData.neckAndNeck]
     @State private var errorMessage: String? = nil
     
     private var trimmedQuery: String {
