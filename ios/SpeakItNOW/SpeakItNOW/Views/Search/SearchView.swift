@@ -12,6 +12,7 @@ struct SearchView: View {
     @State private var isLoading: Bool = false
     @State private var results: [Phrase] = [MockPhraseData.lowKey, MockPhraseData.neckAndNeck]
     @State private var errorMessage: String? = nil
+    @State private var selectedPhrahse: Phrase? = nil
     
     private var trimmedQuery: String {
         query.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -100,7 +101,14 @@ struct SearchView: View {
             VStack(alignment: .leading, spacing: 12) {
                 ForEach(results) { phrase in
                     PhraseRow(phrase: phrase)
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            selectedPhrahse = phrase
+                        }
                 }
+            }
+            .sheet(item: $selectedPhrahse) { phrase in
+                PhraseDetailView(phrase: phrase)
             }
         }
     }

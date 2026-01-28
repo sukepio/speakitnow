@@ -95,7 +95,7 @@ struct MockPhraseData {
         id: "p_neck_and_neck",
         text: "neck and neck",
         meaningJa: "接戦で／ほぼ同時に",
-        isRecommended: true,
+        isRecommended: false,
         details: PhraseDetails(
             detailedMeaning: """
 「neck and neck」は、勝負や競争でほとんど差がなく、互角の状態を表します。
