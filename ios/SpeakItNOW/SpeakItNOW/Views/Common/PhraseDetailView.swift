@@ -15,6 +15,7 @@ struct PhraseDetailView: View {
     
     var body: some View {
         VStack(spacing: 0) {
+            // ヘッダー
             PhraseDetailHeaderView(
                 phrase: phrase,
                 onClose: { dismiss() },
@@ -28,31 +29,31 @@ struct PhraseDetailView: View {
             Divider()
             
             ScrollView {
-                Text("意味")
-                Text(phrase.details.detailedMeaning)
-                Text("オリジン")
-                Text(phrase.details.origin)
-                Text("文脈")
-                Text(phrase.details.contexts[0])
-                Text("コロケーション")
-                ForEach(phrase.details.collocations) { collocation in
-                    Text(collocation.text)
-                    Text(collocation.meaningJa)
-                    Text("例")
-                    Text(collocation.conversation.first.en)
-                    Text(collocation.conversation.first.ja)
-                    Text(collocation.conversation.second.en)
-                    Text(collocation.conversation.second.ja)
+                VStack(alignment: .leading, spacing: 16) {
+                    // 意味
+                    MeaningSection(detailedMeaning: phrase.details.detailedMeaning)
+                    // 使用される文脈
+                    ContextSection(contexts: phrase.details.contexts)
+                    // コロケーション
+                    CollocationSection(collocations: phrase.details.collocations)
+                    // 語源
+                    OriginSection(origin: phrase.details.origin)
+                    // 使い方のヒント
+                    TipsSection(tips: phrase.details.tips)
+                    // 類似表現
+                    if !phrase.details.similar.isEmpty {
+                        SimilarSection(similar: phrase.details.similar)
+                    }
+                    
                 }
-                Text("ヒント")
-                Text(phrase.details.tips)
-                Text("類似語")
+                .padding(.top, 12)
             }
             
         }
         .padding(20)
                 
     }
+    
 }
 
 #Preview {
