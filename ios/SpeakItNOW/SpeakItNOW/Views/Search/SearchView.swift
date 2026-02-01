@@ -24,14 +24,16 @@ struct SearchView: View {
                 .ignoresSafeArea()
             
             VStack() {
-                Text("Search")
+                Text("検索")
                     .font(.largeTitle)
                     .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
                 
                 HStack {
                     Image(systemName: "magnifyingglass")
                         .foregroundStyle(.gray)
-                    TextField("", text: $query, prompt: Text("Enter phrase or word"))
+                    TextField("", text: $query, prompt: Text("Enter a word, phrase, idiom"))
                         .textInputAutocapitalization(.never)
                         .disableAutocorrection(true)
                         .submitLabel(.search)
@@ -92,7 +94,7 @@ struct SearchView: View {
             ProgressView()
                 .tint(.white)
         } else if results.isEmpty && trimmedQuery.isEmpty {
-            Text("学びたい語句を入力して検索しましょう")
+            Text("アウトプットしたい語句を検索しましょう")
                 .foregroundStyle(.white)
         } else if results.isEmpty {
             Text("検索に該当する語句が見つかりませんでした")
