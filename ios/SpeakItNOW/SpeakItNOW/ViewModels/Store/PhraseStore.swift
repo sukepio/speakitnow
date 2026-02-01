@@ -11,6 +11,9 @@ final class PhraseStore: ObservableObject {
     @Published var phrases: [Phrase] = []
     @Published var selectedPhraseId: String?
     @Published var myPhraseIds: Set<String> = []
+    var myPhrases: [Phrase] {
+        phrases.filter{ myPhraseIds.contains($0.id) }
+    }
     
     init() {
         self.phrases = MockPhraseData.phrases
