@@ -24,7 +24,7 @@ struct RecommendedPhraseRow: View {
                 .opacity(isSelected ? 1 : 0)
                 .foregroundStyle(isSelected ? Color.red : Color.clear)
         }
-//        .padding(10)
+        .padding(10)
         .background(isSelected ? Color.red.opacity(0.08) : Color.clear)
         .overlay {
             RoundedRectangle(cornerRadius: 12)
