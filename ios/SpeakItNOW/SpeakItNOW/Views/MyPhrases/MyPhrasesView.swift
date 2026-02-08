@@ -11,6 +11,7 @@ struct MyPhrasesView: View {
     @EnvironmentObject var phraseStore: PhraseStore
     var myPhrases: [Phrase] { phraseStore.myPhrases }
     @State private var selectedPhrase: Phrase? = nil
+    @State private var path: [DetailRoute] = []
     
     var body: some View {
         ZStack {
@@ -43,7 +44,25 @@ struct MyPhrasesView: View {
                     }
                 }
                 .sheet(item: $selectedPhrase) { phrase in
-                    PhraseDetailView(phrase: phrase)
+                    NavigationStack(path: $path) {
+                        PhraseDetailView(
+                            phrase: phrase,
+                            source: .myPhrase,
+                            onStartOutput: { phrase, source in
+                                path.append(.output(pharase: phrase, source: .myPhrase))
+                            }
+                        )
+                        .navigationDestination(for: DetailRoute.self) { route in
+                            switch route {
+                            case.output(let phrase, let source):
+                                OutputView(
+                                    phrase: phrase,
+                                    source: source
+                                )
+                            }
+                        }
+                    }
+                    
                 }
                 .listStyle(.plain)
                 .frame(maxWidth: .infinity)

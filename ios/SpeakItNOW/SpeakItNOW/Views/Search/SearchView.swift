@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct SearchView: View {
-    @State private var query: String = "low-key"
+    @EnvironmentObject var phraseStore: PhraseStore
+    @State private var query: String = ""
     @State private var isLoading: Bool = false
-    @State private var results: [Phrase] = [MockPhraseData.lowKey, MockPhraseData.neckAndNeck]
+    @State private var results: [Phrase] = []
     @State private var errorMessage: String? = nil
     @State private var selectedPhrase: Phrase? = nil
+    @State private var path: [DetailRoute] = []
     
     private var trimmedQuery: String {
         query.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -47,6 +49,7 @@ struct SearchView: View {
                             results = []
                             isLoading = false
                             errorMessage = nil
+                            selectedPhrase = nil
                         } label: {
                             Image(systemName: "xmark")
                                 .foregroundStyle(.gray)
@@ -75,17 +78,34 @@ struct SearchView: View {
     
     private func performSearch() {
         guard !trimmedQuery.isEmpty else { return }
+        let q = normalize(trimmedQuery)
         errorMessage = nil
         results = []
         isLoading = true
+        let source = phraseStore.phrases
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
-            if trimmedQuery == "low-key" {
-                results.append(MockPhraseData.lowKey)
-            } else if trimmedQuery == "neck and neck" {
-                results.append(MockPhraseData.neckAndNeck)
+            defer {
+                isLoading = false
             }
-            isLoading = false
+            let exact = source.filter { normalize($0.text) == q }
+            if !exact.isEmpty {
+                results = exact
+                return
+            }
+            let partial = source.filter { normalize($0.text).contains(q) }
+            results = partial
+            return
         }
+    }
+    
+    private func normalize(_ s: String) -> String {
+        var normalized = s.lowercased()
+        normalized = normalized.trimmingCharacters(in: .whitespacesAndNewlines)
+        normalized = normalized.replacingOccurrences(of: "-", with: " ")
+        normalized = normalized.components(separatedBy: .whitespacesAndNewlines).filter{
+            !$0.isEmpty
+        }.joined(separator: " ")
+        return normalized
     }
     
     @ViewBuilder
@@ -110,7 +130,24 @@ struct SearchView: View {
                 }
             }
             .sheet(item: $selectedPhrase) { phrase in
-                PhraseDetailView(phrase: phrase)
+                NavigationStack(path: $path) {
+                    PhraseDetailView(
+                        phrase: phrase,
+                        source: .search,
+                        onStartOutput: { phrase, source in
+                            path.append(.output(pharase: phrase, source: .search))
+                        }
+                    )
+                    .navigationDestination(for: DetailRoute.self) { route in
+                        switch route {
+                        case.output(let phrase, let source):
+                            OutputView(
+                                phrase: phrase,
+                                source: source
+                            )
+                        }
+                    }
+                }
             }
         }
     }
@@ -118,4 +155,5 @@ struct SearchView: View {
 
 #Preview {
     SearchView()
+        .environmentObject(PhraseStore())
 }

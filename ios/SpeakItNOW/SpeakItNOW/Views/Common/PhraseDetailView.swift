@@ -10,7 +10,11 @@ import SwiftUI
 struct PhraseDetailView: View {
     @EnvironmentObject var phraseStore: PhraseStore
     @Environment(\.dismiss) var dismiss
+    
     let phrase: Phrase
+    let source: PhraseDetailSource
+    let onStartOutput: (Phrase, PhraseDetailSource) -> Void
+    
     var isAdded: Bool {phraseStore.isAdded(phrase)}
     
     var body: some View {
@@ -21,7 +25,7 @@ struct PhraseDetailView: View {
                 onClose: { dismiss() },
                 onAddMyPhrase: { phraseStore.addMyPhrase(phrase) },
                 onRemoveMyPhrase: { phraseStore.removeMyPhrase(phrase) },
-                onStartOutput: { print("Start Output") },
+                onStartOutput: { onStartOutput(phrase, source) },
                 isAdded: isAdded
             )
             .padding(.bottom, 10)
@@ -56,7 +60,20 @@ struct PhraseDetailView: View {
     
 }
 
-#Preview {
-    PhraseDetailView(phrase: MockPhraseData.lowKey)
-        .environmentObject(PhraseStore())
+#Preview("My Phrase") {
+    PhraseDetailView(
+        phrase: MockPhraseData.lowKey,
+        source: .myPhrase,
+        onStartOutput: { _, _ in }
+    )
+    .environmentObject(PhraseStore())
+}
+
+#Preview("Search Result") {
+    PhraseDetailView(
+        phrase: MockPhraseData.lowKey,
+        source: .search,
+        onStartOutput: { _, _ in }
+    )
+    .environmentObject(PhraseStore())
 }
