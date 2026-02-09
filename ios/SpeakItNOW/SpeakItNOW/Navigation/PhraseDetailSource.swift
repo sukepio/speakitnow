@@ -10,4 +10,5 @@ import Foundation
 enum PhraseDetailSource: Hashable {
     case search
     case myPhrase
+    case output
 }

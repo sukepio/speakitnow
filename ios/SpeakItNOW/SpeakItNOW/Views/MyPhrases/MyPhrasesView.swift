@@ -24,8 +24,6 @@ struct MyPhrasesView: View {
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                
-//                VStack(alignment: .leading, spacing: 12) {
                   List {
                     ForEach(myPhrases) { phrase in
                         PhraseRow(phrase: phrase)

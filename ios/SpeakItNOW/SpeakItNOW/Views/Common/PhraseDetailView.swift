@@ -26,7 +26,8 @@ struct PhraseDetailView: View {
                 onAddMyPhrase: { phraseStore.addMyPhrase(phrase) },
                 onRemoveMyPhrase: { phraseStore.removeMyPhrase(phrase) },
                 onStartOutput: { onStartOutput(phrase, source) },
-                isAdded: isAdded
+                isAdded: isAdded,
+                source: source
             )
             .padding(.bottom, 10)
             

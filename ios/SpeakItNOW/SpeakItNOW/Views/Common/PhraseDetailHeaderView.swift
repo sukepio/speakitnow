@@ -14,6 +14,7 @@ struct PhraseDetailHeaderView: View {
     let onRemoveMyPhrase: () -> Void
     let onStartOutput: () -> Void
     let isAdded: Bool
+    let source: PhraseDetailSource
     
     var body: some View {
         HStack() {
@@ -62,19 +63,22 @@ struct PhraseDetailHeaderView: View {
                         .stroke(isAdded ? Color.red : Color.blue, lineWidth: 1)
                 )
             
-            Button {
-                onStartOutput()
-            } label: {
-                Text("今すぐアウトプット")
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
-            }
+            
+            if source != .output {
+                Button {
+                    onStartOutput()
+                } label: {
+                    Text("今すぐアウトプット")
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                }
                 .frame(maxWidth: .infinity)
                 .frame(height: 34)
                 .background(Color.blue)
                 .clipShape(RoundedRectangle(cornerRadius: 20))
                 .padding(.horizontal, 2)
                 .overlay(RoundedRectangle(cornerRadius: 20).strokeBorder(Color.clear, lineWidth: 1))
+            }
         }
     }
 }
@@ -86,6 +90,7 @@ struct PhraseDetailHeaderView: View {
         onAddMyPhrase: { print("Add to my phrase") },
         onRemoveMyPhrase: { print("Remove from my phrase") },
         onStartOutput: { print("Start output") },
-        isAdded: true
+        isAdded: true,
+        source: .myPhrase
     )
 }
