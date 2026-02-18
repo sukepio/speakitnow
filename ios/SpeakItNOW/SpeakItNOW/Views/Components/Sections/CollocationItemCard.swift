@@ -14,12 +14,16 @@ struct CollocationItemCard: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Image(systemName: "play.fill")
-                    .font(.caption)
+                    .foregroundStyle(.black)
+                
                 Text(collocation.text)
-                    .fontWeight(.semibold)
+                    .foregroundStyle(.black)
+                    .fontWeight(.bold)
             }
             Text(collocation.meaningJa)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.black)
+                .fontWeight(.medium)
+                .font(.system(size: 14))
             
             Divider()
             

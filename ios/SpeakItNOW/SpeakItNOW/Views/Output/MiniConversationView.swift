@@ -18,7 +18,7 @@ class ConversationSpeaker: ObservableObject {
         
         let utterance = AVSpeechUtterance(string: text)
         utterance.voice = AVSpeechSynthesisVoice(language: language)
-        utterance.rate = 1
+        utterance.rate = 0.5
         utterance.pitchMultiplier = 1.0
         
         synthesizer.speak(utterance)
@@ -43,6 +43,7 @@ class ConversationSpeaker: ObservableObject {
 
 struct MiniConversationView: View {
     @State private var selectedConversationNo = 0
+    @State private var isMeaningJpShown: Bool = false
     @StateObject private var speaker = ConversationSpeaker()
     let conversations: [Conversation]
     
@@ -53,13 +54,17 @@ struct MiniConversationView: View {
                     VStack {
                         VStack(alignment: .leading, spacing: 4) {
                             Text(conversation.conversation.first.en)
+                                .onTapGesture {
+                                    speaker.speak(conversation.conversation.first.en)
+                                }
                             
-                            Rectangle()
-                                .fill(Color.secondary.opacity(0.3))
-                                .frame(height: 1)
-                            
-                            Text(conversation.conversation.first.ja)
-                                .font(.caption)
+                            if isMeaningJpShown {
+                                Rectangle()
+                                    .fill(Color.secondary.opacity(0.3))
+                                    .frame(height: 1)
+                                Text(conversation.conversation.first.ja)
+                                    .font(.caption)
+                            }
                         }
                         .padding(10)
                         .fixedSize(horizontal: true, vertical: false)
@@ -72,14 +77,19 @@ struct MiniConversationView: View {
                         VStack(alignment: .leading, spacing: 4) {
                             Text(conversation.conversation.second.en)
                                 .foregroundColor(.white)
+                                .onTapGesture {
+                                    speaker.speak(conversation.conversation.second.en)
+                                }
                             
-                            Rectangle()
-                                .fill(Color.white.opacity(0.8))
-                                .frame(height: 1)
-                            
-                            Text(conversation.conversation.second.ja)
-                                .font(.caption)
-                                .foregroundColor(.white.opacity(0.8))
+                            if isMeaningJpShown {
+                                Rectangle()
+                                    .fill(Color.white.opacity(0.8))
+                                    .frame(height: 1)
+                                
+                                Text(conversation.conversation.second.ja)
+                                    .font(.caption)
+                                    .foregroundColor(.white.opacity(0.8))
+                            }
                         }
                         .padding(10)
                         .fixedSize(horizontal: true, vertical: false)
@@ -97,20 +107,40 @@ struct MiniConversationView: View {
             .tabViewStyle(.page)
             
             // 再生ボタン
-            Button {
-                if conversations.indices.contains(selectedConversationNo) {
-                    let currentConv = conversations[selectedConversationNo]
-                    
-                    speaker.speackConversation(
-                        first: currentConv.conversation.first.en,
-                        second: currentConv.conversation.second.en
-                    )
+            ZStack() {
+                Button {
+                    withAnimation {
+                        isMeaningJpShown.toggle()
+                    }
+                } label: {
+                    Image(systemName: "translate")
+                        .font(.system(size: 32))
+                        .foregroundStyle(
+                            isMeaningJpShown ? AnyShapeStyle(.primary) : AnyShapeStyle(.gray),
+                            .primary
+                        )
+                        
                 }
-            } label: {
-                Image(systemName: "play.circle.fill")
-                    .font(.system(size: 64))
-                    .foregroundStyle(.white, .primary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Button {
+                    if conversations.indices.contains(selectedConversationNo) {
+                        let currentConv = conversations[selectedConversationNo]
+                        
+                        speaker.speackConversation(
+                            first: currentConv.conversation.first.en,
+                            second: currentConv.conversation.second.en
+                        )
+                    }
+                } label: {
+                    Image(systemName: "play.circle.fill")
+                        .font(.system(size: 64))
+                        .foregroundStyle(.white, .primary)
+                }
+                
             }
+            .padding(.horizontal, 10)
+            .frame(maxWidth: .infinity)
         }
     }
 }

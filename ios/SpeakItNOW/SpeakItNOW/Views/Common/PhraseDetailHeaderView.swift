@@ -57,7 +57,6 @@ struct PhraseDetailHeaderView: View {
                 .frame(height: 34)
                 .background(isAdded ? Color.red.opacity(0.08) : .white)
                 .clipShape(RoundedRectangle(cornerRadius: 20))
-                .padding(.horizontal, 2)
                 .overlay(
                     RoundedRectangle(cornerRadius: 20)
                         .stroke(isAdded ? Color.red : Color.blue, lineWidth: 1)
@@ -76,7 +75,6 @@ struct PhraseDetailHeaderView: View {
                 .frame(height: 34)
                 .background(Color.blue)
                 .clipShape(RoundedRectangle(cornerRadius: 20))
-                .padding(.horizontal, 2)
                 .overlay(RoundedRectangle(cornerRadius: 20).strokeBorder(Color.clear, lineWidth: 1))
             }
         }
@@ -90,7 +88,7 @@ struct PhraseDetailHeaderView: View {
         onAddMyPhrase: { print("Add to my phrase") },
         onRemoveMyPhrase: { print("Remove from my phrase") },
         onStartOutput: { print("Start output") },
-        isAdded: true,
+        isAdded: false,
         source: .myPhrase
     )
 }

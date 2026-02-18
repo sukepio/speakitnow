@@ -17,15 +17,15 @@ struct ConversationTurnView: View {
             HStack(spacing: 0) {
                 Text("(\(speaker.label)):")
                     .frame(width: 40, alignment: .leading)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.black)
                 Text(en)
                     .font(.subheadline)
-                    .foregroundStyle(.primary)
-                    .fontWeight(.bold)
+                    .foregroundStyle(.black)
+                    .fontWeight(.semibold)
             }
             Text(ja)
                 .font(.caption)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.black)
                 .padding(.leading, 40)
         }
     }

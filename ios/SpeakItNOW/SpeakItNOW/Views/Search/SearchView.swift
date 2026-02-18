@@ -36,6 +36,7 @@ struct SearchView: View {
                     Image(systemName: "magnifyingglass")
                         .foregroundStyle(.gray)
                     TextField("", text: $query, prompt: Text("Enter a word, phrase, idiom"))
+                        .foregroundStyle(.black)
                         .textInputAutocapitalization(.never)
                         .disableAutocorrection(true)
                         .submitLabel(.search)

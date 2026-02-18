@@ -14,11 +14,15 @@ struct PhraseRow: View {
         HStack {
             VStack(alignment: .leading) {
                 Text(phrase.text)
-                    .font(.headline)
+                    .font(.system(size: 20))
+                    .foregroundStyle(.black)
+                    .fontWeight(.bold)
                     .padding(.bottom, 2)
                 
                 Text(phrase.meaningJa)
-                    .font(.caption2)
+                    .font(.system(size: 14))
+                    .foregroundStyle(.black)
+                    .fontWeight(.medium)
             }
             Spacer()
             
