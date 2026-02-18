@@ -11,6 +11,7 @@ import Foundation
 struct PhraseDetails: Codable, Hashable {
     let detailedMeaning: String
     let contexts: [String]
+    let conversations: [Conversation]
     let collocations: [Collocation]
     let examples: [Example]
     let origin: String

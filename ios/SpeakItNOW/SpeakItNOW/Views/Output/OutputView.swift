@@ -28,6 +28,7 @@ struct OutputView: View {
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
+                // 選択フレーズ
                 PhraseRow(phrase: phrase)
                     .contentShape(Rectangle())
                     .onTapGesture {
@@ -64,8 +65,9 @@ struct OutputView: View {
                 VStack {
                     if selectedTab == "Conversation" {
                         VStack {
-                            Text("ミニ会話")
-                                .foregroundStyle(.white)
+                            MiniConversationView(
+                                conversations: phrase.details.conversations
+                            )
                         }
                         .transition(.opacity)
                     } else {

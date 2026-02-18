@@ -35,6 +35,53 @@ struct MockPhraseData {
                 "感情や好みを控えめに伝えるとき",
                 "公にしない・大げさにしない行動"
             ],
+            conversations: [
+                Conversation(
+                    id: "con_lowkey_tpl_1",
+                    text: "casual check-in",
+                    meaningJa: "軽い近況トーク",
+                    conversation: ConversationPair(
+                        first: BilingualText(
+                            en: "How’s your day going?",
+                            ja: "今日どんな感じ？"
+                        ),
+                        second: BilingualText(
+                            en: "I’m low-key tired today.",
+                            ja: "今日は実はちょっと疲れてる。"
+                        )
+                    )
+                ),
+                Conversation(
+                    id: "con_lowkey_tpl_2",
+                    text: "preference",
+                    meaningJa: "好みを控えめに言う",
+                    conversation: ConversationPair(
+                        first: BilingualText(
+                            en: "What kind of music do you listen to?",
+                            ja: "どんな音楽聴くの？"
+                        ),
+                        second: BilingualText(
+                            en: "I low-key like jazz.",
+                            ja: "実はジャズちょっと好き。"
+                        )
+                    )
+                ),
+                Conversation(
+                    id: "con_lowkey_tpl_3",
+                    text: "suggestion",
+                    meaningJa: "控えめに提案する",
+                    conversation: ConversationPair(
+                        first: BilingualText(
+                            en: "What should we do for the weekend?",
+                            ja: "週末どうする？"
+                        ),
+                        second: BilingualText(
+                            en: "Let’s keep it low-key.",
+                            ja: "控えめにしよう。"
+                        )
+                    )
+                )
+            ],
             collocations: [
                 Collocation(
                     id: "col_lowkey_1",
@@ -111,6 +158,54 @@ struct MockPhraseData {
                 "スポーツの試合やレース",
                 "選挙結果・支持率"
             ],
+            conversations: [
+                Conversation(
+                    id: "con_neck_tpl_1",
+                    text: "competition update",
+                    meaningJa: "勝負の状況を共有",
+                    conversation: ConversationPair(
+                        first: BilingualText(
+                            en: "Any updates on the results?",
+                            ja: "結果どうなった？"
+                        ),
+                        second: BilingualText(
+                            en: "It’s neck and neck right now.",
+                            ja: "今、接戦だよ。"
+                        )
+                    )
+                ),
+                Conversation(
+                    id: "con_neck_tpl_2",
+                    text: "two options",
+                    meaningJa: "2つが拮抗している",
+                    conversation: ConversationPair(
+                        first: BilingualText(
+                            en: "Which one is better, A or B?",
+                            ja: "AとB、どっちがいい？"
+                        ),
+                        second: BilingualText(
+                            en: "They’re neck and neck.",
+                            ja: "ほぼ互角だね。"
+                        )
+                    )
+                ),
+                Conversation(
+                    id: "con_neck_tpl_3",
+                    text: "race reaction",
+                    meaningJa: "接戦に驚く",
+                    conversation: ConversationPair(
+                        first: BilingualText(
+                            en: "That was intense, wasn’t it?",
+                            ja: "すごかったね。"
+                        ),
+                        second: BilingualText(
+                            en: "Yeah, it was neck and neck to the end.",
+                            ja: "うん、最後まで接戦だった。"
+                        )
+                    )
+                )
+            ],
+
             collocations: [
                 Collocation(
                     id: "col_neck_1",
@@ -187,6 +282,54 @@ struct MockPhraseData {
                 "予定が未確定のとき（旅行・会議・イベントなど）",
                 "意思決定や結果がまだ分からないとき"
             ],
+            conversations: [
+                Conversation(
+                    id: "con_upair_tpl_1",
+                    text: "plan status",
+                    meaningJa: "予定が未定",
+                    conversation: ConversationPair(
+                        first: BilingualText(
+                            en: "Are we meeting tomorrow?",
+                            ja: "明日会う？"
+                        ),
+                        second: BilingualText(
+                            en: "It’s still up in the air.",
+                            ja: "まだ未定だよ。"
+                        )
+                    )
+                ),
+                Conversation(
+                    id: "con_upair_tpl_2",
+                    text: "decision pending",
+                    meaningJa: "判断がまだ",
+                    conversation: ConversationPair(
+                        first: BilingualText(
+                            en: "Did you decide what to do next?",
+                            ja: "次どうするか決めた？"
+                        ),
+                        second: BilingualText(
+                            en: "No, it’s up in the air.",
+                            ja: "いや、まだ不透明。"
+                        )
+                    )
+                ),
+                Conversation(
+                    id: "con_upair_tpl_3",
+                    text: "uncertain schedule",
+                    meaningJa: "スケジュールが確定していない",
+                    conversation: ConversationPair(
+                        first: BilingualText(
+                            en: "Can you join the event?",
+                            ja: "イベント来れる？"
+                        ),
+                        second: BilingualText(
+                            en: "Maybe. My schedule is up in the air.",
+                            ja: "たぶん。予定がまだ未定なんだ。"
+                        )
+                    )
+                )
+            ],
+
             collocations: [
                 Collocation(
                     id: "col_upair_1",
@@ -263,6 +406,54 @@ struct MockPhraseData {
                 "会議や内輪の会話をこっそり聞きたいとき",
                 "ドラマやドキュメンタリーの表現（舞台裏を覗く感じ）"
             ],
+            conversations: [
+                Conversation(
+                    id: "con_fly_tpl_1",
+                    text: "curiosity",
+                    meaningJa: "内緒の話を聞きたい",
+                    conversation: ConversationPair(
+                        first: BilingualText(
+                            en: "I wonder what they talked about.",
+                            ja: "何話してたんだろうね。"
+                        ),
+                        second: BilingualText(
+                            en: "I’d love to be a fly on the wall.",
+                            ja: "こっそり聞けたら最高なのに。"
+                        )
+                    )
+                ),
+                Conversation(
+                    id: "con_fly_tpl_2",
+                    text: "behind the scenes",
+                    meaningJa: "舞台裏を覗く感じ",
+                    conversation: ConversationPair(
+                        first: BilingualText(
+                            en: "This feels so real, like we’re watching quietly.",
+                            ja: "なんかリアルだね、静かに見てる感じ。"
+                        ),
+                        second: BilingualText(
+                            en: "Yeah, like a fly on the wall.",
+                            ja: "うん、こっそり覗いてるみたい。"
+                        )
+                    )
+                ),
+                Conversation(
+                    id: "con_fly_tpl_3",
+                    text: "private conversation",
+                    meaningJa: "プライベートな会話を見たい",
+                    conversation: ConversationPair(
+                        first: BilingualText(
+                            en: "They’re having a serious talk.",
+                            ja: "真剣な話してるね。"
+                        ),
+                        second: BilingualText(
+                            en: "I wish I were a fly on the wall.",
+                            ja: "こっそりその場に居られたらな。"
+                        )
+                    )
+                )
+            ],
+
             collocations: [
                 Collocation(
                     id: "col_fly_1",
@@ -339,6 +530,54 @@ struct MockPhraseData {
                 "予定変更に合わせて即興で動くとき",
                 "仕事でその場判断・臨機応変に対応するとき"
             ],
+            conversations: [
+                Conversation(
+                    id: "con_onthefly_tpl_1",
+                    text: "no plan",
+                    meaningJa: "計画なしで動く",
+                    conversation: ConversationPair(
+                        first: BilingualText(
+                            en: "Do we need a plan?",
+                            ja: "計画いる？"
+                        ),
+                        second: BilingualText(
+                            en: "Let’s decide on the fly.",
+                            ja: "その場で決めよう。"
+                        )
+                    )
+                ),
+                Conversation(
+                    id: "con_onthefly_tpl_2",
+                    text: "quick adjustment",
+                    meaningJa: "即興で調整する",
+                    conversation: ConversationPair(
+                        first: BilingualText(
+                            en: "Something changed last minute.",
+                            ja: "直前で変更が入った。"
+                        ),
+                        second: BilingualText(
+                            en: "Okay, we’ll adjust on the fly.",
+                            ja: "了解、その場で調整しよう。"
+                        )
+                    )
+                ),
+                Conversation(
+                    id: "con_onthefly_tpl_3",
+                    text: "instant response",
+                    meaningJa: "即対応する",
+                    conversation: ConversationPair(
+                        first: BilingualText(
+                            en: "Can you handle it right now?",
+                            ja: "今すぐ対応できる？"
+                        ),
+                        second: BilingualText(
+                            en: "Yeah, I’ll do it on the fly.",
+                            ja: "うん、その場でやるよ。"
+                        )
+                    )
+                )
+            ],
+
             collocations: [
                 Collocation(
                     id: "col_fly2_1",
@@ -415,6 +654,54 @@ struct MockPhraseData {
                 "飲み会で酔い具合をカジュアルに言うとき",
                 "時間・努力が無駄になったと言うとき"
             ],
+            conversations: [
+                Conversation(
+                    id: "con_wasted_tpl_1",
+                    text: "hangover",
+                    meaningJa: "酔いの話",
+                    conversation: ConversationPair(
+                        first: BilingualText(
+                            en: "You look rough. Are you okay?",
+                            ja: "しんどそうだけど大丈夫？"
+                        ),
+                        second: BilingualText(
+                            en: "Yeah… I got wasted last night.",
+                            ja: "うん…昨日ベロベロになった。"
+                        )
+                    )
+                ),
+                Conversation(
+                    id: "con_wasted_tpl_2",
+                    text: "regret",
+                    meaningJa: "やりすぎを反省",
+                    conversation: ConversationPair(
+                        first: BilingualText(
+                            en: "Do you remember what happened?",
+                            ja: "何があったか覚えてる？"
+                        ),
+                        second: BilingualText(
+                            en: "Not really. I was wasted.",
+                            ja: "あんまり…酔いつぶれてた。"
+                        )
+                    )
+                ),
+                Conversation(
+                    id: "con_wasted_tpl_3",
+                    text: "time wasted",
+                    meaningJa: "無駄になった",
+                    conversation: ConversationPair(
+                        first: BilingualText(
+                            en: "Why are you frustrated?",
+                            ja: "なんでイライラしてるの？"
+                        ),
+                        second: BilingualText(
+                            en: "It feels like my time was wasted.",
+                            ja: "時間が無駄になった気がする。"
+                        )
+                    )
+                )
+            ],
+
             collocations: [
                 Collocation(
                     id: "col_wasted_1",
@@ -491,6 +778,54 @@ struct MockPhraseData {
                 "提案やアイデアの反応を言うとき",
                 "ジョークやスピーチのウケを言うとき"
             ],
+            conversations: [
+                Conversation(
+                    id: "con_gdw_tpl_1",
+                    text: "feedback",
+                    meaningJa: "反応が良い",
+                    conversation: ConversationPair(
+                        first: BilingualText(
+                            en: "How did your idea go?",
+                            ja: "アイデアの反応どうだった？"
+                        ),
+                        second: BilingualText(
+                            en: "It went down well.",
+                            ja: "好評だったよ。"
+                        )
+                    )
+                ),
+                Conversation(
+                    id: "con_gdw_tpl_2",
+                    text: "with audience",
+                    meaningJa: "〜にウケる",
+                    conversation: ConversationPair(
+                        first: BilingualText(
+                            en: "Did the new rule get accepted?",
+                            ja: "新ルール、受け入れられそう？"
+                        ),
+                        second: BilingualText(
+                            en: "I don’t think it’ll go down well.",
+                            ja: "たぶんウケないと思う。"
+                        )
+                    )
+                ),
+                Conversation(
+                    id: "con_gdw_tpl_3",
+                    text: "joke",
+                    meaningJa: "冗談がウケる／ウケない",
+                    conversation: ConversationPair(
+                        first: BilingualText(
+                            en: "Did your joke land?",
+                            ja: "冗談ウケた？"
+                        ),
+                        second: BilingualText(
+                            en: "It didn’t go down well.",
+                            ja: "ウケなかった。"
+                        )
+                    )
+                )
+            ],
+
             collocations: [
                 Collocation(
                     id: "col_gdw_1",
@@ -567,6 +902,54 @@ struct MockPhraseData {
                 "ビジネスや副業で大きく稼いだ話をするとき",
                 "イベント・セールなどで大成功したとき"
             ],
+            conversations: [
+                Conversation(
+                    id: "con_makill_tpl_1",
+                    text: "business result",
+                    meaningJa: "稼ぎがすごい",
+                    conversation: ConversationPair(
+                        first: BilingualText(
+                            en: "How’s business lately?",
+                            ja: "最近どう？"
+                        ),
+                        second: BilingualText(
+                            en: "We’re making a killing.",
+                            ja: "めっちゃ儲かってる。"
+                        )
+                    )
+                ),
+                Conversation(
+                    id: "con_makill_tpl_2",
+                    text: "one-time big profit",
+                    meaningJa: "一発で大儲け",
+                    conversation: ConversationPair(
+                        first: BilingualText(
+                            en: "Was that project worth it?",
+                            ja: "その案件、やる価値あった？"
+                        ),
+                        second: BilingualText(
+                            en: "Yeah, I made a killing on it.",
+                            ja: "うん、あれで大儲けした。"
+                        )
+                    )
+                ),
+                Conversation(
+                    id: "con_makill_tpl_3",
+                    text: "surprised reaction",
+                    meaningJa: "儲けに驚く",
+                    conversation: ConversationPair(
+                        first: BilingualText(
+                            en: "How did you afford that?",
+                            ja: "どうやってそれ買えたの？"
+                        ),
+                        second: BilingualText(
+                            en: "I made a killing last month.",
+                            ja: "先月大儲けしたんだ。"
+                        )
+                    )
+                )
+            ],
+
             collocations: [
                 Collocation(
                     id: "col_makill_1",
