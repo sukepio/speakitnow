@@ -17,11 +17,4 @@ struct Phrase: Identifiable, Codable, Hashable {
     // 将来の拡張（必要になったら使う）
     var tags: [String]?
     var isSaved: Bool?
-    var difficulty: Difficulty?
-}
-
-enum Difficulty: String, Codable, Hashable {
-    case easy
-    case medium
-    case hard
 }

@@ -72,8 +72,7 @@ struct OutputView: View {
                         .transition(.opacity)
                     } else {
                         VStack {
-                            Text("瞬間英作文")
-                                .foregroundStyle(.white)
+                            InstantCompositionSettingsView()
                         }
                         .transition(.opacity)
                     }
