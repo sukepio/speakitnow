@@ -62,20 +62,16 @@ struct OutputView: View {
                 }
                 
                 // タブコンテンツエリア
-                VStack {
-                    if selectedTab == "Conversation" {
-                        VStack {
-                            MiniConversationView(
-                                conversations: phrase.details.conversations
-                            )
-                        }
-                        .transition(.opacity)
-                    } else {
-                        VStack {
-                            InstantCompositionSettingsView()
-                        }
-                        .transition(.opacity)
-                    }
+                ZStack {
+                    MiniConversationView(
+                        conversations: phrase.details.conversations
+                    )
+                    .opacity(selectedTab == "Conversation" ? 1 : 0)
+                    .allowsHitTesting(selectedTab == "Conversation")
+                    
+                    InstantCompositionSettingsView()
+                        .opacity(selectedTab == "Writing" ? 1 : 0)
+                        .allowsHitTesting(selectedTab == "Writing")
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 

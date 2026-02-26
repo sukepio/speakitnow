@@ -15,7 +15,7 @@ struct InstantCompositionSettingsView: View {
     @State private var isPlayScreenShown: Bool = false
     
     var body: some View {
-        NavigationStack {
+//        NavigationStack {
             Form {
                 Picker("回数", selection: $questionCount) {
                     ForEach(1...10, id: \.self) { i in
@@ -53,9 +53,9 @@ struct InstantCompositionSettingsView: View {
                 }
             }
             .fullScreenCover(isPresented: $isPlayScreenShown) {
-                Text("一回目")
+                InstantCompositionPlayView()
             }
-        }
+//        }
     }
 }
 

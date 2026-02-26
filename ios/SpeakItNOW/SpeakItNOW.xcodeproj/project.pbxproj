@@ -10,9 +10,22 @@
 		E6BF7EF22F17C49000559007 /* SpeakItNOW.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeakItNOW.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		E6FA6A682F4EED8B0036C262 /* Exceptions for "SpeakItNOW" folder in "SpeakItNOW" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = E6BF7EF12F17C49000559007 /* SpeakItNOW */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		E6BF7EF42F17C49000559007 /* SpeakItNOW */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				E6FA6A682F4EED8B0036C262 /* Exceptions for "SpeakItNOW" folder in "SpeakItNOW" target */,
+			);
 			path = SpeakItNOW;
 			sourceTree = "<group>";
 		};
@@ -256,6 +269,9 @@
 				DEVELOPMENT_TEAM = 7KCHW8J8TA;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SpeakItNOW/Info.plist;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "英語の発音を録音するためにマイクを使用します。";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "発話された音声を英語テキストに変換するために音声認識を使用します。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -284,6 +300,9 @@
 				DEVELOPMENT_TEAM = 7KCHW8J8TA;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SpeakItNOW/Info.plist;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "英語の発音を録音するためにマイクを使用します。";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "発話された音声を英語テキストに変換するために音声認識を使用します。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
