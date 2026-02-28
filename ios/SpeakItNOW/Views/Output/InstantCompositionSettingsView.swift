@@ -13,9 +13,9 @@ struct InstantCompositionSettingsView: View {
     @State private var selectedScene: SceneType = .daily
     @State private var selectedFormalLevel: FormalLevel = .casual
     @State private var isPlayScreenShown: Bool = false
+    let phrase: Phrase
     
     var body: some View {
-//        NavigationStack {
             Form {
                 Picker("回数", selection: $questionCount) {
                     ForEach(1...10, id: \.self) { i in
@@ -53,12 +53,18 @@ struct InstantCompositionSettingsView: View {
                 }
             }
             .fullScreenCover(isPresented: $isPlayScreenShown) {
-                InstantCompositionPlayView()
+                let settings = CompositionSession.SessionSettings(
+                    questionCount: questionCount,
+                    difficulty: selectedDifficulty,
+                    scene: selectedScene.rawValue,
+                    formatLevel: selectedFormalLevel
+                )
+                
+                InstantCompositionPlayView(phrase: phrase, settings: settings)
             }
-//        }
     }
 }
 
 #Preview {
-    InstantCompositionSettingsView()
+    InstantCompositionSettingsView(phrase: MockPhraseData.makeAKilling)
 }

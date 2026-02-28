@@ -1,0 +1,101 @@
+//
+//  InstantCompositionPlayView.swift
+//  SpeakItNOW
+//
+//  Created by 助名直人 on 2026/02/20.
+//
+
+import SwiftUI
+
+struct InstantCompositionPlayView: View {
+    @Environment(\.dismiss) private var dismiss
+    @StateObject private var viewModel = InstantCompositionViewModel()
+    @State private var isFlipped: Bool = false
+    let phrase: Phrase
+    let settings: CompositionSession.SessionSettings
+    
+    var body: some View {
+        ZStack {
+            Color(Color.black.opacity(0.9))
+                .ignoresSafeArea()
+            
+            VStack() {
+                VStack {
+                    HStack {
+                        Button {
+                            dismiss()
+                        } label: {
+                            Image(systemName: "xmark")
+                                .font(.title2)
+                                .foregroundStyle(.gray)
+                        }
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    Text("\(viewModel.currentQuestionIndex + 1) / \(viewModel.totalQuestionCount == 0 ? 5 : viewModel.totalQuestionCount)問目")
+                        .font(.subheadline)
+                        .foregroundStyle(.gray)
+                        .padding(10)
+                    
+                    ProgressView(
+                        value: Float(viewModel.currentQuestionIndex + 1),
+                        total: Float(viewModel.totalQuestionCount == 0 ? 5 : viewModel.totalQuestionCount)
+                    )
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.bottom, 20)
+                
+                switch viewModel.currentState {
+                case .loading:
+                    ProgressView("問題生成中...")
+                        .scaleEffect(1.2)
+                case .finished:
+                    VStack(spacing: 20) {
+                        Text("🎉 お疲れ様でした！")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                        Button("終了して戻る") {
+                            dismiss()
+                        }
+                        .font(.headline)
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(12)
+                    }
+                case .playing, .evaluating, .showingResult:
+                    if let log = viewModel.currentLog {
+                        ZStack {
+                            if !isFlipped {
+                                CardFrontView(viewModel: viewModel, log: log, isFlipped: $isFlipped)
+                            } else {
+                                CardBackView(viewModel: viewModel, log: log, isFlipped: $isFlipped)
+                                    .rotation3DEffect(.degrees(180), axis: (x: 0, y:1, z: 0))
+                            }
+                        }
+                        .rotation3DEffect(
+                            .degrees(isFlipped ? 180 : 0),
+                            axis: (x: 0, y: 1, z: 0))
+                    }
+                }
+                
+                
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+            .padding(20)
+            .onAppear {
+                viewModel.loadQuestions(phrase: phrase, settings: settings)
+            }
+        }
+    }
+}
+
+
+#Preview {
+    let settings = CompositionSession.SessionSettings(questionCount: 3, difficulty: .intermediate, scene: SceneType.daily.rawValue, formatLevel: .casual)
+    InstantCompositionPlayView(
+        phrase: MockPhraseData.makeAKilling,
+        settings: settings
+    )
+}

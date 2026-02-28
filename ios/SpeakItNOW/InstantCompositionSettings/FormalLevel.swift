@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum FormalLevel: String, CaseIterable {
+enum FormalLevel: String, CaseIterable, Codable {
     case casual = "カジュアル"
     case formal = "フォーマル"
 }

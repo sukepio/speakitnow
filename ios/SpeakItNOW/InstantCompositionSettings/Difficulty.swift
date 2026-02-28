@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Difficulty: String, CaseIterable {
+enum Difficulty: String, CaseIterable, Codable {
     case beginner = "初級"
     case intermediate = "中級"
     case advanced = "上級"

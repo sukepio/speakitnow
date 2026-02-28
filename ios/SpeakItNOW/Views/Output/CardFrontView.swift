@@ -8,21 +8,26 @@
 import SwiftUI
 
 struct CardFrontView: View {
-    @Binding var isFliped : Bool
+    @ObservedObject var viewModel: InstantCompositionViewModel
+    var log: CompositionLog
+    @Binding var isFlipped : Bool
     @State private var userText : String = ""
     @StateObject private var speechRecognizer = SpeechRecognizer()
     
     var body: some View {
-        VStack {
-            Text("その場で決めよう")
-                .font(.headline)
+        VStack(spacing: 16) {
+            Text(log.questionJa)
+                .font(.title3.bold())
                 .foregroundStyle(.black)
+                .multilineTextAlignment(.center)
+                .padding(.vertical, 60)
             
             TextEditor(text: speechRecognizer.recognizedText.isEmpty && !speechRecognizer.isRecording ? $userText : $speechRecognizer.recognizedText)
-                .frame(width: 280, height: 160)
+                .padding(16)
+                .frame(maxWidth: 280, maxHeight: 160)
                 .scrollContentBackground(Visibility.hidden)
                 .background(Color.black.opacity(0.8))
-                .cornerRadius(20)
+                .cornerRadius(8)
             
             HStack(spacing: 30) {
                 // リセットボタン
@@ -47,8 +52,10 @@ struct CardFrontView: View {
                 // 送信ボタン
                 Button {
                     withAnimation(.easeInOut(duration: 0.6)) {
-                        isFliped = true
+                        isFlipped = true
                     }
+                    
+                    viewModel.submitAnswer(userText: speechRecognizer.recognizedText.isEmpty ? userText : speechRecognizer.recognizedText)
                 } label: {
                     Image(systemName: "paperplane.fill")
                         .font(.system(size: 40))
@@ -57,13 +64,31 @@ struct CardFrontView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
         }
-        .padding(20)
-        .frame(width: 320, height: 480, alignment: .top)
+        .padding(24)
+        .frame(maxWidth: 360, maxHeight: 600, alignment: .top)
         .background(.white)
-        .cornerRadius(20)
+        .cornerRadius(24)
+        .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 5)
     }
 }
         
-#Preview {
-    CardFrontView(isFliped: .constant(true))
+#Preview("表面 (CardFrontView)") {
+    let mockVM: InstantCompositionViewModel = {
+            let vm = InstantCompositionViewModel()
+            vm.currentState = .playing
+            return vm
+    }()
+    
+    let mockLog = CompositionLog(
+        id: "mock1",
+        sessionId: "session1",
+        questionIndex: 1,
+        questionJa: "その場で決めよう",
+        modelAnswerEn: "Let's decide on the fly."
+    )
+    
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        CardFrontView(viewModel: mockVM, log: mockLog, isFlipped: .constant(false))
+    }
 }

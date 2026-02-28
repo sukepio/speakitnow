@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum SceneType: String, CaseIterable {
+enum SceneType: String, CaseIterable, Codable {
     case daily = "日常会話"
     case business = "ビジネス"
     case travel = "旅行"

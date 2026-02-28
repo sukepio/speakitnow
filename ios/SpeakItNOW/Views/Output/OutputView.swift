@@ -69,7 +69,7 @@ struct OutputView: View {
                     .opacity(selectedTab == "Conversation" ? 1 : 0)
                     .allowsHitTesting(selectedTab == "Conversation")
                     
-                    InstantCompositionSettingsView()
+                    InstantCompositionSettingsView(phrase: phrase)
                         .opacity(selectedTab == "Writing" ? 1 : 0)
                         .allowsHitTesting(selectedTab == "Writing")
                 }
