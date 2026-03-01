@@ -13,6 +13,7 @@ struct InstantCompositionSettingsView: View {
     @State private var selectedScene: SceneType = .daily
     @State private var selectedFormalLevel: FormalLevel = .casual
     @State private var isPlayScreenShown: Bool = false
+    
     let phrase: Phrase
     
     var body: some View {

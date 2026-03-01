@@ -11,6 +11,8 @@ struct InstantCompositionPlayView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = InstantCompositionViewModel()
     @State private var isFlipped: Bool = false
+    @State private var showingExitAlert: Bool = false
+    
     let phrase: Phrase
     let settings: CompositionSession.SessionSettings
     
@@ -23,7 +25,7 @@ struct InstantCompositionPlayView: View {
                 VStack {
                     HStack {
                         Button {
-                            dismiss()
+                            showingExitAlert = true
                         } label: {
                             Image(systemName: "xmark")
                                 .font(.title2)
@@ -88,6 +90,14 @@ struct InstantCompositionPlayView: View {
                 viewModel.loadQuestions(phrase: phrase, settings: settings)
             }
         }
+        .alert("終了しますか？", isPresented: $showingExitAlert) {
+            Button("キャンセル", role: .cancel) {}
+            
+            Button("終了する", role: .destructive) {
+                dismiss()
+            }
+        }
+        .frame(alignment: .center)
     }
 }
 
