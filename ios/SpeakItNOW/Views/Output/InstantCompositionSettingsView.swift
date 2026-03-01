@@ -16,10 +16,11 @@ struct InstantCompositionSettingsView: View {
     let phrase: Phrase
     
     var body: some View {
+        VStack(spacing: 0) {
             Form {
                 Picker("回数", selection: $questionCount) {
                     ForEach(1...10, id: \.self) { i in
-                            Text("\(i)回")
+                        Text("\(i)回")
                     }
                 }
                 Picker("難易度", selection: $selectedDifficulty) {
@@ -39,29 +40,36 @@ struct InstantCompositionSettingsView: View {
                     }
                 }
                 .pickerStyle(.segmented)
-                
-                Section {
-                    Button {
-                        isPlayScreenShown.toggle()
-                    } label: {
-                        Text("スタート")
-                            .font(.headline)
-                            .frame(maxWidth: .infinity, alignment: .center)
-                            .foregroundStyle(.white)
-                    }
-                    .listRowBackground(Color.blue)
+            }
+            .scrollContentBackground(.hidden)
+            
+            VStack {
+                Button {
+                    isPlayScreenShown.toggle()
+                } label: {
+                    Text("スタート")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(.vertical, 16)
+                        .foregroundStyle(.white)
                 }
+                .background(Color.blue)
+                .cornerRadius(20)
             }
-            .fullScreenCover(isPresented: $isPlayScreenShown) {
-                let settings = CompositionSession.SessionSettings(
-                    questionCount: questionCount,
-                    difficulty: selectedDifficulty,
-                    scene: selectedScene.rawValue,
-                    formatLevel: selectedFormalLevel
-                )
-                
-                InstantCompositionPlayView(phrase: phrase, settings: settings)
-            }
+            .padding(.horizontal, 20)
+            .padding(.bottom, 24)
+            .padding(.top, 16)
+        }
+        .fullScreenCover(isPresented: $isPlayScreenShown) {
+            let settings = CompositionSession.SessionSettings(
+                questionCount: questionCount,
+                difficulty: selectedDifficulty,
+                scene: selectedScene.rawValue,
+                formatLevel: selectedFormalLevel
+            )
+            
+            InstantCompositionPlayView(phrase: phrase, settings: settings)
+        }
     }
 }
 
