@@ -13,6 +13,7 @@ struct CardFrontView: View {
     @Binding var isFlipped : Bool
     @State private var userText : String = ""
     @StateObject private var speechRecognizer = SpeechRecognizer()
+    @FocusState private var isFocused: Bool
     
     var body: some View {
         VStack(spacing: 16) {
@@ -22,12 +23,28 @@ struct CardFrontView: View {
                 .multilineTextAlignment(.center)
                 .padding(.vertical, 60)
             
-            TextEditor(text: speechRecognizer.recognizedText.isEmpty && !speechRecognizer.isRecording ? $userText : $speechRecognizer.recognizedText)
+            TextField("", text: speechRecognizer.recognizedText.isEmpty && !speechRecognizer.isRecording ? $userText : $speechRecognizer.recognizedText, axis: .vertical)
                 .padding(16)
-                .frame(maxWidth: 280, maxHeight: 160)
-                .scrollContentBackground(Visibility.hidden)
+                .frame(maxWidth: .infinity, maxHeight: 160, alignment: .topLeading)
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    isFocused = true
+                }
                 .background(Color.black.opacity(0.8))
+                .foregroundStyle(.white)
                 .cornerRadius(8)
+                .submitLabel(.done)
+                .focused($isFocused)
+                .onChange(of: userText) { oldValue, newValue in
+                        // ★ 最後の入力が「改行」だったら
+                        if newValue.hasSuffix("\n") {
+                            // 1. 改行文字を取り除く
+                            userText = String(newValue.dropLast())
+                            
+                            // 2. フォーカスを外す（＝キーボードが閉じる）
+                            isFocused = false
+                        }
+                }
             
             HStack(spacing: 30) {
                 // リセットボタン
@@ -65,7 +82,7 @@ struct CardFrontView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
         }
         .padding(24)
-        .frame(maxWidth: 360, maxHeight: 600, alignment: .top)
+        .frame(maxWidth: 360, maxHeight: 700, alignment: .top)
         .background(.white)
         .cornerRadius(24)
         .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 5)
