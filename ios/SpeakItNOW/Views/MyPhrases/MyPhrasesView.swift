@@ -65,6 +65,7 @@ struct MyPhrasesView: View {
                 .listStyle(.plain)
                 .frame(maxWidth: .infinity)
                 .scrollContentBackground(.hidden)
+                .scrollIndicators(.hidden)
                 
             }
             .frame(maxHeight: .infinity, alignment: .top)

@@ -121,15 +121,23 @@ struct SearchView: View {
             Text("検索に該当する語句が見つかりませんでした")
                 .foregroundStyle(.white)
         } else {
-            VStack(alignment: .leading, spacing: 12) {
-                ForEach(results) { phrase in
-                    PhraseRow(phrase: phrase)
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            selectedPhrase = phrase
-                        }
-                }
-            }
+            List {
+              ForEach(results) { phrase in
+                  PhraseRow(phrase: phrase)
+                      .contentShape(Rectangle())
+                      .onTapGesture {
+                          selectedPhrase = phrase
+                      }
+                      .swipeActions {
+                          Button(role: .destructive) { phraseStore.removeMyPhrase(phrase) } label: { Text("削除")
+                          }
+                          .tint(.red)
+                      }
+                      .listRowSeparator(.hidden)
+                      .listRowBackground(Color.clear)
+                      .listRowInsets(EdgeInsets(top: 6, leading: 0, bottom: 6, trailing: 0))
+              }
+          }
             .sheet(item: $selectedPhrase) { phrase in
                 NavigationStack(path: $path) {
                     PhraseDetailView(
@@ -150,6 +158,10 @@ struct SearchView: View {
                     }
                 }
             }
+            .listStyle(.plain)
+            .frame(maxWidth: .infinity)
+            .scrollContentBackground(.hidden)
+            .scrollIndicators(.hidden)
         }
     }
 }

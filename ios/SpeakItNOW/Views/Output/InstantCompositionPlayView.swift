@@ -70,6 +70,7 @@ struct InstantCompositionPlayView: View {
                         .foregroundColor(.white)
                         .cornerRadius(12)
                     }
+                    .transition(.opacity)
                 case .playing, .evaluating, .showingResult:
                     if let log = viewModel.currentLog {
                         ZStack {
@@ -83,6 +84,7 @@ struct InstantCompositionPlayView: View {
                         .rotation3DEffect(
                             .degrees(flipDegree),
                             axis: (x: 0, y: 1, z: 0))
+                        .transition(.opacity)
                     }
                 }
                 
