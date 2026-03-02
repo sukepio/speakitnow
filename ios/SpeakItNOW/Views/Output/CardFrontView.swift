@@ -10,7 +10,7 @@ import SwiftUI
 struct CardFrontView: View {
     @ObservedObject var viewModel: InstantCompositionViewModel
     var log: CompositionLog
-    @Binding var isFlipped : Bool
+    @Binding var flipDegree : Double
     @State private var userText : String = ""
     @StateObject private var speechRecognizer = SpeechRecognizer()
     @FocusState private var isFocused: Bool
@@ -69,7 +69,7 @@ struct CardFrontView: View {
                 // 送信ボタン
                 Button {
                     withAnimation(.easeInOut(duration: 0.6)) {
-                        isFlipped = true
+                        flipDegree += 180
                     }
                     
                     viewModel.submitAnswer(userText: speechRecognizer.recognizedText.isEmpty ? userText : speechRecognizer.recognizedText)
@@ -106,6 +106,6 @@ struct CardFrontView: View {
     
     ZStack {
         Color.black.edgesIgnoringSafeArea(.all)
-        CardFrontView(viewModel: mockVM, log: mockLog, isFlipped: .constant(false))
+        CardFrontView(viewModel: mockVM, log: mockLog, flipDegree: .constant(360.0))
     }
 }

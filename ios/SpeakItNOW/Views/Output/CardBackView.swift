@@ -10,7 +10,11 @@ import SwiftUI
 struct CardBackView: View {
     @ObservedObject var viewModel: InstantCompositionViewModel
     var log: CompositionLog
-    @Binding var isFlipped: Bool
+    @Binding var flipDegree: Double
+    
+    var isLastQuestion: Bool {
+        viewModel.currentQuestionIndex == viewModel.totalQuestionCount - 1
+    }
     
     var body: some View {
         VStack(spacing: 0) {
@@ -96,16 +100,22 @@ struct CardBackView: View {
             VStack {
                 // 「次へ」ボタン
                 Button {
-                    withAnimation(.easeInOut(duration: 0.6)) {
-                        isFlipped = false
-                    }
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                        viewModel.nextQuestion()
+                    if isLastQuestion {
+                        withAnimation(.easeInOut(duration: 0.6)) {
+                            viewModel.nextQuestion()
+                        }
+                    } else {
+                        withAnimation(.easeInOut(duration: 0.6)) {
+                            flipDegree += 180
+                        }
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            viewModel.nextQuestion()
+                        }
                     }
                     
                 } label: {
-                    Text("次へ")
+                    Text(isLastQuestion ? "完了" : "次へ")
                         .font(.headline)
                         .fontWeight(.bold)
                         .foregroundStyle(.white)
@@ -128,7 +138,7 @@ struct CardBackView: View {
 #Preview("裏面 - 結果表示") {
     let mockVM: InstantCompositionViewModel = {
         let vm = InstantCompositionViewModel()
-        vm.currentState = .showingResult // または .evaluating
+        vm.currentState = .showingResult
         return vm
     }()
     
@@ -146,14 +156,14 @@ struct CardBackView: View {
     
     ZStack {
         Color.black.edgesIgnoringSafeArea(.all)
-        CardBackView(viewModel: mockVM, log: mockLog, isFlipped: .constant(true))
+        CardBackView(viewModel: mockVM, log: mockLog, flipDegree: .constant(180.0))
     }
 }
 
 #Preview("裏面 - 添削中") {
     let mockVM: InstantCompositionViewModel = {
         let vm = InstantCompositionViewModel()
-        vm.currentState = .showingResult // または .evaluating
+        vm.currentState = .evaluating // または .evaluating
         return vm
     }()
     
@@ -171,6 +181,35 @@ struct CardBackView: View {
     
     ZStack {
         Color.black.edgesIgnoringSafeArea(.all)
-        CardBackView(viewModel: mockVM, log: mockLog, isFlipped: .constant(true))
+        CardBackView(viewModel: mockVM, log: mockLog , flipDegree: .constant(180.0))
+    }
+}
+
+#Preview("裏面 - 最終質問") {
+    let mockLog = CompositionLog(
+        id: "mock1",
+        sessionId: "session1",
+        questionIndex: 0,
+        questionJa: "その場で決めよう",
+        modelAnswerEn: "Let's decide on the fly.",
+        userAnswerEn: "Let's decide on the spot.", // ユーザーがこう答えた想定
+        feedback: "文法的には正しいですが、「その場で臨機応変に決めよう」というニュアンスを出すには \"on the fly\" というイディオムが自然です。",
+        isPerfect: false,
+        createdAt: nil
+    )
+    
+    let mockVM: InstantCompositionViewModel = {
+        let vm = InstantCompositionViewModel()
+        vm.currentState = .showingResult
+        vm.currentQuestionIndex = 0
+        vm.logs = [mockLog]
+        return vm
+    }()
+    
+    
+    
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        CardBackView(viewModel: mockVM, log: mockLog, flipDegree: .constant(180.0))
     }
 }

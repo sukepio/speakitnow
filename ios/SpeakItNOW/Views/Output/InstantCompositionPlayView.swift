@@ -10,8 +10,12 @@ import SwiftUI
 struct InstantCompositionPlayView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = InstantCompositionViewModel()
-    @State private var isFlipped: Bool = false
+    @State private var flipDegree: Double = 0
     @State private var showingExitAlert: Bool = false
+    
+    var isFrontVisible: Bool {
+        Int(flipDegree / 180) % 2 == 0
+    }
     
     let phrase: Phrase
     let settings: CompositionSession.SessionSettings
@@ -69,15 +73,15 @@ struct InstantCompositionPlayView: View {
                 case .playing, .evaluating, .showingResult:
                     if let log = viewModel.currentLog {
                         ZStack {
-                            if !isFlipped {
-                                CardFrontView(viewModel: viewModel, log: log, isFlipped: $isFlipped)
+                            if isFrontVisible {
+                                CardFrontView(viewModel: viewModel, log: log, flipDegree: $flipDegree)
                             } else {
-                                CardBackView(viewModel: viewModel, log: log, isFlipped: $isFlipped)
+                                CardBackView(viewModel: viewModel, log: log, flipDegree: $flipDegree)
                                     .rotation3DEffect(.degrees(180), axis: (x: 0, y:1, z: 0))
                             }
                         }
                         .rotation3DEffect(
-                            .degrees(isFlipped ? 180 : 0),
+                            .degrees(flipDegree),
                             axis: (x: 0, y: 1, z: 0))
                     }
                 }
