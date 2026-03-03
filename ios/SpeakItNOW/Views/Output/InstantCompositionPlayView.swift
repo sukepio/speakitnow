@@ -108,10 +108,18 @@ struct InstantCompositionPlayView: View {
 }
 
 
-#Preview {
+#Preview("表面 - playing") {
     let settings = CompositionSession.SessionSettings(questionCount: 3, difficulty: .intermediate, scene: SceneType.daily.rawValue, formatLevel: .casual)
     InstantCompositionPlayView(
         phrase: MockPhraseData.makeAKilling,
         settings: settings
     )
 }
+
+//#Preview("完了画面") {
+//    let settings = CompositionSession.SessionSettings(questionCount: 3, difficulty: .intermediate, scene: SceneType.daily.rawValue, formatLevel: .casual)
+//    InstantCompositionPlayView(
+//        phrase: MockPhraseData.makeAKilling,
+//        settings: settings
+//    )
+//}

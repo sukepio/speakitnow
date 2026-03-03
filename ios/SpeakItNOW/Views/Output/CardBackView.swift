@@ -12,6 +12,10 @@ struct CardBackView: View {
     var log: CompositionLog
     @Binding var flipDegree: Double
     
+    var isPerfect: Bool {
+        log.isPerfect == true
+    }
+    
     var isLastQuestion: Bool {
         viewModel.currentQuestionIndex == viewModel.totalQuestionCount - 1
     }
@@ -50,7 +54,7 @@ struct CardBackView: View {
                     } else {
                         // 見本回答
                         VStack(alignment: .leading) {
-                            Text("より自然な表現")
+                            Text("回答例")
                                 .font(.subheadline)
                                 .foregroundStyle(.white.opacity(0.8))
                                 .padding(.bottom, 12)
@@ -65,18 +69,20 @@ struct CardBackView: View {
                         .cornerRadius(8)
                         
                         // 解説
-                        if let feedback = log.feedback {
+                        if isPerfect || log.feedback != nil {
                             VStack(alignment: .leading, spacing: 12) {
-                                HStack {
-                                    Image(systemName: "lightbulb.fill")
-                                        .foregroundStyle(.blue) // 薄い青背景に合わせてアイコンも青に
-                                    Text("ポイント")
-                                        .font(.headline)
-                                        .fontWeight(.bold)
-                                        .foregroundStyle(.black) // 薄い背景に合わせて文字を黒に
-                                }
+//                                if !isPerfect {
+                                    HStack {
+                                        Image(systemName: isPerfect ? "checkmark.circle.fill" : "lightbulb.fill")
+                                            .foregroundStyle(.blue)
+                                        Text(isPerfect ? "Excellent!" : "ポイント")
+                                            .font(.headline)
+                                            .fontWeight(.bold)
+                                            .foregroundStyle(.black)
+                                    }
+//                                }
                                 
-                                Text(feedback)
+                                Text(isPerfect ? "修正はありません。" : (log.feedback ?? ""))
                                     .font(.subheadline)
                                     .foregroundStyle(.black) 
                                     .lineSpacing(4)
@@ -207,6 +213,32 @@ struct CardBackView: View {
     }()
     
     
+    
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        CardBackView(viewModel: mockVM, log: mockLog, flipDegree: .constant(180.0))
+    }
+}
+
+#Preview("裏面 - パーフェクト（最後の問題）") {
+    let mockLog = CompositionLog(
+        id: "mock3",
+        sessionId: "session1",
+        questionIndex: 4,
+        questionJa: "その場で決めよう",
+        modelAnswerEn: "Let's decide on the fly.",
+        userAnswerEn: "Let's decide on the fly.",
+        feedback: nil,
+        isPerfect: true, // ★ パーフェクトのパターン（緑のUIになるかテスト）
+        createdAt: nil
+    )
+    
+    let mockVM: InstantCompositionViewModel = {
+        let vm = InstantCompositionViewModel()
+        vm.currentState = .showingResult
+        vm.currentQuestionIndex = 4
+        return vm
+    }()
     
     ZStack {
         Color.black.edgesIgnoringSafeArea(.all)
