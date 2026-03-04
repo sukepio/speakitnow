@@ -56,20 +56,10 @@ struct InstantCompositionPlayView: View {
                     ProgressView("問題生成中...")
                         .scaleEffect(1.2)
                 case .finished:
-                    VStack(spacing: 20) {
-                        Text("🎉 お疲れ様でした！")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                        Button("終了して戻る") {
-                            dismiss()
-                        }
-                        .font(.headline)
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(12)
-                    }
+                    InstantCompositionResultView(
+                        instantCompositionViewModel: viewModel,
+                        onDismiss: { dismiss() }
+                    )
                     .transition(.opacity)
                 case .playing, .evaluating, .showingResult:
                     if let log = viewModel.currentLog {

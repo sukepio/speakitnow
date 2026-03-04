@@ -8,6 +8,7 @@
 
 /* Begin PBXFileReference section */
 		E6BF7EF22F17C49000559007 /* SpeakItNOW.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeakItNOW.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E6F926462F5859D700A4AB67 /* SpeakItNOW.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeakItNOW.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -55,6 +56,11 @@
 			children = (
 				E6BF7EF22F17C49000559007 /* SpeakItNOW.app */,
 			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E6F926482F5859D700A4AB67 /* Products */ = {
+			isa = PBXGroup;
 			name = Products;
 			sourceTree = "<group>";
 		};
@@ -110,6 +116,12 @@
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E6BF7EF32F17C49000559007 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = E6F926482F5859D700A4AB67 /* Products */;
+					ProjectRef = E6F926462F5859D700A4AB67 /* SpeakItNOW.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				E6BF7EF12F17C49000559007 /* SpeakItNOW */,
