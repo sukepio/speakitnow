@@ -26,31 +26,6 @@ struct InstantCompositionPlayView: View {
                 .ignoresSafeArea()
             
             VStack() {
-                VStack {
-                    HStack {
-                        Button {
-                            showingExitAlert = true
-                        } label: {
-                            Image(systemName: "xmark")
-                                .font(.title2)
-                                .foregroundStyle(.gray)
-                        }
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    Text("\(viewModel.currentQuestionIndex + 1) / \(viewModel.totalQuestionCount == 0 ? 5 : viewModel.totalQuestionCount)問目")
-                        .font(.subheadline)
-                        .foregroundStyle(.gray)
-                        .padding(10)
-                    
-                    ProgressView(
-                        value: Float(viewModel.currentQuestionIndex + 1),
-                        total: Float(viewModel.totalQuestionCount == 0 ? 5 : viewModel.totalQuestionCount)
-                    )
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.bottom, 20)
-                
                 switch viewModel.currentState {
                 case .loading:
                     ProgressView("問題生成中...")
@@ -63,6 +38,21 @@ struct InstantCompositionPlayView: View {
                     .transition(.opacity)
                 case .playing, .evaluating, .showingResult:
                     if let log = viewModel.currentLog {
+                        closeButton
+                        VStack {
+                            Text("\(viewModel.currentQuestionIndex + 1) / \(viewModel.totalQuestionCount)")
+                                .font(.subheadline)
+                                .foregroundStyle(.gray)
+                                .padding(10)
+                            
+                            ProgressView(
+                                value: Float(viewModel.currentQuestionIndex + 1),
+                                total: Float(viewModel.totalQuestionCount)
+                            )
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.bottom, 20)
+                        
                         ZStack {
                             if isFrontVisible {
                                 CardFrontView(viewModel: viewModel, log: log, flipDegree: $flipDegree)
@@ -80,7 +70,7 @@ struct InstantCompositionPlayView: View {
                 
                 
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding(20)
             .onAppear {
                 viewModel.loadQuestions(phrase: phrase, settings: settings)
@@ -95,6 +85,20 @@ struct InstantCompositionPlayView: View {
         }
         .frame(alignment: .center)
     }
+    
+    private var closeButton : some View {
+        HStack {
+            Button {
+                showingExitAlert = true
+            } label: {
+                Image(systemName: "xmark")
+                    .font(.title)
+                    .foregroundStyle(.gray)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.bottom, 10)
+    }
 }
 
 
@@ -106,10 +110,3 @@ struct InstantCompositionPlayView: View {
     )
 }
 
-//#Preview("完了画面") {
-//    let settings = CompositionSession.SessionSettings(questionCount: 3, difficulty: .intermediate, scene: SceneType.daily.rawValue, formatLevel: .casual)
-//    InstantCompositionPlayView(
-//        phrase: MockPhraseData.makeAKilling,
-//        settings: settings
-//    )
-//}

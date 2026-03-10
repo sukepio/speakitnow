@@ -71,7 +71,6 @@ struct CardBackView: View {
                         // 解説
                         if isPerfect || log.feedback != nil {
                             VStack(alignment: .leading, spacing: 12) {
-//                                if !isPerfect {
                                     HStack {
                                         Image(systemName: isPerfect ? "checkmark.circle.fill" : "lightbulb.fill")
                                             .foregroundStyle(.blue)
@@ -80,7 +79,6 @@ struct CardBackView: View {
                                             .fontWeight(.bold)
                                             .foregroundStyle(.black)
                                     }
-//                                }
                                 
                                 Text(isPerfect ? "修正はありません。" : (log.feedback ?? ""))
                                     .font(.subheadline)
