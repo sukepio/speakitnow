@@ -20,6 +20,7 @@ struct CompositionLog: Identifiable, Codable {
     // ユーザーの回答と添削結果
     var userAnswerEn: String? = nil
     var feedback: String? = nil
+    var otherModelAnserEn: [String]? = nil
     var isPerfect: Bool? = nil
     var createdAt: Date? = nil
 }

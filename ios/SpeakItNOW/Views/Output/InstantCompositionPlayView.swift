@@ -57,7 +57,7 @@ struct InstantCompositionPlayView: View {
                         .scaleEffect(1.2)
                 case .finished:
                     InstantCompositionResultView(
-                        instantCompositionViewModel: viewModel,
+                        viewModel: viewModel,
                         onDismiss: { dismiss() }
                     )
                     .transition(.opacity)

@@ -15,6 +15,26 @@ struct CardFrontView: View {
     @StateObject private var speechRecognizer = SpeechRecognizer()
     @FocusState private var isFocused: Bool
     
+    private var isRecording: Bool {
+        speechRecognizer.state == .recording
+    }
+    
+    private var trimmedUserText: String {
+        userText.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+    
+    private var canSubmit: Bool {
+        !trimmedUserText.isEmpty && speechRecognizer.state == .idle
+    }
+    
+    private var canReset: Bool {
+        !userText.isEmpty && speechRecognizer.state == .idle
+    }
+    
+    private var canRecord: Bool {
+        !isFocused && speechRecognizer.state != .processing
+    }
+    
     var body: some View {
         VStack(spacing: 16) {
             Text(log.questionJa)
@@ -23,7 +43,7 @@ struct CardFrontView: View {
                 .multilineTextAlignment(.center)
                 .padding(.vertical, 60)
             
-            TextField("", text: speechRecognizer.recognizedText.isEmpty && !speechRecognizer.isRecording ? $userText : $speechRecognizer.recognizedText, axis: .vertical)
+            TextField("", text: $userText, axis: .vertical)
                 .padding(16)
                 .frame(maxWidth: .infinity, maxHeight: 160, alignment: .topLeading)
                 .contentShape(Rectangle())
@@ -35,49 +55,53 @@ struct CardFrontView: View {
                 .cornerRadius(8)
                 .submitLabel(.done)
                 .focused($isFocused)
-                .onChange(of: userText) { oldValue, newValue in
-                        // ★ 最後の入力が「改行」だったら
+                .onChange(of: userText) { _, newValue in
                         if newValue.hasSuffix("\n") {
-                            // 1. 改行文字を取り除く
                             userText = String(newValue.dropLast())
-                            
-                            // 2. フォーカスを外す（＝キーボードが閉じる）
                             isFocused = false
                         }
+                }
+                .onChange(of: speechRecognizer.state) { _, state in
+                    if state == .idle {
+                        mergeSpeechToText()
+                    }
                 }
             
             HStack(spacing: 30) {
                 // リセットボタン
                 Button {
                     userText = ""
-                    speechRecognizer.recognizedText = ""
+                    speechRecognizer.clearRecognizedText()
                 } label: {
                     Image(systemName: "arrow.trianglehead.counterclockwise")
                         .font(.system(size: 40))
                 }
-                .disabled(userText.isEmpty && speechRecognizer.recognizedText.isEmpty ? true : false)
+                .disabled(!canReset)
                 
                 // 録音ボタン
                 Button {
                     speechRecognizer.toggleRecording()
                 } label: {
-                    Image(systemName: speechRecognizer.isRecording ? "stop.circle.fill" : "mic.circle.fill")
-                        .font(.system(size: 64))
-                        .foregroundStyle(speechRecognizer.isRecording ? .red : .blue)
+                    Image(systemName: isRecording ? "stop.circle.fill" : "mic.circle.fill")
+                        .font(.system(size: 72))
+                        .foregroundStyle(isRecording ? .red : .blue)
                 }
+                .disabled(!canRecord)
+                .opacity(canRecord ? 1 : 0.2)
                 
                 // 送信ボタン
                 Button {
+                    isFocused = false
                     withAnimation(.easeInOut(duration: 0.6)) {
                         flipDegree += 180
                     }
-                    
-                    viewModel.submitAnswer(userText: speechRecognizer.recognizedText.isEmpty ? userText : speechRecognizer.recognizedText)
+                    viewModel.submitAnswer(userText: trimmedUserText)
                 } label: {
                     Image(systemName: "paperplane.fill")
                         .font(.system(size: 40))
                 }
-                .disabled(userText.isEmpty && speechRecognizer.recognizedText.isEmpty ? true : false)
+                .rotationEffect(Angle(degrees: 45))
+                .disabled(!canSubmit)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
         }
@@ -86,6 +110,15 @@ struct CardFrontView: View {
         .background(.white)
         .cornerRadius(24)
         .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 5)
+    }
+    
+    private func mergeSpeechToText() {
+        let recognized = speechRecognizer.recognizedText.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !recognized.isEmpty else { return }
+        
+        let prefix = userText.isEmpty || userText.hasSuffix(" ") ? "" : " "
+        userText += prefix + recognized
+        speechRecognizer.clearRecognizedText()
     }
 }
         

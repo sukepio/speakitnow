@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
+		E6B905AC2F5AFFCD005C961B /* SpeakItNOW.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeakItNOW.xcodeproj; sourceTree = "<group>"; };
 		E6BF7EF22F17C49000559007 /* SpeakItNOW.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeakItNOW.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6F926462F5859D700A4AB67 /* SpeakItNOW.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeakItNOW.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -43,6 +44,11 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E6B905AE2F5AFFCD005C961B /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
 		E6BF7EE92F17C49000559007 = {
 			isa = PBXGroup;
 			children = (
@@ -97,7 +103,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1640;
-				LastUpgradeCheck = 2620;
+				LastUpgradeCheck = 2630;
 				TargetAttributes = {
 					E6BF7EF12F17C49000559007 = {
 						CreatedOnToolsVersion = 16.4;
@@ -117,6 +123,10 @@
 			productRefGroup = E6BF7EF32F17C49000559007 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
+				{
+					ProductGroup = E6B905AE2F5AFFCD005C961B /* Products */;
+					ProjectRef = E6B905AC2F5AFFCD005C961B /* SpeakItNOW.xcodeproj */;
+				},
 				{
 					ProductGroup = E6F926482F5859D700A4AB67 /* Products */;
 					ProjectRef = E6F926462F5859D700A4AB67 /* SpeakItNOW.xcodeproj */;
@@ -185,6 +195,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 7KCHW8J8TA;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -249,6 +260,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 7KCHW8J8TA;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -278,12 +290,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 7KCHW8J8TA;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SpeakItNOW/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "英語の発音を録音するためにマイクを使用します。";
-				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "発話された音声を英語テキストに変換するために音声認識を使用します。";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "音声で話した英語をテキスト化し、発話内容を確認できるようにするために音声認識を使用します。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -309,12 +321,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 7KCHW8J8TA;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SpeakItNOW/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "英語の発音を録音するためにマイクを使用します。";
-				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "発話された音声を英語テキストに変換するために音声認識を使用します。";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "音声で話した英語をテキスト化し、発話内容を確認できるようにするために音声認識を使用します。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

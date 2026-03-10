@@ -29,6 +29,7 @@ struct MockCompositionData {
                 modelAnswerEn: question.1, // 模範解答
                 userAnswerEn: nil,
                 feedback: nil,
+                otherModelAnserEn: ["I don't know.", "Not that I know of."],
                 isPerfect: nil,
                 createdAt: nil
             )

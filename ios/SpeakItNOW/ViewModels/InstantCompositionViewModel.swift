@@ -53,7 +53,8 @@ class InstantCompositionViewModel: ObservableObject {
         // ▼ 現在は添削APIの通信ラグ（1.0秒）をシミュレートしつつ固定のフィードバックを返す
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.logs[self.currentQuestionIndex].feedback = "文法的には正しいですが、「その場で臨機応変に決めよう」というニュアンスを出すには \"on the fly\" というイディオムが自然です。"
-            self.logs[self.currentQuestionIndex].isPerfect = false
+            self.logs[self.currentQuestionIndex].isPerfect = true
+            self.logs[self.currentQuestionIndex].otherModelAnserEn = ["I don't know.", "Not that I know of."]
             self.currentState = .showingResult
         }
     }
