@@ -11,5 +11,5 @@ struct Collocation: Identifiable, Codable, Hashable {
     let id: String
     let text: String
     let meaningJa: String
-    let conversation: ConversationPair
+    let conversationPair: ConversationPair
 }

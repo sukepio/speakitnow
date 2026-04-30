@@ -22,5 +22,5 @@ struct CollocationSection: View {
 }
 
 #Preview {
-    CollocationSection(collocations:  MockPhraseData.lowKey.details.collocations)
+    CollocationSection(collocations:  MockPhraseData.lowKey.phraseDetails.collocations)
 }

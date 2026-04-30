@@ -7,19 +7,19 @@
 
 import SwiftUI
 
-struct PhraseRow: View {
-    let phrase : Phrase
+struct PhraseRow<Item:PhraseDisplayable>: View {
+    let item : Item
     
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text(phrase.text)
+                Text(item.displayText)
                     .font(.system(size: 20))
                     .foregroundStyle(.black)
                     .fontWeight(.bold)
                     .padding(.bottom, 2)
                 
-                Text(phrase.meaningJa)
+                Text(item.displayMeaningJa)
                     .font(.system(size: 14))
                     .foregroundStyle(.black)
                     .fontWeight(.medium)
@@ -36,5 +36,5 @@ struct PhraseRow: View {
 }
 
 #Preview {
-    PhraseRow(phrase: MockPhraseData.lowKey)
+    PhraseRow(item: MockPhraseData.lowKey)
 }

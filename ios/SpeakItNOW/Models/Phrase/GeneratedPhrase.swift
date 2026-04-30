@@ -1,25 +1,21 @@
 //
-//  Phrase.swift
-//  
+//  File.swift
+//  SpeakItNOW
 //
-//  Created by 助名直人 on 2026/01/15.
+//  Created by 助名直人 on 2026/04/17.
 //
+
 import Foundation
 
-/// 画面共通で扱うフレーズ
-struct Phrase: Identifiable, Codable, Hashable {
-    let id: String
+struct GeneratedPhrase: Identifiable {
+    var id: String { normalizedText }
     let text: String
     let meaningJa: String
     let normalizedText: String
     let phraseDetails: PhraseDetails
-
-    // 将来の拡張（必要になったら使う）
-    var tags: [String]?
-    var isSaved: Bool?
 }
 
-extension Phrase: PhraseDetailDisplayable {
+extension GeneratedPhrase: PhraseDetailDisplayable {
     var displayText: String { text }
     var displayMeaningJa: String { meaningJa }
     var displayDetailedMeaning: String { phraseDetails.detailedMeaning }

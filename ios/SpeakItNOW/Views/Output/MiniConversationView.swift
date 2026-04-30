@@ -53,16 +53,16 @@ struct MiniConversationView: View {
                 ForEach(Array(conversations.enumerated()), id: \.offset) { index, conversation in
                     VStack {
                         VStack(alignment: .leading, spacing: 4) {
-                            Text(conversation.conversation.first.en)
+                            Text(conversation.conversationPair.first.en)
                                 .onTapGesture {
-                                    speaker.speak(conversation.conversation.first.en)
+                                    speaker.speak(conversation.conversationPair.first.en)
                                 }
                             
                             if isMeaningJpShown {
                                 Rectangle()
                                     .fill(Color.secondary.opacity(0.3))
                                     .frame(height: 1)
-                                Text(conversation.conversation.first.ja)
+                                Text(conversation.conversationPair.first.ja)
                                     .font(.caption)
                             }
                         }
@@ -75,10 +75,10 @@ struct MiniConversationView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         
                         VStack(alignment: .leading, spacing: 4) {
-                            Text(conversation.conversation.second.en)
+                            Text(conversation.conversationPair.second.en)
                                 .foregroundColor(.white)
                                 .onTapGesture {
-                                    speaker.speak(conversation.conversation.second.en)
+                                    speaker.speak(conversation.conversationPair.second.en)
                                 }
                             
                             if isMeaningJpShown {
@@ -86,7 +86,7 @@ struct MiniConversationView: View {
                                     .fill(Color.white.opacity(0.8))
                                     .frame(height: 1)
                                 
-                                Text(conversation.conversation.second.ja)
+                                Text(conversation.conversationPair.second.ja)
                                     .font(.caption)
                                     .foregroundColor(.white.opacity(0.8))
                             }
@@ -128,8 +128,8 @@ struct MiniConversationView: View {
                         let currentConv = conversations[selectedConversationNo]
                         
                         speaker.speackConversation(
-                            first: currentConv.conversation.first.en,
-                            second: currentConv.conversation.second.en
+                            first: currentConv.conversationPair.first.en,
+                            second: currentConv.conversationPair.second.en
                         )
                     }
                 } label: {
@@ -147,6 +147,6 @@ struct MiniConversationView: View {
 
 #Preview {
     MiniConversationView(
-        conversations: MockPhraseData.onTheFly.details.conversations
+        conversations: MockPhraseData.onTheFly.phraseDetails.conversations
     )
 }

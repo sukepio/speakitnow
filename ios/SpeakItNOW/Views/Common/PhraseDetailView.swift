@@ -36,18 +36,18 @@ struct PhraseDetailView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
                     // 意味
-                    MeaningSection(detailedMeaning: phrase.details.detailedMeaning)
+                    MeaningSection(detailedMeaning: phrase.phraseDetails.detailedMeaning)
                     // 使用される文脈
-                    ContextSection(contexts: phrase.details.contexts)
+                    ContextSection(contexts: phrase.phraseDetails.contexts)
                     // コロケーション
-                    CollocationSection(collocations: phrase.details.collocations)
+                    CollocationSection(collocations: phrase.phraseDetails.collocations)
                     // 語源
-                    OriginSection(origin: phrase.details.origin)
+                    OriginSection(origin: phrase.phraseDetails.origin)
                     // 使い方のヒント
-                    TipsSection(tips: phrase.details.tips)
+                    TipsSection(tips: phrase.phraseDetails.tips)
                     // 類似表現
-                    if !phrase.details.similar.isEmpty {
-                        SimilarSection(similar: phrase.details.similar)
+                    if !phrase.phraseDetails.similar.isEmpty {
+                        SimilarSection(similar: phrase.phraseDetails.similar)
                     }
                     
                 }

@@ -64,7 +64,7 @@ struct OutputView: View {
                 // タブコンテンツエリア
                 ZStack {
                     MiniConversationView(
-                        conversations: phrase.details.conversations
+                        conversations: phrase.phraseDetails.conversations
                     )
                     .opacity(selectedTab == "Conversation" ? 1 : 0)
                     .allowsHitTesting(selectedTab == "Conversation")

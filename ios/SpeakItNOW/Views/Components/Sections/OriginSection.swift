@@ -20,5 +20,5 @@ struct OriginSection: View {
 }
 
 #Preview {
-    OriginSection(origin: MockPhraseData.lowKey.details.origin)
+    OriginSection(origin: MockPhraseData.lowKey.phraseDetails.origin)
 }

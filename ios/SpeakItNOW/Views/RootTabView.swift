@@ -8,11 +8,11 @@
 import SwiftUI
 
 enum Tab {
-    case home, myPhrases, search, history
+    case /*home, */myPhrases, search, history
 }
 
 struct RootTabView: View {
-    @State private var selectedTab: Tab = .home
+    @State private var selectedTab: Tab = .search
     
     init() {
         UITabBar.appearance().unselectedItemTintColor = .white
@@ -20,7 +20,7 @@ struct RootTabView: View {
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            tabItemView(destination: HomeView(), imageName: "house", title: "Home", tag: Tab.home)
+//            tabItemView(destination: HomeView(), imageName: "house", title: "Home", tag: Tab.home)
             tabItemView(destination: SearchView(), imageName: "magnifyingglass", title: "Search", tag: Tab.search)
             tabItemView(destination: MyPhrasesView(), imageName: "bookmark", title: "My Phrases", tag: Tab.myPhrases)
             tabItemView(destination: Text("History"), imageName: "clock", title: "History", tag: Tab.history)

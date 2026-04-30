@@ -25,8 +25,9 @@ struct MockPhraseData {
         id: "p_low_key",
         text: "low-key",
         meaningJa: "控えめに／さりげなく／実はちょっと",
-        isRecommended: true,
-        details: PhraseDetails(
+        normalizedText: "low-key",
+//        isRecommended: true,
+        phraseDetails: PhraseDetails(
             detailedMeaning: """
 「low-key」は、何かを大げさにせず、控えめ・さりげない形で行うときに使われます。
 感情や評価を抑えて伝えたいときや、「実はちょっと〜」というニュアンスでもよく使われます。
@@ -40,7 +41,7 @@ struct MockPhraseData {
                     id: "con_lowkey_tpl_1",
                     text: "casual check-in",
                     meaningJa: "軽い近況トーク",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "How’s your day going?",
                             ja: "今日どんな感じ？"
@@ -55,7 +56,7 @@ struct MockPhraseData {
                     id: "con_lowkey_tpl_2",
                     text: "preference",
                     meaningJa: "好みを控えめに言う",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "What kind of music do you listen to?",
                             ja: "どんな音楽聴くの？"
@@ -70,7 +71,7 @@ struct MockPhraseData {
                     id: "con_lowkey_tpl_3",
                     text: "suggestion",
                     meaningJa: "控えめに提案する",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "What should we do for the weekend?",
                             ja: "週末どうする？"
@@ -87,7 +88,7 @@ struct MockPhraseData {
                     id: "col_lowkey_1",
                     text: "low-key like ~",
                     meaningJa: "実は〜がちょっと好き",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "I’m low-key into jazz these days.",
                             ja: "最近、実はジャズにちょっとハマってるんだ。"
@@ -102,7 +103,7 @@ struct MockPhraseData {
                     id: "col_lowkey_2",
                     text: "keep it low-key",
                     meaningJa: "控えめにする／大ごとにしない",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "Let’s keep the party low-key.",
                             ja: "パーティーは控えめにやろう。"
@@ -148,8 +149,9 @@ struct MockPhraseData {
         id: "p_neck_and_neck",
         text: "neck and neck",
         meaningJa: "接戦で／ほぼ同時に",
-        isRecommended: false,
-        details: PhraseDetails(
+        normalizedText: "neck and neck",
+//        isRecommended: false,
+        phraseDetails: PhraseDetails(
             detailedMeaning: """
 「neck and neck」は、勝負や競争でほとんど差がなく、互角の状態を表します。
 スポーツやレース、選挙結果など、結果が拮抗している場面でよく使われます。
@@ -163,7 +165,7 @@ struct MockPhraseData {
                     id: "con_neck_tpl_1",
                     text: "competition update",
                     meaningJa: "勝負の状況を共有",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "Any updates on the results?",
                             ja: "結果どうなった？"
@@ -178,7 +180,7 @@ struct MockPhraseData {
                     id: "con_neck_tpl_2",
                     text: "two options",
                     meaningJa: "2つが拮抗している",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "Which one is better, A or B?",
                             ja: "AとB、どっちがいい？"
@@ -193,7 +195,7 @@ struct MockPhraseData {
                     id: "con_neck_tpl_3",
                     text: "race reaction",
                     meaningJa: "接戦に驚く",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "That was intense, wasn’t it?",
                             ja: "すごかったね。"
@@ -211,7 +213,7 @@ struct MockPhraseData {
                     id: "col_neck_1",
                     text: "be neck and neck",
                     meaningJa: "〜と接戦状態にある",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "Who’s winning the race?",
                             ja: "誰がレースで勝ってるの？"
@@ -226,7 +228,7 @@ struct MockPhraseData {
                     id: "col_neck_2",
                     text: "neck-and-neck competition",
                     meaningJa: "接戦の競争",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "That was an exciting match.",
                             ja: "すごくエキサイティングな試合だったね。"
@@ -272,8 +274,9 @@ struct MockPhraseData {
         id: "p_up_in_the_air",
         text: "up in the air",
         meaningJa: "未定で／どうなるか分からない",
-        isRecommended: true,
-        details: PhraseDetails(
+        normalizedText: "up in the air",
+//        isRecommended: true,
+        phraseDetails: PhraseDetails(
             detailedMeaning: """
 「up in the air」は、物事がまだ決まっていない／先が読めない状態を表します。
 予定・計画・判断などが確定していないときに、とても自然に使えます。
@@ -287,7 +290,7 @@ struct MockPhraseData {
                     id: "con_upair_tpl_1",
                     text: "plan status",
                     meaningJa: "予定が未定",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "Are we meeting tomorrow?",
                             ja: "明日会う？"
@@ -302,7 +305,7 @@ struct MockPhraseData {
                     id: "con_upair_tpl_2",
                     text: "decision pending",
                     meaningJa: "判断がまだ",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "Did you decide what to do next?",
                             ja: "次どうするか決めた？"
@@ -317,7 +320,7 @@ struct MockPhraseData {
                     id: "con_upair_tpl_3",
                     text: "uncertain schedule",
                     meaningJa: "スケジュールが確定していない",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "Can you join the event?",
                             ja: "イベント来れる？"
@@ -335,7 +338,7 @@ struct MockPhraseData {
                     id: "col_upair_1",
                     text: "be up in the air",
                     meaningJa: "未定だ／不透明だ",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "Are we still going on the trip?",
                             ja: "旅行、まだ行くの？"
@@ -350,7 +353,7 @@ struct MockPhraseData {
                     id: "col_upair_2",
                     text: "leave ~ up in the air",
                     meaningJa: "〜を未定のままにしておく",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "Did you decide the meeting time?",
                             ja: "会議の時間決めた？"
@@ -396,8 +399,9 @@ struct MockPhraseData {
         id: "p_fly_on_the_wall",
         text: "fly on the wall",
         meaningJa: "こっそり見聞きする人／当事者に気づかれずその場にいる存在",
-        isRecommended: false,
-        details: PhraseDetails(
+        normalizedText: "fly on the wall",
+//        isRecommended: false,
+        phraseDetails: PhraseDetails(
             detailedMeaning: """
 「a fly on the wall」は、「その場の人に気づかれずに会話や出来事を見聞きできる存在」を表します。
 ドラマや会議、カップルの会話など「中をのぞきたい」場面でよく出ます。
@@ -411,7 +415,7 @@ struct MockPhraseData {
                     id: "con_fly_tpl_1",
                     text: "curiosity",
                     meaningJa: "内緒の話を聞きたい",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "I wonder what they talked about.",
                             ja: "何話してたんだろうね。"
@@ -426,7 +430,7 @@ struct MockPhraseData {
                     id: "con_fly_tpl_2",
                     text: "behind the scenes",
                     meaningJa: "舞台裏を覗く感じ",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "This feels so real, like we’re watching quietly.",
                             ja: "なんかリアルだね、静かに見てる感じ。"
@@ -441,7 +445,7 @@ struct MockPhraseData {
                     id: "con_fly_tpl_3",
                     text: "private conversation",
                     meaningJa: "プライベートな会話を見たい",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "They’re having a serious talk.",
                             ja: "真剣な話してるね。"
@@ -459,7 +463,7 @@ struct MockPhraseData {
                     id: "col_fly_1",
                     text: "be a fly on the wall",
                     meaningJa: "こっそりその場を見聞きできる存在になる",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "I wonder what they said in that meeting.",
                             ja: "あの会議で何言ってたんだろうね。"
@@ -474,7 +478,7 @@ struct MockPhraseData {
                     id: "col_fly_2",
                     text: "like a fly on the wall",
                     meaningJa: "（比喩的に）こっそり見ているように",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "The camera follows them quietly.",
                             ja: "カメラが静かに彼らを追ってるね。"
@@ -520,8 +524,9 @@ struct MockPhraseData {
         id: "p_on_the_fly",
         text: "on the fly",
         meaningJa: "その場で即興で／素早く対応して",
-        isRecommended: true,
-        details: PhraseDetails(
+        normalizedText: "on the fly",
+//        isRecommended: true,
+        phraseDetails: PhraseDetails(
             detailedMeaning: """
 「on the fly」は、準備する時間があまりない中で、その場で判断して素早く対応するニュアンスです。
 仕事の現場（仕様変更、トラブル対応）でも日常でもよく使われます。
@@ -535,7 +540,7 @@ struct MockPhraseData {
                     id: "con_onthefly_tpl_1",
                     text: "no plan",
                     meaningJa: "計画なしで動く",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "Do we need a plan?",
                             ja: "計画いる？"
@@ -550,7 +555,7 @@ struct MockPhraseData {
                     id: "con_onthefly_tpl_2",
                     text: "quick adjustment",
                     meaningJa: "即興で調整する",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "Something changed last minute.",
                             ja: "直前で変更が入った。"
@@ -565,7 +570,7 @@ struct MockPhraseData {
                     id: "con_onthefly_tpl_3",
                     text: "instant response",
                     meaningJa: "即対応する",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "Can you handle it right now?",
                             ja: "今すぐ対応できる？"
@@ -583,7 +588,7 @@ struct MockPhraseData {
                     id: "col_fly2_1",
                     text: "decide on the fly",
                     meaningJa: "その場で決める",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "Do we need a detailed plan?",
                             ja: "細かい計画いる？"
@@ -598,7 +603,7 @@ struct MockPhraseData {
                     id: "col_fly2_2",
                     text: "make changes on the fly",
                     meaningJa: "その場で調整する／即興で変更する",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "The client changed the requirements again.",
                             ja: "クライアントがまた要件変えたね。"
@@ -644,8 +649,9 @@ struct MockPhraseData {
         id: "p_wasted",
         text: "wasted",
         meaningJa: "（かなり）酔っぱらった／無駄になった",
-        isRecommended: false,
-        details: PhraseDetails(
+        normalizedText: "wasted",
+//        isRecommended: false,
+        phraseDetails: PhraseDetails(
             detailedMeaning: """
 「wasted」は主にカジュアルに「ベロベロに酔った」を表すスラング的表現です。
 文脈によっては「（努力・時間などが）無駄になった」という意味にもなります。
@@ -659,7 +665,7 @@ struct MockPhraseData {
                     id: "con_wasted_tpl_1",
                     text: "hangover",
                     meaningJa: "酔いの話",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "You look rough. Are you okay?",
                             ja: "しんどそうだけど大丈夫？"
@@ -674,7 +680,7 @@ struct MockPhraseData {
                     id: "con_wasted_tpl_2",
                     text: "regret",
                     meaningJa: "やりすぎを反省",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "Do you remember what happened?",
                             ja: "何があったか覚えてる？"
@@ -689,7 +695,7 @@ struct MockPhraseData {
                     id: "con_wasted_tpl_3",
                     text: "time wasted",
                     meaningJa: "無駄になった",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "Why are you frustrated?",
                             ja: "なんでイライラしてるの？"
@@ -707,7 +713,7 @@ struct MockPhraseData {
                     id: "col_wasted_1",
                     text: "get wasted",
                     meaningJa: "ベロベロに酔う",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "How was the party?",
                             ja: "パーティーどうだった？"
@@ -722,7 +728,7 @@ struct MockPhraseData {
                     id: "col_wasted_2",
                     text: "waste ~ / be wasted",
                     meaningJa: "（時間・お金などが）無駄になる",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "I spent hours on this, and it got rejected.",
                             ja: "これに何時間もかけたのに却下された。"
@@ -768,8 +774,9 @@ struct MockPhraseData {
         id: "p_go_down_well",
         text: "go down well",
         meaningJa: "好評だ／ウケがいい／受け入れられる",
-        isRecommended: false,
-        details: PhraseDetails(
+        normalizedText: "go down well",
+//        isRecommended: false,
+        phraseDetails: PhraseDetails(
             detailedMeaning: """
 「go down well」は、提案・ジョーク・スピーチ・新商品などが「人々に好意的に受け取られる」ことを表します。
 「評判がいい」「ウケがいい」を自然に言える便利表現です。
@@ -783,7 +790,7 @@ struct MockPhraseData {
                     id: "con_gdw_tpl_1",
                     text: "feedback",
                     meaningJa: "反応が良い",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "How did your idea go?",
                             ja: "アイデアの反応どうだった？"
@@ -798,7 +805,7 @@ struct MockPhraseData {
                     id: "con_gdw_tpl_2",
                     text: "with audience",
                     meaningJa: "〜にウケる",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "Did the new rule get accepted?",
                             ja: "新ルール、受け入れられそう？"
@@ -813,7 +820,7 @@ struct MockPhraseData {
                     id: "con_gdw_tpl_3",
                     text: "joke",
                     meaningJa: "冗談がウケる／ウケない",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "Did your joke land?",
                             ja: "冗談ウケた？"
@@ -831,7 +838,7 @@ struct MockPhraseData {
                     id: "col_gdw_1",
                     text: "go down well with ~",
                     meaningJa: "〜に好評だ／〜にウケる",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "How did your presentation go?",
                             ja: "プレゼンどうだった？"
@@ -846,7 +853,7 @@ struct MockPhraseData {
                     id: "col_gdw_2",
                     text: "won’t go down well",
                     meaningJa: "ウケない／受け入れられなさそう",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "Should we cut the budget again?",
                             ja: "また予算削る？"
@@ -892,8 +899,9 @@ struct MockPhraseData {
         id: "p_make_a_killing",
         text: "make a killing",
         meaningJa: "（大金を）ガッポリ稼ぐ／大儲けする",
-        isRecommended: true,
-        details: PhraseDetails(
+        normalizedText: "make a killing",
+//        isRecommended: true,
+        phraseDetails: PhraseDetails(
             detailedMeaning: """
 「make a killing」は「短期間で大きく儲ける」「想像以上に稼ぐ」という強い表現です。
 投資・セール・ビジネスなど、結果が“大成功”だったときにカジュアルに使えます。
@@ -907,7 +915,7 @@ struct MockPhraseData {
                     id: "con_makill_tpl_1",
                     text: "business result",
                     meaningJa: "稼ぎがすごい",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "How’s business lately?",
                             ja: "最近どう？"
@@ -922,7 +930,7 @@ struct MockPhraseData {
                     id: "con_makill_tpl_2",
                     text: "one-time big profit",
                     meaningJa: "一発で大儲け",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "Was that project worth it?",
                             ja: "その案件、やる価値あった？"
@@ -937,7 +945,7 @@ struct MockPhraseData {
                     id: "con_makill_tpl_3",
                     text: "surprised reaction",
                     meaningJa: "儲けに驚く",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "How did you afford that?",
                             ja: "どうやってそれ買えたの？"
@@ -955,7 +963,7 @@ struct MockPhraseData {
                     id: "col_makill_1",
                     text: "make a killing on ~",
                     meaningJa: "〜で大儲けする",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "How was your online store last month?",
                             ja: "先月のネットショップどうだった？"
@@ -970,7 +978,7 @@ struct MockPhraseData {
                     id: "col_makill_2",
                     text: "make a killing selling ~",
                     meaningJa: "〜を売って大儲けする",
-                    conversation: ConversationPair(
+                    conversationPair: ConversationPair(
                         first: BilingualText(
                             en: "Why are those tickets so expensive?",
                             ja: "なんでチケットそんな高いの？"

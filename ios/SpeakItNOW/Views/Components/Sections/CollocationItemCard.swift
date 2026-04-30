@@ -28,12 +28,12 @@ struct CollocationItemCard: View {
             Divider()
             
             ConversationTurnView(speaker: .a,
-                                 en: collocation.conversation.first.en,
-                                 ja: collocation.conversation.first.ja)
+                                 en: collocation.conversationPair.first.en,
+                                 ja: collocation.conversationPair.first.ja)
             
             ConversationTurnView(speaker: .b,
-                                 en: collocation.conversation.second.en,
-                                 ja: collocation.conversation.second.ja)
+                                 en: collocation.conversationPair.second.en,
+                                 ja: collocation.conversationPair.second.ja)
         }
         .padding(10)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -43,6 +43,6 @@ struct CollocationItemCard: View {
 
 #Preview {
     CollocationItemCard(
-        collocation: MockPhraseData.lowKey.details.collocations[0]
+        collocation: MockPhraseData.lowKey.phraseDetails.collocations[0]
     )
 }

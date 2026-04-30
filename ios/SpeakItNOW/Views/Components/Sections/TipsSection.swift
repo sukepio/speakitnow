@@ -19,5 +19,5 @@ struct TipsSection: View {
 }
 
 #Preview {
-    TipsSection(tips: MockPhraseData.lowKey.details.tips)
+    TipsSection(tips: MockPhraseData.lowKey.phraseDetails.tips)
 }

@@ -27,5 +27,5 @@ struct SimilarSection: View {
 }
 
 #Preview {
-    SimilarSection(similar: MockPhraseData.lowKey.details.similar)
+    SimilarSection(similar: MockPhraseData.lowKey.phraseDetails.similar)
 }

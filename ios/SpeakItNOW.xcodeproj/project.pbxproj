@@ -6,9 +6,25 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		E6B906652F7564FF005C961B /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = E6B906642F7564FF005C961B /* Auth */; };
+		E6B906672F7564FF005C961B /* Functions in Frameworks */ = {isa = PBXBuildFile; productRef = E6B906662F7564FF005C961B /* Functions */; };
+		E6B906692F7564FF005C961B /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = E6B906682F7564FF005C961B /* PostgREST */; };
+		E6B9066B2F7564FF005C961B /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = E6B9066A2F7564FF005C961B /* Storage */; };
+		E6B9066D2F7564FF005C961B /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = E6B9066C2F7564FF005C961B /* Supabase */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		E675B5852FA34B9600A7CACE /* SpeakItNOW.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeakItNOW.xcodeproj; sourceTree = "<group>"; };
+		E6B86B022F7E983300633CA9 /* SpeakItNOW.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeakItNOW.xcodeproj; sourceTree = "<group>"; };
+		E6B86C3E2F83DDFA00633CA9 /* SpeakItNOW.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeakItNOW.xcodeproj; sourceTree = "<group>"; };
+		E6B86CDC2F852BC100633CA9 /* SpeakItNOW.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeakItNOW.xcodeproj; sourceTree = "<group>"; };
 		E6B905AC2F5AFFCD005C961B /* SpeakItNOW.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeakItNOW.xcodeproj; sourceTree = "<group>"; };
+		E6B9062B2F5F0DB0005C961B /* SpeakItNOW.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeakItNOW.xcodeproj; sourceTree = "<group>"; };
+		E6B906BD2F764FA6005C961B /* SpeakItNOW.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeakItNOW.xcodeproj; sourceTree = "<group>"; };
 		E6BF7EF22F17C49000559007 /* SpeakItNOW.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeakItNOW.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E6DEE40C2F8E004A00FF5F67 /* SpeakItNOW.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeakItNOW.xcodeproj; sourceTree = "<group>"; };
+		E6DEE4B02F8FC83200FF5F67 /* SpeakItNOW.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeakItNOW.xcodeproj; sourceTree = "<group>"; };
 		E6F926462F5859D700A4AB67 /* SpeakItNOW.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeakItNOW.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -38,13 +54,48 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6B9066D2F7564FF005C961B /* Supabase in Frameworks */,
+				E6B9066B2F7564FF005C961B /* Storage in Frameworks */,
+				E6B906692F7564FF005C961B /* PostgREST in Frameworks */,
+				E6B906672F7564FF005C961B /* Functions in Frameworks */,
+				E6B906652F7564FF005C961B /* Auth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E675B5882FA34B9600A7CACE /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E6B86B052F7E983300633CA9 /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E6B86C412F83DDFA00633CA9 /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E6B86CDF2F852BC100633CA9 /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
 		E6B905AE2F5AFFCD005C961B /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E6B9062D2F5F0DB0005C961B /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E6B906C02F764FA6005C961B /* Products */ = {
 			isa = PBXGroup;
 			name = Products;
 			sourceTree = "<group>";
@@ -62,6 +113,16 @@
 			children = (
 				E6BF7EF22F17C49000559007 /* SpeakItNOW.app */,
 			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E6DEE40F2F8E004A00FF5F67 /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E6DEE4B32F8FC83200FF5F67 /* Products */ = {
+			isa = PBXGroup;
 			name = Products;
 			sourceTree = "<group>";
 		};
@@ -90,6 +151,11 @@
 			);
 			name = SpeakItNOW;
 			packageProductDependencies = (
+				E6B906642F7564FF005C961B /* Auth */,
+				E6B906662F7564FF005C961B /* Functions */,
+				E6B906682F7564FF005C961B /* PostgREST */,
+				E6B9066A2F7564FF005C961B /* Storage */,
+				E6B9066C2F7564FF005C961B /* Supabase */,
 			);
 			productName = SpeakItNOW;
 			productReference = E6BF7EF22F17C49000559007 /* SpeakItNOW.app */;
@@ -119,13 +185,48 @@
 			);
 			mainGroup = E6BF7EE92F17C49000559007;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				E6B906632F7564FF005C961B /* XCRemoteSwiftPackageReference "supabase-swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E6BF7EF32F17C49000559007 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = E6B9062D2F5F0DB0005C961B /* Products */;
+					ProjectRef = E6B9062B2F5F0DB0005C961B /* SpeakItNOW.xcodeproj */;
+				},
+				{
+					ProductGroup = E6B906C02F764FA6005C961B /* Products */;
+					ProjectRef = E6B906BD2F764FA6005C961B /* SpeakItNOW.xcodeproj */;
+				},
+				{
+					ProductGroup = E6B86B052F7E983300633CA9 /* Products */;
+					ProjectRef = E6B86B022F7E983300633CA9 /* SpeakItNOW.xcodeproj */;
+				},
+				{
+					ProductGroup = E6B86C412F83DDFA00633CA9 /* Products */;
+					ProjectRef = E6B86C3E2F83DDFA00633CA9 /* SpeakItNOW.xcodeproj */;
+				},
+				{
+					ProductGroup = E6DEE40F2F8E004A00FF5F67 /* Products */;
+					ProjectRef = E6DEE40C2F8E004A00FF5F67 /* SpeakItNOW.xcodeproj */;
+				},
+				{
+					ProductGroup = E6B86CDF2F852BC100633CA9 /* Products */;
+					ProjectRef = E6B86CDC2F852BC100633CA9 /* SpeakItNOW.xcodeproj */;
+				},
+				{
 					ProductGroup = E6B905AE2F5AFFCD005C961B /* Products */;
 					ProjectRef = E6B905AC2F5AFFCD005C961B /* SpeakItNOW.xcodeproj */;
+				},
+				{
+					ProductGroup = E6DEE4B32F8FC83200FF5F67 /* Products */;
+					ProjectRef = E6DEE4B02F8FC83200FF5F67 /* SpeakItNOW.xcodeproj */;
+				},
+				{
+					ProductGroup = E675B5882FA34B9600A7CACE /* Products */;
+					ProjectRef = E675B5852FA34B9600A7CACE /* SpeakItNOW.xcodeproj */;
 				},
 				{
 					ProductGroup = E6F926482F5859D700A4AB67 /* Products */;
@@ -367,6 +468,45 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E6B906632F7564FF005C961B /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase/supabase-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E6B906642F7564FF005C961B /* Auth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E6B906632F7564FF005C961B /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Auth;
+		};
+		E6B906662F7564FF005C961B /* Functions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E6B906632F7564FF005C961B /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Functions;
+		};
+		E6B906682F7564FF005C961B /* PostgREST */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E6B906632F7564FF005C961B /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = PostgREST;
+		};
+		E6B9066A2F7564FF005C961B /* Storage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E6B906632F7564FF005C961B /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Storage;
+		};
+		E6B9066C2F7564FF005C961B /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E6B906632F7564FF005C961B /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E6BF7EEA2F17C49000559007 /* Project object */;
 }

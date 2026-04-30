@@ -9,17 +9,11 @@ import SwiftUI
 
 struct SearchView: View {
     @EnvironmentObject var phraseStore: PhraseStore
-    @State private var query: String = ""
-    @State private var isLoading: Bool = false
-    @State private var results: [Phrase] = []
-    @State private var errorMessage: String? = nil
-    @State private var selectedPhrase: Phrase? = nil
+    @StateObject var searchViewModel = SearchViewModel()
+
+    @State private var selectedPhrase: SearchedResultItem? = nil
     @State private var path: [DetailRoute] = []
-    
-    private var trimmedQuery: String {
-        query.trimmingCharacters(in: .whitespacesAndNewlines)
-    }
-    
+        
     var body: some View {
         ZStack {
             Color(Color.black.opacity(0.9))
@@ -35,7 +29,7 @@ struct SearchView: View {
                 HStack {
                     Image(systemName: "magnifyingglass")
                         .foregroundStyle(.gray)
-                    TextField("", text: $query, prompt: Text("Enter a word, phrase, idiom"))
+                    TextField("", text: $searchViewModel.searchText, prompt: Text("Enter a word, phrase, idiom"))
                         .foregroundStyle(.black)
                         .textInputAutocapitalization(.never)
                         .disableAutocorrection(true)
@@ -44,12 +38,9 @@ struct SearchView: View {
                             performSearch()
                         }
                     
-                    if !trimmedQuery.isEmpty {
+                    if searchViewModel.canSearch {
                         Button {
-                            query = ""
-                            results = []
-                            isLoading = false
-                            errorMessage = nil
+                            searchViewModel.resetSearch()
                             selectedPhrase = nil
                         } label: {
                             Image(systemName: "xmark")
@@ -78,60 +69,32 @@ struct SearchView: View {
     }
     
     private func performSearch() {
-        guard !trimmedQuery.isEmpty else { return }
-        let q = normalize(trimmedQuery)
-        errorMessage = nil
-        results = []
-        isLoading = true
-        let source = phraseStore.phrases
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
-            defer {
-                isLoading = false
-            }
-            let exact = source.filter { normalize($0.text) == q }
-            if !exact.isEmpty {
-                results = exact
-                return
-            }
-            let partial = source.filter { normalize($0.text).contains(q) }
-            results = partial
-            return
+        Task {
+            await searchViewModel.performSearch()
         }
-    }
-    
-    private func normalize(_ s: String) -> String {
-        var normalized = s.lowercased()
-        normalized = normalized.trimmingCharacters(in: .whitespacesAndNewlines)
-        normalized = normalized.replacingOccurrences(of: "-", with: " ")
-        normalized = normalized.components(separatedBy: .whitespacesAndNewlines).filter{
-            !$0.isEmpty
-        }.joined(separator: " ")
-        return normalized
     }
     
     @ViewBuilder
     private var content: some View {
-        if isLoading {
+        if searchViewModel.isLoading {
             ProgressView()
                 .tint(.white)
-        } else if results.isEmpty && trimmedQuery.isEmpty {
+        } else if let message = searchViewModel.errorMessage {
+            Text(message)
+                .foregroundStyle(.red)
+        } else if searchViewModel.isInitialState {
             Text("アウトプットしたい語句を検索しましょう")
                 .foregroundStyle(.white)
-        } else if results.isEmpty {
+        } else if searchViewModel.hasNoResults {
             Text("検索に該当する語句が見つかりませんでした")
                 .foregroundStyle(.white)
         } else {
             List {
-              ForEach(results) { phrase in
-                  PhraseRow(phrase: phrase)
+                ForEach(searchViewModel.results) { searchResult in
+                    PhraseRow(item: searchResult.content)
                       .contentShape(Rectangle())
                       .onTapGesture {
-                          selectedPhrase = phrase
-                      }
-                      .swipeActions {
-                          Button(role: .destructive) { phraseStore.removeMyPhrase(phrase) } label: { Text("削除")
-                          }
-                          .tint(.red)
+                          selectedPhrase = searchResult
                       }
                       .listRowSeparator(.hidden)
                       .listRowBackground(Color.clear)
@@ -141,7 +104,7 @@ struct SearchView: View {
             .sheet(item: $selectedPhrase) { phrase in
                 NavigationStack(path: $path) {
                     PhraseDetailView(
-                        phrase: phrase,
+                        phrase: ,
                         source: .search,
                         onStartOutput: { phrase, source in
                             path.append(.output(pharase: phrase, source: .search))
@@ -170,3 +133,8 @@ struct SearchView: View {
     SearchView()
         .environmentObject(PhraseStore())
 }
+
+#Preview {
+    SearchView().environmentObject(PhraseStore())
+}
+
