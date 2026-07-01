@@ -15,7 +15,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E6209AF82FDC1F42007E81AA /* SpeakItNOW.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeakItNOW.xcodeproj; sourceTree = "<group>"; };
 		E675B5852FA34B9600A7CACE /* SpeakItNOW.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeakItNOW.xcodeproj; sourceTree = "<group>"; };
+		E6AF03792FF0DE63007FDBEE /* SpeakItNOW.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeakItNOW.xcodeproj; sourceTree = "<group>"; };
 		E6B86B022F7E983300633CA9 /* SpeakItNOW.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeakItNOW.xcodeproj; sourceTree = "<group>"; };
 		E6B86C3E2F83DDFA00633CA9 /* SpeakItNOW.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeakItNOW.xcodeproj; sourceTree = "<group>"; };
 		E6B86CDC2F852BC100633CA9 /* SpeakItNOW.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeakItNOW.xcodeproj; sourceTree = "<group>"; };
@@ -23,6 +25,7 @@
 		E6B9062B2F5F0DB0005C961B /* SpeakItNOW.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeakItNOW.xcodeproj; sourceTree = "<group>"; };
 		E6B906BD2F764FA6005C961B /* SpeakItNOW.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeakItNOW.xcodeproj; sourceTree = "<group>"; };
 		E6BF7EF22F17C49000559007 /* SpeakItNOW.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeakItNOW.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E6D788962FE6BF980094A22A /* SpeakItNOW.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeakItNOW.xcodeproj; sourceTree = "<group>"; };
 		E6DEE40C2F8E004A00FF5F67 /* SpeakItNOW.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeakItNOW.xcodeproj; sourceTree = "<group>"; };
 		E6DEE4B02F8FC83200FF5F67 /* SpeakItNOW.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeakItNOW.xcodeproj; sourceTree = "<group>"; };
 		E6F926462F5859D700A4AB67 /* SpeakItNOW.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeakItNOW.xcodeproj; sourceTree = "<group>"; };
@@ -65,7 +68,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E6209AFB2FDC1F42007E81AA /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
 		E675B5882FA34B9600A7CACE /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E6AF037C2FF0DE63007FDBEE /* Products */ = {
 			isa = PBXGroup;
 			name = Products;
 			sourceTree = "<group>";
@@ -113,6 +126,11 @@
 			children = (
 				E6BF7EF22F17C49000559007 /* SpeakItNOW.app */,
 			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E6D788992FE6BF980094A22A /* Products */ = {
+			isa = PBXGroup;
 			name = Products;
 			sourceTree = "<group>";
 		};
@@ -193,6 +211,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = E6D788992FE6BF980094A22A /* Products */;
+					ProjectRef = E6D788962FE6BF980094A22A /* SpeakItNOW.xcodeproj */;
+				},
+				{
 					ProductGroup = E6B9062D2F5F0DB0005C961B /* Products */;
 					ProjectRef = E6B9062B2F5F0DB0005C961B /* SpeakItNOW.xcodeproj */;
 				},
@@ -213,8 +235,8 @@
 					ProjectRef = E6DEE40C2F8E004A00FF5F67 /* SpeakItNOW.xcodeproj */;
 				},
 				{
-					ProductGroup = E6B86CDF2F852BC100633CA9 /* Products */;
-					ProjectRef = E6B86CDC2F852BC100633CA9 /* SpeakItNOW.xcodeproj */;
+					ProductGroup = E6209AFB2FDC1F42007E81AA /* Products */;
+					ProjectRef = E6209AF82FDC1F42007E81AA /* SpeakItNOW.xcodeproj */;
 				},
 				{
 					ProductGroup = E6B905AE2F5AFFCD005C961B /* Products */;
@@ -223,6 +245,14 @@
 				{
 					ProductGroup = E6DEE4B32F8FC83200FF5F67 /* Products */;
 					ProjectRef = E6DEE4B02F8FC83200FF5F67 /* SpeakItNOW.xcodeproj */;
+				},
+				{
+					ProductGroup = E6B86CDF2F852BC100633CA9 /* Products */;
+					ProjectRef = E6B86CDC2F852BC100633CA9 /* SpeakItNOW.xcodeproj */;
+				},
+				{
+					ProductGroup = E6AF037C2FF0DE63007FDBEE /* Products */;
+					ProjectRef = E6AF03792FF0DE63007FDBEE /* SpeakItNOW.xcodeproj */;
 				},
 				{
 					ProductGroup = E675B5882FA34B9600A7CACE /* Products */;

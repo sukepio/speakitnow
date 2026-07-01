@@ -1,17 +1,15 @@
 //
-//  PhraseDTO.swift
+//  PhraseInsertDTO.swift
 //  SpeakItNOW
 //
-//  Created by 助名直人 on 2026/03/27.
+//  Created by 助名直人 on 2026/06/20.
 //
 
 import Foundation
 
-struct PhraseDTO: Codable {
-    let id: Int
+struct PhraseInsertDTO: Encodable {
     let text: String
     let meaning_ja: String
     let normalized_text: String
     let phrase_details: PhraseDetailsDTO
-//    let conversation_templates: ConversationTemplateDTO
 }

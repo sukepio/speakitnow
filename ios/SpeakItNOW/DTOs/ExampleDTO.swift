@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ExampleDTO: Decodable {
+struct ExampleDTO: Codable {
     let id: String
     let en: String
     let ja: String

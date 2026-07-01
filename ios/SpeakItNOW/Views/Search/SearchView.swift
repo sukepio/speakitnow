@@ -11,7 +11,7 @@ struct SearchView: View {
     @EnvironmentObject var phraseStore: PhraseStore
     @StateObject var searchViewModel = SearchViewModel()
 
-    @State private var selectedPhrase: SearchedResultItem? = nil
+    @State private var selectedPhrase: Phrase? = nil
     @State private var path: [DetailRoute] = []
         
     var body: some View {
@@ -91,7 +91,7 @@ struct SearchView: View {
         } else {
             List {
                 ForEach(searchViewModel.results) { searchResult in
-                    PhraseRow(item: searchResult.content)
+                    PhraseRow(item: searchResult)
                       .contentShape(Rectangle())
                       .onTapGesture {
                           selectedPhrase = searchResult
@@ -104,7 +104,7 @@ struct SearchView: View {
             .sheet(item: $selectedPhrase) { phrase in
                 NavigationStack(path: $path) {
                     PhraseDetailView(
-                        phrase: ,
+                        phrase: phrase,
                         source: .search,
                         onStartOutput: { phrase, source in
                             path.append(.output(pharase: phrase, source: .search))

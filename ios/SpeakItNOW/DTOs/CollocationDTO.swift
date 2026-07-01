@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CollocationDTO: Decodable {
+struct CollocationDTO: Codable {
     let id: String
     let text: String
     let meaning_ja: String

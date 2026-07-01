@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PhraseDetailsDTO: Decodable {
+struct PhraseDetailsDTO: Codable {
     let detailed_meaning: String
     let contexts: [String]
     let conversations: [ConversationDTO]

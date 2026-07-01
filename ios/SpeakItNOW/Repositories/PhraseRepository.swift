@@ -24,9 +24,9 @@ final class PhraseRepository {
         let normalizedQuery = normalize(query: query)
         
         // 完全一致検索
-        let exactPhrases: [PhraseDTO] = try await searchExactPhrases(normalizedQuery: normalizedQuery)
-        if !exactPhrases.isEmpty {
-            return convertToPhrase(phrases: exactPhrases)
+        let exactMatchesForQuery: [PhraseDTO] = try await searchExactPhrases(normalizedQuery: normalizedQuery)
+        if !exactMatchesForQuery.isEmpty {
+            return convertToPhrase(phrases: exactMatchesForQuery)
         }
         
         // 部分一致検索
@@ -34,6 +34,39 @@ final class PhraseRepository {
         if !partialPhrases.isEmpty {
             return convertToPhrase(phrases: partialPhrases)
         }
+        
+        // LLM生成
+        let generatedPhrase: LLMGeneratedPhraseDTO = try await generatePhrase(query: query)
+        let generatedPhraseNormalizedText = normalize(query: generatedPhrase.text)
+        
+        // 再度完全一致検索
+        let exactMatchesForGeneratedPhrase = try await searchExactPhrases(normalizedQuery: generatedPhraseNormalizedText)
+        if !exactMatchesForGeneratedPhrase.isEmpty {
+            return convertToPhrase(phrases: exactMatchesForGeneratedPhrase)
+        }
+        
+        // insert用DTO詰め替え
+        let phraseInsertDTO: PhraseInsertDTO = convertToPhraseInsertDTO(
+            generatedPhrase: generatedPhrase,
+            normalizedText: generatedPhraseNormalizedText
+        )
+        
+        // LLM生成保存
+        do {
+            let insertedPhrase: Phrase = try await insertPhrase(phrase: phraseInsertDTO)
+            return [insertedPhrase]
+        } catch {
+            if isUniqueViolation(error){
+                let exactMatchesForUniqueViolation = try await searchExactPhrases(normalizedQuery: generatedPhraseNormalizedText)
+                
+                if !exactMatchesForUniqueViolation.isEmpty {
+                    return convertToPhrase(phrases: exactMatchesForUniqueViolation)
+                }
+                
+                throw error
+            }
+        }
+        
         return []
     }
     
@@ -48,21 +81,40 @@ final class PhraseRepository {
     }
     
     private func searchExactPhrases(normalizedQuery: String) async throws -> [PhraseDTO] {
-        let phrases: [PhraseDTO] = try await supabase.from("phrases").select("id, text, meaning_ja, phrase_details").equals("normalized_text", value: normalizedQuery).execute().value
+        let phrases: [PhraseDTO] = try await supabase
+            .from("phrases")
+            .select("id, text, meaning_ja, normalized_text, phrase_details")
+            .equals("normalized_text", value: normalizedQuery)
+            .execute()
+            .value
         return phrases
     }
     
     private func searchPartialPhrases(normalizedQuery: String) async throws -> [PhraseDTO] {
-        let phrases: [PhraseDTO] = try await supabase.from("phrases").select("id, text, meaning_ja, phrase_details").ilike("normalized_text", pattern: "%\(normalizedQuery)%").execute().value
+        let phrases: [PhraseDTO] = try await supabase
+            .from("phrases")
+            .select("id, text, meaning_ja, normalized_text, phrase_details")
+            .ilike("normalized_text", pattern: "%\(normalizedQuery)%")
+            .execute()
+            .value
         return phrases
     }
     
-    // TODO: api call
+    private func generatePhrase(query: String) async throws -> LLMGeneratedPhraseDTO {
+        let response: LLMGeneratedPhraseDTO = try await supabase.functions
+          .invoke(
+            "generate-phrase",
+            options: FunctionInvokeOptions(
+              body: ["query": query]
+            )
+          )
+        return response
+    }
     
     private func convertToPhrase(phrases: [PhraseDTO]) -> [Phrase] {
         phrases.map { dto in
             Phrase(
-                id: String(dto.id),
+                id: dto.id,
                 text: dto.text,
                 meaningJa: dto.meaning_ja,
                 normalizedText: dto.normalized_text,
@@ -135,7 +187,41 @@ final class PhraseRepository {
         return phrases
     }
     
-
+    private func convertToPhraseInsertDTO(generatedPhrase: LLMGeneratedPhraseDTO, normalizedText: String) -> PhraseInsertDTO {
+            PhraseInsertDTO(
+                text: generatedPhrase.text,
+                meaning_ja: generatedPhrase.meaning_ja,
+                normalized_text: normalizedText,
+                phrase_details: generatedPhrase.phrase_details
+            )
+    }
     
+    private func convertToPhrase(dto: PhraseDTO) -> Phrase {
+        Phrase(
+            id: dto.id,
+            text: dto.text,
+            meaningJa: dto.meaning_ja,
+            normalizedText: dto.normalized_text,
+            phraseDetails: convertToPhraseDetails(dto.phrase_details)
+        )
+    }
+
+    private func insertPhrase(phrase: PhraseInsertDTO) async throws -> Phrase {
+        let insertedDTO: PhraseDTO = try await supabase
+            .from("phrases")
+            .insert(phrase)
+            .select("id, text, meaning_ja, normalized_text, phrase_details")
+            .single()
+            .execute()
+            .value
+        
+        return convertToPhrase(dto: insertedDTO)
+        
+    }
+    
+    private func isUniqueViolation(_ error: Error) -> Bool {
+        let message = String(describing: error)
+        return message.contains("23505")
+    }
     
 }

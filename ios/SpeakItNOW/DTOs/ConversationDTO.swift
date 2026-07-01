@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ConversationDTO: Decodable {
+struct ConversationDTO: Codable {
     let id: String
     let text: String
     let meaning_ja: String

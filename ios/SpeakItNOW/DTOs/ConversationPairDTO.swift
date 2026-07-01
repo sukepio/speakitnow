@@ -7,12 +7,12 @@
 
 import Foundation
 
-struct ConversationPairDTO: Decodable {
+struct ConversationPairDTO: Codable {
     let first: BilingualTextDTO
     let second: BilingualTextDTO
 }
 
-struct BilingualTextDTO: Decodable {
+struct BilingualTextDTO: Codable {
     let en: String
     let ja: String
 }

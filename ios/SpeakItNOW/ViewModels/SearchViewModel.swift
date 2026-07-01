@@ -10,7 +10,7 @@ import Foundation
 @MainActor
 class SearchViewModel: ObservableObject {
     @Published var searchText: String = ""
-    @Published var results: [SearchedResultItem] = []
+    @Published var results: [Phrase] = []
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
     
@@ -36,33 +36,20 @@ class SearchViewModel: ObservableObject {
     
     // 検索
     func performSearch() async {
-        if trimmedQuery.isEmpty {
-            return
-        }
+        guard !trimmedQuery.isEmpty else { return }
         
         hasSearched = true
-        
         errorMessage = nil
         isLoading = true
         
         do {
-            defer {
-                isLoading = false
-            }
-            
-            let searchResult: [Phrase] = try await repository.searchPhrases(query: trimmedQuery)
-            let searchResultItems: [SearchedResultItem] = convertToSearchedResultItems(phrases: searchResult)
-            if !searchResultItems.isEmpty {
-                results = searchResultItems
-                return
-            }
-            // LLM検索
-            
+            defer { isLoading = false }
+            results = try await repository.searchPhrases(query: trimmedQuery)
         } catch {
-            errorMessage = "エラーが発生しました。"
+            print("search error:", error)
+            errorMessage = error.localizedDescription
+            results = []
         }
-        
-        results = []
     }
     
     func resetSearch() {
@@ -74,20 +61,5 @@ class SearchViewModel: ObservableObject {
         hasSearched = false
     }
     
-    private func convertToSearchedResultItems(phrases: [Phrase]) -> [SearchedResultItem] {
-        phrases.map { phrase in
-            SearchedResultItem(
-                content: SearchResultContent.saved(phrase)
-            )
-        }
-    }
-    
-    private func convertToSearchedResultItems(generatedPhrases: [GeneratedPhrase]) -> [SearchedResultItem] {
-        generatedPhrases.map { phrase in
-            SearchedResultItem(
-                content: SearchResultContent.generated(phrase)
-            )
-        }
-    }
     
 }

@@ -29,7 +29,7 @@ struct OutputView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 // 選択フレーズ
-                PhraseRow(phrase: phrase)
+                PhraseRow(item: phrase)
                     .contentShape(Rectangle())
                     .onTapGesture {
                         selectedPhrase = phrase

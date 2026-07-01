@@ -8,7 +8,7 @@ import Foundation
 
 /// 画面共通で扱うフレーズ
 struct Phrase: Identifiable, Codable, Hashable {
-    let id: String
+    let id: Int
     let text: String
     let meaningJa: String
     let normalizedText: String

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SimilarPhraseDTO: Decodable {
+struct SimilarPhraseDTO: Codable {
     let id: String
     let phrase: String
     let meaning_ja: String

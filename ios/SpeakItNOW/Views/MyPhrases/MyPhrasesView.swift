@@ -26,7 +26,7 @@ struct MyPhrasesView: View {
 
                   List {
                     ForEach(myPhrases) { phrase in
-                        PhraseRow(phrase: phrase)
+                        PhraseRow(item: phrase)
                             .contentShape(Rectangle())
                             .onTapGesture {
                                 selectedPhrase = phrase
