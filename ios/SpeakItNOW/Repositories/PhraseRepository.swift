@@ -14,8 +14,15 @@ final class PhraseRepository {
       supabaseKey: "sb_publishable_bFMICOIn2u382RMOqn-QFg_6UsF4mwG"
     )
     
-    func getPhrases() async throws -> [Phrase] {
-        let phrases: [PhraseDTO] = try await fetchPhrases()
+    func fetchPhrases(ids: [Int]) async throws -> [Phrase] {
+        if ids.isEmpty { return [] }
+        let phrases: [PhraseDTO] = try await supabase
+            .from("phrases")
+            .select("id, text, meaning_ja, normalized_text, phrase_details")
+            .in("id", values: ids)
+            .execute()
+            .value
+        
         return convertToPhrase(phrases: phrases)
     }
     

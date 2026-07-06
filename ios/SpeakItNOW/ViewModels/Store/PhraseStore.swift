@@ -9,29 +9,22 @@ import Foundation
 
 @MainActor
 final class PhraseStore: ObservableObject {
-    @Published var phrases: [Phrase] = []
-    @Published var selectedPhraseId: String?
-    @Published var myPhraseIds: Set<String> = []
+    @Published var myPhrases: [Phrase] = []
+    @Published var selectedPhraseId: Int?
+    @Published var myPhraseIds: Set<Int> = []
     @Published var errorMessage: String?
     
     private let repository = PhraseRepository()
-    
-    var myPhrases: [Phrase] {
-        phrases.filter{ myPhraseIds.contains($0.id) }
-    }
+    private let userPhraseRepository = UserPhraseRepository()
     
     init() {
-        self.phrases = []
+        self.myPhrases = []
     }
     
-//    var recommendedPhrases: [Phrase] {
-//        phrases.filter{ $0.isRecommended }
-//    }
-    
-    func loadPhrases() async {
-        //TODO: 成功したらphrasesを入れる。失敗したらerrorMessagesを入れる
+    func loadMyPhrases() async {
         do {
-            self.phrases = try await repository.getPhrases()
+            self.myPhraseIds = try await userPhraseRepository.fetchMyPhraseIds()
+            self.myPhrases = try await repository.fetchPhrases(ids: Array(self.myPhraseIds))
             self.errorMessage = nil
         } catch {
             self.errorMessage = error.localizedDescription
@@ -42,11 +35,30 @@ final class PhraseStore: ObservableObject {
         return myPhraseIds.contains(phrase.id)
     }
     
-    func addMyPhrase(_ phrase: Phrase) {
-        myPhraseIds.insert(phrase.id)
+    func addMyPhrase(_ phrase: Phrase) async {
+        do {
+            try await userPhraseRepository.addMyPhrase(phraseId: phrase.id)
+            
+            self.myPhraseIds.insert(phrase.id)
+            
+            if !myPhrases.contains(where: { $0.id == phrase.id }) {
+                self.myPhrases.append(phrase)
+            }
+            
+            self.errorMessage = nil
+        } catch {
+            self.errorMessage = error.localizedDescription
+        }
     }
     
-    func removeMyPhrase(_ phrase: Phrase) {
-        myPhraseIds.remove(phrase.id)
+    func removeMyPhrase(_ phrase: Phrase) async {
+        do {
+            try await userPhraseRepository.removeMyPhrase(phraseId: phrase.id)
+            self.myPhraseIds.remove(phrase.id)
+            self.myPhrases.removeAll { $0.id == phrase.id }
+            self.errorMessage = nil
+        } catch {
+            self.errorMessage = error.localizedDescription
+        }
     }
 }

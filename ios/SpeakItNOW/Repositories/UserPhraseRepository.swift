@@ -14,6 +14,7 @@ final class UserPhraseRepository {
       supabaseKey: "sb_publishable_bFMICOIn2u382RMOqn-QFg_6UsF4mwG"
     )
     
+    
     // 取得
     func fetchMyPhraseIds() async throws -> Set<Int> {
         let userId = try currentUserId()
@@ -30,7 +31,7 @@ final class UserPhraseRepository {
     
     // 削除
     func removeMyPhrase(phraseId: Int) async throws {
-        try await removeUserPhrase(phraseId: phraseId)
+        try await deleteUserPhrase(phraseId: phraseId)
     }
     
     private func currentUserId() throws -> UUID {
@@ -61,7 +62,7 @@ final class UserPhraseRepository {
             .execute()
     }
     
-    private func removeUserPhrase(phraseId: Int) async throws {
+    private func deleteUserPhrase(phraseId: Int) async throws {
         let userId = try currentUserId()
         try await supabase
             .from("user_phrases")
