@@ -18,6 +18,7 @@
 		E6209AF82FDC1F42007E81AA /* SpeakItNOW.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeakItNOW.xcodeproj; sourceTree = "<group>"; };
 		E675B5852FA34B9600A7CACE /* SpeakItNOW.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeakItNOW.xcodeproj; sourceTree = "<group>"; };
 		E6AF03792FF0DE63007FDBEE /* SpeakItNOW.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeakItNOW.xcodeproj; sourceTree = "<group>"; };
+		E6AF04322FFD2EC1007FDBEE /* SpeakItNOW.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeakItNOW.xcodeproj; sourceTree = "<group>"; };
 		E6B86B022F7E983300633CA9 /* SpeakItNOW.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeakItNOW.xcodeproj; sourceTree = "<group>"; };
 		E6B86C3E2F83DDFA00633CA9 /* SpeakItNOW.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeakItNOW.xcodeproj; sourceTree = "<group>"; };
 		E6B86CDC2F852BC100633CA9 /* SpeakItNOW.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeakItNOW.xcodeproj; sourceTree = "<group>"; };
@@ -79,6 +80,11 @@
 			sourceTree = "<group>";
 		};
 		E6AF037C2FF0DE63007FDBEE /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E6AF04352FFD2EC1007FDBEE /* Products */ = {
 			isa = PBXGroup;
 			name = Products;
 			sourceTree = "<group>";
@@ -249,6 +255,10 @@
 				{
 					ProductGroup = E6B86CDF2F852BC100633CA9 /* Products */;
 					ProjectRef = E6B86CDC2F852BC100633CA9 /* SpeakItNOW.xcodeproj */;
+				},
+				{
+					ProductGroup = E6AF04352FFD2EC1007FDBEE /* Products */;
+					ProjectRef = E6AF04322FFD2EC1007FDBEE /* SpeakItNOW.xcodeproj */;
 				},
 				{
 					ProductGroup = E6AF037C2FF0DE63007FDBEE /* Products */;

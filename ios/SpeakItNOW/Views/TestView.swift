@@ -20,18 +20,18 @@ struct TestView: View {
 //            }
         
         TextField("", text: $phrase)
-        
-        Button {
-            Task {
-                do {
-                    print("test")
-                } catch {
-                    print(error.localizedDescription)
-                }
-            }
-        } label : {
-            Text("Press here")
-        }
+//        
+//        Button {
+//            Task {
+//                do {
+//                    print("test")
+//                } catch {
+//                    print(error.localizedDescription)
+//                }
+//            }
+//        } label : {
+//            Text("Press here")
+//        }
     }
 }
 

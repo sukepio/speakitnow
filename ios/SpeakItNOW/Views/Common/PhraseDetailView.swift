@@ -23,8 +23,22 @@ struct PhraseDetailView: View {
             PhraseDetailHeaderView(
                 phrase: phrase,
                 onClose: { dismiss() },
-                onAddMyPhrase: { phraseStore.addMyPhrase(phrase) },
-                onRemoveMyPhrase: { phraseStore.removeMyPhrase(phrase) },
+                onAddMyPhrase: {
+                        print("onAddMyPhrase tapped")            // 追加
+                        Task {
+                            await phraseStore.addMyPhrase(phrase)
+                            if let msg = phraseStore.errorMessage {
+                                print("Add failed:", msg)         // 追加
+                            } else {
+                                print("Add succeeded")
+                            }
+                        }
+                },
+                onRemoveMyPhrase: {
+                    Task {
+                        await phraseStore.removeMyPhrase(phrase)
+                    }
+                },
                 onStartOutput: { onStartOutput(phrase, source) },
                 isAdded: isAdded,
                 source: source

@@ -22,7 +22,7 @@ struct MockPhraseData {
 
     // MARK: - low-key
     static let lowKey = Phrase(
-        id: "p_low_key",
+        id: 1,
         text: "low-key",
         meaningJa: "控えめに／さりげなく／実はちょっと",
         normalizedText: "low-key",
@@ -146,7 +146,7 @@ struct MockPhraseData {
 
     // MARK: - neck and neck
     static let neckAndNeck = Phrase(
-        id: "p_neck_and_neck",
+        id: 2,
         text: "neck and neck",
         meaningJa: "接戦で／ほぼ同時に",
         normalizedText: "neck and neck",
@@ -271,7 +271,7 @@ struct MockPhraseData {
 
     // MARK: - up in the air
     static let upInTheAir = Phrase(
-        id: "p_up_in_the_air",
+        id: 3,
         text: "up in the air",
         meaningJa: "未定で／どうなるか分からない",
         normalizedText: "up in the air",
@@ -396,7 +396,7 @@ struct MockPhraseData {
 
     // MARK: - fly on the wall
     static let flyOnTheWall = Phrase(
-        id: "p_fly_on_the_wall",
+        id: 4,
         text: "fly on the wall",
         meaningJa: "こっそり見聞きする人／当事者に気づかれずその場にいる存在",
         normalizedText: "fly on the wall",
@@ -521,7 +521,7 @@ struct MockPhraseData {
 
     // MARK: - on the fly
     static let onTheFly = Phrase(
-        id: "p_on_the_fly",
+        id: 5,
         text: "on the fly",
         meaningJa: "その場で即興で／素早く対応して",
         normalizedText: "on the fly",
@@ -646,7 +646,7 @@ struct MockPhraseData {
 
     // MARK: - wasted
     static let wasted = Phrase(
-        id: "p_wasted",
+        id: 6,
         text: "wasted",
         meaningJa: "（かなり）酔っぱらった／無駄になった",
         normalizedText: "wasted",
@@ -771,7 +771,7 @@ struct MockPhraseData {
 
     // MARK: - go down well
     static let goDownWell = Phrase(
-        id: "p_go_down_well",
+        id: 7,
         text: "go down well",
         meaningJa: "好評だ／ウケがいい／受け入れられる",
         normalizedText: "go down well",
@@ -896,7 +896,7 @@ struct MockPhraseData {
 
     // MARK: - make a killing
     static let makeAKilling = Phrase(
-        id: "p_make_a_killing",
+        id: 8,
         text: "make a killing",
         meaningJa: "（大金を）ガッポリ稼ぐ／大儲けする",
         normalizedText: "make a killing",

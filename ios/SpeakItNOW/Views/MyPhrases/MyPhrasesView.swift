@@ -32,8 +32,11 @@ struct MyPhrasesView: View {
                                 selectedPhrase = phrase
                             }
                             .swipeActions {
-                                Button(role: .destructive) { phraseStore.removeMyPhrase(phrase) } label: { Text("削除")
-                                }
+                                Button(role: .destructive) {
+                                    Task {
+                                        await phraseStore.removeMyPhrase(phrase)
+                                    }
+                                } label: { Text("削除") }
                                 .tint(.red)
                             }
                             .listRowSeparator(.hidden)

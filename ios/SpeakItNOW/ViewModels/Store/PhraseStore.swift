@@ -19,6 +19,9 @@ final class PhraseStore: ObservableObject {
     
     init() {
         self.myPhrases = []
+        Task {
+            await self.loadMyPhrases()
+        }
     }
     
     func loadMyPhrases() async {
