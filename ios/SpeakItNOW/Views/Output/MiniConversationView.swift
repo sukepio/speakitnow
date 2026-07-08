@@ -54,50 +54,77 @@ struct MiniConversationView: View {
                     VStack {
                         VStack(alignment: .leading, spacing: 4) {
                             Text(conversation.conversationPair.first.en)
+                                .multilineTextAlignment(.leading)
+                                .lineLimit(nil)
                                 .onTapGesture {
                                     speaker.speak(conversation.conversationPair.first.en)
                                 }
-                            
+
                             if isMeaningJpShown {
-                                Rectangle()
-                                    .fill(Color.secondary.opacity(0.3))
-                                    .frame(height: 1)
-                                Text(conversation.conversationPair.first.ja)
-                                    .font(.caption)
+                                VStack(alignment: .leading, spacing: 6) {
+                                    Rectangle()
+                                        .fill(Color.secondary.opacity(0.3))
+                                        .frame(height: 1)
+                                    Text(conversation.conversationPair.first.ja)
+                                        .font(.caption)
+                                        .multilineTextAlignment(.leading)
+                                        .lineLimit(nil)
+                                        .contentTransition(.opacity)
+                                }
+                                .transition(
+                                    .asymmetric(
+                                        insertion: .move(edge: .top).combined(with: .opacity),
+                                        removal: .opacity
+                                    )
+                                )
                             }
                         }
                         .padding(10)
-                        .fixedSize(horizontal: true, vertical: false)
+                        .fixedSize(horizontal: false, vertical: true)
                         .background {
                             RoundedRectangle(cornerRadius: 12)
                                 .fill(Color(.systemGray6))
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        
+                        .animation(.spring(response: 0.28, dampingFraction: 0.85), value: isMeaningJpShown)
+
                         VStack(alignment: .leading, spacing: 4) {
                             Text(conversation.conversationPair.second.en)
                                 .foregroundColor(.white)
+                                .multilineTextAlignment(.leading)
+                                .lineLimit(nil)
                                 .onTapGesture {
                                     speaker.speak(conversation.conversationPair.second.en)
                                 }
-                            
+
                             if isMeaningJpShown {
-                                Rectangle()
-                                    .fill(Color.white.opacity(0.8))
-                                    .frame(height: 1)
-                                
-                                Text(conversation.conversationPair.second.ja)
-                                    .font(.caption)
-                                    .foregroundColor(.white.opacity(0.8))
+                                VStack(alignment: .leading, spacing: 6) {
+                                    Rectangle()
+                                        .fill(Color.white.opacity(0.8))
+                                        .frame(height: 1)
+                                    Text(conversation.conversationPair.second.ja)
+                                        .font(.caption)
+                                        .foregroundColor(.white.opacity(0.8))
+                                        .multilineTextAlignment(.leading)
+                                        .lineLimit(nil)
+                                        .contentTransition(.opacity)
+                                }
+                                .transition(
+                                    .asymmetric(
+                                        insertion: .move(edge: .top).combined(with: .opacity),
+                                        removal: .opacity
+                                    )
+                                )
                             }
                         }
                         .padding(10)
-                        .fixedSize(horizontal: true, vertical: false)
+                        .fixedSize(horizontal: false, vertical: true)
                         .background {
                             RoundedRectangle(cornerRadius: 12)
                                 .fill(.blue)
                         }
                         .frame(maxWidth: .infinity, alignment: .trailing)
+                        .animation(.spring(response: 0.28, dampingFraction: 0.85), value: isMeaningJpShown)
                     }
                     .padding(.horizontal, 10)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
