@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct PhraseDetailView: View {
     @EnvironmentObject var phraseStore: PhraseStore
@@ -24,19 +25,31 @@ struct PhraseDetailView: View {
                 phrase: phrase,
                 onClose: { dismiss() },
                 onAddMyPhrase: {
-                        print("onAddMyPhrase tapped")            // 追加
-                        Task {
-                            await phraseStore.addMyPhrase(phrase)
-                            if let msg = phraseStore.errorMessage {
-                                print("Add failed:", msg)         // 追加
+                    let generator = UINotificationFeedbackGenerator()
+                    generator.prepare()
+                    Task {
+                        await phraseStore.addMyPhrase(phrase)
+                        await MainActor.run {
+                            if phraseStore.errorMessage == nil {
+                                generator.notificationOccurred(.success)
                             } else {
-                                print("Add succeeded")
+                                generator.notificationOccurred(.error)
                             }
                         }
+                    }
                 },
                 onRemoveMyPhrase: {
+                    let generator = UINotificationFeedbackGenerator()
+                    generator.prepare()
                     Task {
                         await phraseStore.removeMyPhrase(phrase)
+                        await MainActor.run {
+                            if phraseStore.errorMessage == nil {
+                                generator.notificationOccurred(.success)
+                            } else {
+                                generator.notificationOccurred(.error)
+                            }
+                        }
                     }
                 },
                 onStartOutput: { onStartOutput(phrase, source) },
@@ -46,6 +59,14 @@ struct PhraseDetailView: View {
             .padding(.bottom, 10)
             
             Divider()
+            
+            if let message = phraseStore.errorMessage {
+                Text(message)
+                    .font(.caption)
+                    .foregroundStyle(.red)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, 4)
+            }
             
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
@@ -92,3 +113,4 @@ struct PhraseDetailView: View {
     )
     .environmentObject(PhraseStore())
 }
+
