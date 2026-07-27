@@ -15,6 +15,7 @@ struct PhraseDetailHeaderView: View {
     let onStartOutput: () -> Void
     let isAdded: Bool
     let source: PhraseDetailSource
+    @State private var isSettingsPresented: Bool = false
     
     var body: some View {
         HStack() {
@@ -53,21 +54,21 @@ struct PhraseDetailHeaderView: View {
                         .foregroundColor(isAdded ? .red : .blue)
                 }
             }
-                .frame(maxWidth: .infinity)
-                .frame(height: 34)
-                .background(isAdded ? Color.red.opacity(0.08) : .white)
-                .clipShape(RoundedRectangle(cornerRadius: 20))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 20)
-                        .stroke(isAdded ? Color.red : Color.blue, lineWidth: 1)
-                )
+            .frame(maxWidth: .infinity)
+            .frame(height: 34)
+            .background(isAdded ? Color.red.opacity(0.08) : .white)
+            .clipShape(RoundedRectangle(cornerRadius: 20))
+            .overlay(
+                RoundedRectangle(cornerRadius: 20)
+                    .stroke(isAdded ? Color.red : Color.blue, lineWidth: 1)
+            )
             
             
             if source != .output {
                 Button {
-                    onStartOutput()
+                    isSettingsPresented = true
                 } label: {
-                    Text("今すぐアウトプット")
+                    Label("今すぐアウトプット", systemImage: "bolt.fill")
                         .fontWeight(.bold)
                         .foregroundColor(.white)
                 }
@@ -77,6 +78,16 @@ struct PhraseDetailHeaderView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 20))
                 .overlay(RoundedRectangle(cornerRadius: 20).strokeBorder(Color.clear, lineWidth: 1))
             }
+        }
+        .sheet(isPresented: $isSettingsPresented) {
+            InstantCompositionSettingsScreen(
+                questionCount: 5,
+                selectedDifficulty: Difficulty.beginner,
+                selectedScene: SceneType.daily,
+                selectedFormalLevel: FormalLevel.casual,
+                isPlayScreenShown: false,
+                phrase: phrase
+            )
         }
     }
 }
@@ -92,3 +103,4 @@ struct PhraseDetailHeaderView: View {
         source: .myPhrase
     )
 }
+
