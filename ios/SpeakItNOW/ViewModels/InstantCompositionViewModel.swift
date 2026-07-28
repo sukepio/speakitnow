@@ -151,7 +151,7 @@ final class InstantCompositionViewModel: ObservableObject {
                         modelAnswerEn: question.modelAnswerEn
                     )
                 }
-                await persistGeneratedSession()
+                currentState = .playing
             } catch is CancellationError {
                 return
             } catch {
@@ -210,35 +210,21 @@ final class InstantCompositionViewModel: ObservableObject {
         }
     }
 
-    private func persistGeneratedSession() async {
-        guard let phrase, let settings else { return }
-
-        do {
-            compositionSessionId = try await historyRepository.createSession(
-                phrase: phrase,
-                settings: settings,
-                questions: logs
-            )
-            failedOperation = nil
-            errorMessage = nil
-            currentState = .playing
-        } catch {
-            guard !Task.isCancelled else { return }
-            failedOperation = .sessionPersistence
-            errorMessage = error.localizedDescription
-            currentState = .failed
-        }
-    }
-
     private func persistAnswer(at index: Int) async {
-        guard logs.indices.contains(index) else { return }
-        guard let compositionSessionId else {
-            pendingAnswerIndex = nil
-            currentState = .showingResult
-            return
-        }
+        guard logs.indices.contains(index),
+              let phrase,
+              let settings else { return }
 
         do {
+            if compositionSessionId == nil {
+                compositionSessionId = try await historyRepository.createSession(
+                    phrase: phrase,
+                    settings: settings,
+                    questions: logs
+                )
+            }
+
+            guard let compositionSessionId else { return }
             try await historyRepository.saveAnswer(
                 compositionSessionId: compositionSessionId,
                 log: logs[index]
@@ -249,19 +235,23 @@ final class InstantCompositionViewModel: ObservableObject {
             currentState = .showingResult
         } catch {
             guard !Task.isCancelled else { return }
-            failedOperation = .answerPersistence
+            failedOperation = compositionSessionId == nil
+                ? .sessionPersistence
+                : .answerPersistence
             errorMessage = error.localizedDescription
             currentState = .failed
         }
     }
 
     private func retrySessionPersistence() {
+        guard let pendingAnswerIndex else { return }
+
         requestTask?.cancel()
-        currentState = .loading
+        currentState = .evaluating
         errorMessage = nil
 
         requestTask = Task { [weak self] in
-            await self?.persistGeneratedSession()
+            await self?.persistAnswer(at: pendingAnswerIndex)
         }
     }
 

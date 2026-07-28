@@ -12,9 +12,8 @@ struct SectionTitle: View {
     
     var body: some View {
         Text(title)
-            .font(.subheadline)
-            .fontWeight(.semibold)
-            .opacity(0.7)
+            .font(.subheadline.weight(.semibold))
+            .foregroundStyle(.white.opacity(0.65))
     }
 }
 

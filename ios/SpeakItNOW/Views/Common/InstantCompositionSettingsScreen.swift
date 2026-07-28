@@ -105,25 +105,27 @@ struct InstantCompositionSettingsScreen: View {
                     .pickerStyle(.segmented)
                 }
                 
-                Section {
-                    Button {
-                        isPlayScreenShown = true
-                    } label: {
-                        Text("この設定で始める")
-                            .font(.headline)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 12)
-                    }
-                    .buttonStyle(.plain)
-                    .tint(.white)
-                    .foregroundStyle(.white)
-                    .listRowInsets(EdgeInsets())
-                    .frame(maxWidth: .infinity)
-                    .background(Color.blue)
-                    .cornerRadius(12)
-                    .accessibilityLabel("瞬間英作文を開始")
-                    .accessibilityHint("選択した設定でプレイ画面を開きます")
+            }
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                Button {
+                    isPlayScreenShown = true
+                } label: {
+                    Text("この設定で始める")
+                        .font(.headline)
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 15)
+                        .background(Color.blue)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .contentShape(RoundedRectangle(cornerRadius: 12))
                 }
+                .buttonStyle(.plain)
+                .padding(.horizontal, 20)
+                .padding(.top, 12)
+                .padding(.bottom, 8)
+                .background(.bar)
+                .accessibilityLabel("瞬間英作文を開始")
+                .accessibilityHint("選択した設定でプレイ画面を開きます")
             }
             .navigationTitle("瞬間英作文の設定")
             .navigationBarTitleDisplayMode(.inline)

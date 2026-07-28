@@ -20,89 +20,88 @@ struct PhraseDetailView: View {
     var isAdded: Bool {phraseStore.isAdded(phrase)}
     
     var body: some View {
-        VStack(spacing: 0) {
-            // ヘッダー
-            PhraseDetailHeaderView(
-                phrase: phrase,
-                onClose: { dismiss() },
-                onAddMyPhrase: {
-                    let generator = UINotificationFeedbackGenerator()
-                    generator.prepare()
-                    Task {
-                        await phraseStore.addMyPhrase(phrase)
-                        await MainActor.run {
-                            if phraseStore.errorMessage == nil {
-                                generator.notificationOccurred(.success)
-                            } else {
-                                generator.notificationOccurred(.error)
+        ZStack {
+            Color.black.opacity(0.9)
+                .ignoresSafeArea()
+
+            VStack(spacing: 0) {
+                PhraseDetailHeaderView(
+                    phrase: phrase,
+                    onClose: { dismiss() },
+                    onAddMyPhrase: {
+                        let generator = UINotificationFeedbackGenerator()
+                        generator.prepare()
+                        Task {
+                            await phraseStore.addMyPhrase(phrase)
+                            await MainActor.run {
+                                if phraseStore.errorMessage == nil {
+                                    generator.notificationOccurred(.success)
+                                } else {
+                                    generator.notificationOccurred(.error)
+                                }
                             }
                         }
-                    }
-                },
-                onRemoveMyPhrase: {
-                    let generator = UINotificationFeedbackGenerator()
-                    generator.prepare()
-                    Task {
-                        await phraseStore.removeMyPhrase(phrase)
-                        await MainActor.run {
-                            if phraseStore.errorMessage == nil {
-                                generator.notificationOccurred(.success)
-                            } else {
-                                generator.notificationOccurred(.error)
+                    },
+                    onRemoveMyPhrase: {
+                        let generator = UINotificationFeedbackGenerator()
+                        generator.prepare()
+                        Task {
+                            await phraseStore.removeMyPhrase(phrase)
+                            await MainActor.run {
+                                if phraseStore.errorMessage == nil {
+                                    generator.notificationOccurred(.success)
+                                } else {
+                                    generator.notificationOccurred(.error)
+                                }
                             }
                         }
-                    }
-                },
-                onStartOutput: { onStartOutput(phrase, source) },
-                onSpeak: { text in speaker.speak(text) },
-                isAdded: isAdded,
-                source: source
-            )
-            .padding(.bottom, 10)
-            
-            Divider()
-            
-            if let message = phraseStore.errorMessage {
-                Text(message)
-                    .font(.caption)
-                    .foregroundStyle(.red)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical, 4)
-            }
-            
-            ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
-                    // 意味
-                    MeaningSection(detailedMeaning: phrase.phraseDetails.detailedMeaning)
-                    // 使用される文脈
-                    ContextSection(contexts: phrase.phraseDetails.contexts)
-                    // コロケーション
-                    CollocationSection(
-                        collocations: phrase.phraseDetails.collocations,
-                        onSpeak: { text in speaker.speak(text) }
-                    )
-                    // 語源
-                    OriginSection(origin: phrase.phraseDetails.origin)
-                    // 使い方のヒント
-                    TipsSection(tips: phrase.phraseDetails.tips)
-                    // 類似表現
-                    if !phrase.phraseDetails.similar.isEmpty {
-                        SimilarSection(
-                            similar: phrase.phraseDetails.similar,
+                    },
+                    onStartOutput: { onStartOutput(phrase, source) },
+                    onSpeak: { text in speaker.speak(text) },
+                    isAdded: isAdded,
+                    source: source
+                )
+                .padding(.bottom, 16)
+
+                Divider()
+                    .overlay(Color.white.opacity(0.12))
+
+                if let message = phraseStore.errorMessage {
+                    Text(message)
+                        .font(.caption)
+                        .foregroundStyle(.red)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.top, 10)
+                }
+
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 16) {
+                        MeaningSection(detailedMeaning: phrase.phraseDetails.detailedMeaning)
+                        ContextSection(contexts: phrase.phraseDetails.contexts)
+                        CollocationSection(
+                            collocations: phrase.phraseDetails.collocations,
                             onSpeak: { text in speaker.speak(text) }
                         )
+                        OriginSection(origin: phrase.phraseDetails.origin)
+                        TipsSection(tips: phrase.phraseDetails.tips)
+                        if !phrase.phraseDetails.similar.isEmpty {
+                            SimilarSection(
+                                similar: phrase.phraseDetails.similar,
+                                onSpeak: { text in speaker.speak(text) }
+                            )
+                        }
                     }
-                    
+                    .padding(.vertical, 16)
                 }
-                .padding(.top, 12)
+                .scrollIndicators(.hidden)
             }
-            
+            .padding(.horizontal, 20)
         }
-        .padding(20)
+        .preferredColorScheme(.dark)
+        .toolbar(.hidden, for: .navigationBar)
         .onDisappear {
             speaker.stop()
         }
-                
     }
     
 }

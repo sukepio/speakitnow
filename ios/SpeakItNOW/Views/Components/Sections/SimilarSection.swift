@@ -14,7 +14,7 @@ struct SimilarSection: View {
     var body: some View {
         SectionCard {
             VStack(alignment: .leading, spacing: 8) {
-                SectionTitle(title: "類似語")
+                SectionTitle(title: "類似表現")
                 ForEach(similar) { similar in
                     SimilarRowView(
                         phrase: similar.phrase,

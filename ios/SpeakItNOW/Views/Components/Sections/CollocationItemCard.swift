@@ -14,12 +14,13 @@ struct CollocationItemCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Image(systemName: "play.fill")
-                    .foregroundStyle(.black)
+                Image(systemName: "link")
+                    .font(.caption.weight(.bold))
+                    .foregroundStyle(.blue)
                 
                 Text(collocation.text)
-                    .foregroundStyle(.black)
-                    .fontWeight(.bold)
+                    .foregroundStyle(.white)
+                    .font(.headline)
 
                 Spacer()
 
@@ -30,11 +31,11 @@ struct CollocationItemCard: View {
                 )
             }
             Text(collocation.meaningJa)
-                .foregroundStyle(.black)
-                .fontWeight(.medium)
-                .font(.system(size: 14))
+                .foregroundStyle(.white.opacity(0.65))
+                .font(.subheadline)
             
             Divider()
+                .overlay(Color.white.opacity(0.1))
             
             ConversationTurnView(speaker: .a,
                                  en: collocation.conversationPair.first.en,
@@ -46,9 +47,14 @@ struct CollocationItemCard: View {
                                  ja: collocation.conversationPair.second.ja,
                                  onSpeak: onSpeak)
         }
-        .padding(10)
+        .padding(14)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(RoundedRectangle(cornerRadius: 10).fill(.white))
+        .background(Color.white.opacity(0.07))
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .overlay {
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color.white.opacity(0.06), lineWidth: 1)
+        }
     }
 }
 

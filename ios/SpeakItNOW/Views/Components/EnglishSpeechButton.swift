@@ -17,9 +17,10 @@ struct EnglishSpeechButton: View {
             Image(systemName: "speaker.wave.2.fill")
                 .font(.subheadline)
                 .foregroundStyle(.blue)
-                .padding(7)
+                .frame(width: 44, height: 44)
                 .background(Color.blue.opacity(0.1))
                 .clipShape(Circle())
+                .contentShape(Circle())
         }
         .buttonStyle(.plain)
         .accessibilityLabel(accessibilityLabel)

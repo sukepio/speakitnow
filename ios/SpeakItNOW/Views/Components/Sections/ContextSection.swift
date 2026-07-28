@@ -12,7 +12,7 @@ struct ContextSection: View {
     
     var body: some View {
         SectionCard {
-            SectionTitle(title: "文脈")
+            SectionTitle(title: "使われる文脈")
             ForEach(contexts, id: \.self) { context in
                 BulletRow(text: context)
             }

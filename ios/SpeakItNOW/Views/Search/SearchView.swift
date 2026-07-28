@@ -13,6 +13,7 @@ struct SearchView: View {
 
     @State private var selectedPhrase: Phrase? = nil
     @State private var path: [DetailRoute] = []
+    @FocusState private var isSearchFieldFocused: Bool
         
     var body: some View {
         NavigationStack {
@@ -65,6 +66,8 @@ struct SearchView: View {
                     .foregroundStyle(.white.opacity(0.45))
             )
             .foregroundStyle(.white)
+            .focused($isSearchFieldFocused)
+            .frame(minHeight: 44)
             .textInputAutocapitalization(.never)
             .disableAutocorrection(true)
             .submitLabel(.search)
@@ -79,16 +82,23 @@ struct SearchView: View {
                 } label: {
                     Image(systemName: "xmark.circle.fill")
                         .foregroundStyle(.white.opacity(0.55))
+                        .frame(width: 44, height: 44)
                         .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel("検索内容を消去")
             }
         }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 12)
+        .padding(.leading, 14)
+        .padding(.trailing, searchViewModel.canSearch ? 0 : 14)
         .background(Color.white.opacity(0.1))
         .clipShape(RoundedRectangle(cornerRadius: 16))
+        .contentShape(RoundedRectangle(cornerRadius: 16))
+        .simultaneousGesture(
+            TapGesture().onEnded {
+                isSearchFieldFocused = true
+            }
+        )
         .padding(.horizontal, 20)
     }
     

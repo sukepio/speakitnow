@@ -14,28 +14,34 @@ struct ConversationTurnView: View {
     let onSpeak: (String) -> Void
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 2) {
-            HStack(spacing: 0) {
-                Text("(\(speaker.label)):")
-                    .frame(width: 40, alignment: .leading)
-                    .foregroundStyle(.black)
+        HStack(alignment: .top, spacing: 10) {
+            Text(speaker.label)
+                .font(.caption.bold())
+                .foregroundStyle(.blue)
+                .frame(width: 28, height: 28)
+                .background(Color.blue.opacity(0.14))
+                .clipShape(Circle())
+
+            VStack(alignment: .leading, spacing: 3) {
                 Text(en)
                     .font(.subheadline)
-                    .foregroundStyle(.black)
+                    .foregroundStyle(.white)
                     .fontWeight(.semibold)
+                    .fixedSize(horizontal: false, vertical: true)
 
-                Spacer(minLength: 8)
-
-                EnglishSpeechButton(
-                    text: en,
-                    accessibilityLabel: "話者\(speaker.label)の英文を再生",
-                    onSpeak: onSpeak
-                )
+                Text(ja)
+                    .font(.caption)
+                    .foregroundStyle(.white.opacity(0.6))
+                    .fixedSize(horizontal: false, vertical: true)
             }
-            Text(ja)
-                .font(.caption)
-                .foregroundStyle(.black)
-                .padding(.leading, 40)
+
+            Spacer(minLength: 4)
+
+            EnglishSpeechButton(
+                text: en,
+                accessibilityLabel: "話者\(speaker.label)の英文を再生",
+                onSpeak: onSpeak
+            )
         }
     }
 }

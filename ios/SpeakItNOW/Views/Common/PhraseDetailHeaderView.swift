@@ -19,75 +19,91 @@ struct PhraseDetailHeaderView: View {
     @State private var isSettingsPresented: Bool = false
     
     var body: some View {
-        HStack() {
-            Spacer()
-            Button {
-                onClose()
-            } label: {
-                Image(systemName: "xmark")
-                    .padding(10)
-                    .contentShape(Rectangle())
-            }
-               .buttonStyle(.plain)
-        }
-        
-        VStack(alignment: .leading) {
-            HStack(alignment: .center) {
-                Text(phrase.text)
-                    .font(.title)
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                Text("英語表現")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.white.opacity(0.55))
 
                 Spacer()
 
-                EnglishSpeechButton(
-                    text: phrase.text,
-                    accessibilityLabel: "\(phrase.text)を再生",
-                    onSpeak: onSpeak
-                )
-            }
-            Text(phrase.meaningJa)
-                .font(.caption)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.bottom, 8)
-        
-        HStack() {
-            Button {
-                if isAdded {
-                    onRemoveMyPhrase()
-                } else {
-                    onAddMyPhrase()
-                }
-            } label: {
-                HStack {
-                    Text(isAdded ? "Myフレーズ帳から削除" : "Myフレーズ帳に保存")
-                        .font(.subheadline)
-                        .fontWeight(.bold)
-                        .foregroundColor(isAdded ? .red : .blue)
-                }
-            }
-            .frame(maxWidth: .infinity)
-            .frame(height: 34)
-            .background(isAdded ? Color.red.opacity(0.08) : .white)
-            .clipShape(RoundedRectangle(cornerRadius: 20))
-            .overlay(
-                RoundedRectangle(cornerRadius: 20)
-                    .stroke(isAdded ? Color.red : Color.blue, lineWidth: 1)
-            )
-            
-            
-            if source != .output {
                 Button {
-                    isSettingsPresented = true
+                    onClose()
                 } label: {
-                    Label("今すぐアウトプット", systemImage: "bolt.fill")
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
+                    Image(systemName: "xmark")
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(.white)
+                        .frame(width: 44, height: 44)
+                        .background(Color.white.opacity(0.1))
+                        .clipShape(Circle())
+                        .contentShape(Circle())
                 }
-                .frame(maxWidth: .infinity)
-                .frame(height: 34)
-                .background(Color.blue)
-                .clipShape(RoundedRectangle(cornerRadius: 20))
-                .overlay(RoundedRectangle(cornerRadius: 20).strokeBorder(Color.clear, lineWidth: 1))
+                .buttonStyle(.plain)
+                .accessibilityLabel("閉じる")
+            }
+
+            VStack(alignment: .leading, spacing: 8) {
+                HStack(alignment: .top, spacing: 12) {
+                    Text(phrase.text)
+                        .font(.title.bold())
+                        .foregroundStyle(.white)
+                        .fixedSize(horizontal: false, vertical: true)
+
+                    Spacer(minLength: 4)
+
+                    EnglishSpeechButton(
+                        text: phrase.text,
+                        accessibilityLabel: "\(phrase.text)を再生",
+                        onSpeak: onSpeak
+                    )
+                }
+
+                Text(phrase.meaningJa)
+                    .font(.subheadline)
+                    .foregroundStyle(.white.opacity(0.7))
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            HStack(spacing: 10) {
+                Button {
+                    if isAdded {
+                        onRemoveMyPhrase()
+                    } else {
+                        onAddMyPhrase()
+                    }
+                } label: {
+                    Label(
+                        isAdded ? "保存を解除" : "フレーズ帳に保存",
+                        systemImage: isAdded ? "bookmark.slash.fill" : "bookmark.fill"
+                    )
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(isAdded ? .red : .blue)
+                    .frame(maxWidth: .infinity, minHeight: 46)
+                    .background((isAdded ? Color.red : Color.blue).opacity(0.12))
+                    .clipShape(RoundedRectangle(cornerRadius: 14))
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 14)
+                            .stroke((isAdded ? Color.red : Color.blue).opacity(0.75), lineWidth: 1)
+                    }
+                    .contentShape(RoundedRectangle(cornerRadius: 14))
+                }
+                .buttonStyle(.plain)
+
+                if source != .output {
+                    Button {
+                        isSettingsPresented = true
+                    } label: {
+                        Label("アウトプット", systemImage: "bolt.fill")
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity, minHeight: 46)
+                            .background(Color.blue)
+                            .clipShape(RoundedRectangle(cornerRadius: 14))
+                            .contentShape(RoundedRectangle(cornerRadius: 14))
+                    }
+                    .buttonStyle(.plain)
+                }
             }
         }
         .sheet(isPresented: $isSettingsPresented) {

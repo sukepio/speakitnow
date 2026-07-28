@@ -13,8 +13,10 @@ struct BulletRow: View {
         HStack(spacing: 8) {
             Circle()
                 .frame(width: 5, height: 5)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.blue)
             Text(text)
+                .foregroundStyle(.white.opacity(0.9))
+                .fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }

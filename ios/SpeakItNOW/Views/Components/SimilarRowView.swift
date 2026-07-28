@@ -17,9 +17,10 @@ struct SimilarRowView: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(phrase)
                     .fontWeight(.semibold)
+                    .foregroundStyle(.white)
                 Text(meaningJa)
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.white.opacity(0.6))
             }
 
             Spacer()
@@ -31,6 +32,7 @@ struct SimilarRowView: View {
             )
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.vertical, 3)
         
     }
 }

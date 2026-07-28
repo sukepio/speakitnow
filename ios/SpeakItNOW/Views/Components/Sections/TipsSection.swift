@@ -11,7 +11,7 @@ struct TipsSection: View {
     let tips: String
     var body: some View {
         SectionCard {
-            SectionTitle(title: "ヒント")
+            SectionTitle(title: "使い方のヒント")
             Text(tips)
                 .font(.body)
         }
