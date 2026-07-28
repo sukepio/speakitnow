@@ -20,13 +20,13 @@ struct InstantCompositionSettingsView: View {
         VStack(spacing: 0) {
             Form {
                 Picker("回数", selection: $questionCount) {
-                    ForEach(1...10, id: \.self) { i in
-                        Text("\(i)回")
+                    ForEach(1...20, id: \.self) { i in
+                        Text("\(i)問")
                     }
                 }
                 Picker("難易度", selection: $selectedDifficulty) {
                     ForEach(Difficulty.allCases, id: \.self) { difficulty in
-                        Text(difficulty.rawValue).tag(difficulty)
+                        Text(difficulty.displayName).tag(difficulty)
                     }
                 }
                 Picker("シーン", selection: $selectedScene) {

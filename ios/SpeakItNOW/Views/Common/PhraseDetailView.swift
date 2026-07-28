@@ -11,6 +11,7 @@ import UIKit
 struct PhraseDetailView: View {
     @EnvironmentObject var phraseStore: PhraseStore
     @Environment(\.dismiss) var dismiss
+    @StateObject private var speaker = ConversationSpeaker()
     
     let phrase: Phrase
     let source: PhraseDetailSource
@@ -53,6 +54,7 @@ struct PhraseDetailView: View {
                     }
                 },
                 onStartOutput: { onStartOutput(phrase, source) },
+                onSpeak: { text in speaker.speak(text) },
                 isAdded: isAdded,
                 source: source
             )
@@ -75,14 +77,20 @@ struct PhraseDetailView: View {
                     // 使用される文脈
                     ContextSection(contexts: phrase.phraseDetails.contexts)
                     // コロケーション
-                    CollocationSection(collocations: phrase.phraseDetails.collocations)
+                    CollocationSection(
+                        collocations: phrase.phraseDetails.collocations,
+                        onSpeak: { text in speaker.speak(text) }
+                    )
                     // 語源
                     OriginSection(origin: phrase.phraseDetails.origin)
                     // 使い方のヒント
                     TipsSection(tips: phrase.phraseDetails.tips)
                     // 類似表現
                     if !phrase.phraseDetails.similar.isEmpty {
-                        SimilarSection(similar: phrase.phraseDetails.similar)
+                        SimilarSection(
+                            similar: phrase.phraseDetails.similar,
+                            onSpeak: { text in speaker.speak(text) }
+                        )
                     }
                     
                 }
@@ -91,6 +99,9 @@ struct PhraseDetailView: View {
             
         }
         .padding(20)
+        .onDisappear {
+            speaker.stop()
+        }
                 
     }
     
@@ -113,4 +124,3 @@ struct PhraseDetailView: View {
     )
     .environmentObject(PhraseStore())
 }
-

@@ -13,6 +13,7 @@ struct PhraseDetailHeaderView: View {
     let onAddMyPhrase: () -> Void
     let onRemoveMyPhrase: () -> Void
     let onStartOutput: () -> Void
+    let onSpeak: (String) -> Void
     let isAdded: Bool
     let source: PhraseDetailSource
     @State private var isSettingsPresented: Bool = false
@@ -31,8 +32,18 @@ struct PhraseDetailHeaderView: View {
         }
         
         VStack(alignment: .leading) {
-            Text(phrase.text)
-                .font(.title)
+            HStack(alignment: .center) {
+                Text(phrase.text)
+                    .font(.title)
+
+                Spacer()
+
+                EnglishSpeechButton(
+                    text: phrase.text,
+                    accessibilityLabel: "\(phrase.text)を再生",
+                    onSpeak: onSpeak
+                )
+            }
             Text(phrase.meaningJa)
                 .font(.caption)
         }
@@ -99,8 +110,8 @@ struct PhraseDetailHeaderView: View {
         onAddMyPhrase: { print("Add to my phrase") },
         onRemoveMyPhrase: { print("Remove from my phrase") },
         onStartOutput: { print("Start output") },
+        onSpeak: { _ in },
         isAdded: false,
         source: .myPhrase
     )
 }
-

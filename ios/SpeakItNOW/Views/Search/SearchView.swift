@@ -15,57 +15,81 @@ struct SearchView: View {
     @State private var path: [DetailRoute] = []
         
     var body: some View {
-        ZStack {
-            Color(Color.black.opacity(0.9))
-                .ignoresSafeArea()
-            
-            VStack() {
-                Text("検索")
-                    .font(.largeTitle)
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+        NavigationStack {
+            ZStack {
+                Color.black.opacity(0.9)
+                    .ignoresSafeArea()
 
-                
-                HStack {
-                    Image(systemName: "magnifyingglass")
-                        .foregroundStyle(.gray)
-                    TextField("", text: $searchViewModel.searchText, prompt: Text("Enter a word, phrase, idiom"))
-                        .foregroundStyle(.black)
-                        .textInputAutocapitalization(.never)
-                        .disableAutocorrection(true)
-                        .submitLabel(.search)
-                        .onSubmit {
-                            performSearch()
-                        }
-                    
-                    if searchViewModel.canSearch {
-                        Button {
-                            searchViewModel.resetSearch()
-                            selectedPhrase = nil
-                        } label: {
-                            Image(systemName: "xmark")
-                                .foregroundStyle(.gray)
-                                .padding(2)
-                                .contentShape(Rectangle())
-                        }
-                            .buttonStyle(.plain)
-                    }
-                    
+                VStack(spacing: 16) {
+                    Text("検索")
+                        .font(.largeTitle.bold())
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.horizontal, 20)
 
+                    searchBar
+
+                    content
                 }
-                .padding(.horizontal, 12)
-                .padding(.vertical, 10)
-                .background(.white)
-                .clipShape(RoundedRectangle(cornerRadius: 14))
-                .padding(.top, 32)
-                
-                content
-                    .padding(.top, 24)
-                
             }
-            .frame(maxHeight: .infinity, alignment: .top)
-            .padding(.horizontal, 20)
+            .toolbar(.hidden, for: .navigationBar)
         }
+        .sheet(item: $selectedPhrase) { phrase in
+            NavigationStack(path: $path) {
+                PhraseDetailView(
+                    phrase: phrase,
+                    source: .search,
+                    onStartOutput: { phrase, source in
+                        path.append(.output(pharase: phrase, source: source))
+                    }
+                )
+                .navigationDestination(for: DetailRoute.self) { route in
+                    switch route {
+                    case.output(let phrase, let source):
+                        OutputView(phrase: phrase, source: source)
+                    }
+                }
+            }
+        }
+    }
+
+    private var searchBar: some View {
+        HStack(spacing: 10) {
+            Image(systemName: "magnifyingglass")
+                .foregroundStyle(.white.opacity(0.55))
+
+            TextField(
+                "",
+                text: $searchViewModel.searchText,
+                prompt: Text("英単語・フレーズ・イディオムを検索")
+                    .foregroundStyle(.white.opacity(0.45))
+            )
+            .foregroundStyle(.white)
+            .textInputAutocapitalization(.never)
+            .disableAutocorrection(true)
+            .submitLabel(.search)
+            .onSubmit {
+                performSearch()
+            }
+
+            if searchViewModel.canSearch {
+                Button {
+                    searchViewModel.resetSearch()
+                    selectedPhrase = nil
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundStyle(.white.opacity(0.55))
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("検索内容を消去")
+            }
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 12)
+        .background(Color.white.opacity(0.1))
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .padding(.horizontal, 20)
     }
     
     private func performSearch() {
@@ -77,55 +101,63 @@ struct SearchView: View {
     @ViewBuilder
     private var content: some View {
         if searchViewModel.isLoading {
-            ProgressView()
+            Spacer()
+            ProgressView("検索中...")
                 .tint(.white)
+                .foregroundStyle(.white)
+            Spacer()
         } else if let message = searchViewModel.errorMessage {
-            Text(message)
-                .foregroundStyle(.red)
+            statusView(
+                icon: "exclamationmark.triangle",
+                title: "検索できませんでした",
+                message: message
+            )
         } else if searchViewModel.isInitialState {
-            Text("アウトプットしたい語句を検索しましょう")
-                .foregroundStyle(.white)
+            statusView(
+                icon: "magnifyingglass",
+                title: "英語表現を検索しましょう",
+                message: "アウトプットしたい単語やフレーズを入力してください。"
+            )
         } else if searchViewModel.hasNoResults {
-            Text("検索に該当する語句が見つかりませんでした")
-                .foregroundStyle(.white)
+            statusView(
+                icon: "magnifyingglass",
+                title: "検索結果がありません",
+                message: "別の単語やフレーズでもう一度お試しください。"
+            )
         } else {
             List {
                 ForEach(searchViewModel.results) { searchResult in
                     PhraseRow(item: searchResult)
-                      .contentShape(Rectangle())
-                      .onTapGesture {
-                          selectedPhrase = searchResult
-                      }
-                      .listRowSeparator(.hidden)
-                      .listRowBackground(Color.clear)
-                      .listRowInsets(EdgeInsets(top: 6, leading: 0, bottom: 6, trailing: 0))
-              }
-          }
-            .sheet(item: $selectedPhrase) { phrase in
-                NavigationStack(path: $path) {
-                    PhraseDetailView(
-                        phrase: phrase,
-                        source: .search,
-                        onStartOutput: { phrase, source in
-                            path.append(.output(pharase: phrase, source: .search))
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            selectedPhrase = searchResult
                         }
-                    )
-                    .navigationDestination(for: DetailRoute.self) { route in
-                        switch route {
-                        case.output(let phrase, let source):
-                            OutputView(
-                                phrase: phrase,
-                                source: source
-                            )
-                        }
-                    }
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
+                        .listRowInsets(EdgeInsets(top: 6, leading: 20, bottom: 6, trailing: 20))
                 }
             }
             .listStyle(.plain)
-            .frame(maxWidth: .infinity)
             .scrollContentBackground(.hidden)
-            .scrollIndicators(.hidden)
         }
+    }
+
+    private func statusView(icon: String, title: String, message: String) -> some View {
+        VStack(spacing: 16) {
+            Spacer()
+            Image(systemName: icon)
+                .font(.system(size: 52))
+                .foregroundStyle(.white.opacity(0.45))
+            Text(title)
+                .font(.title3.bold())
+                .foregroundStyle(.white)
+            Text(message)
+                .font(.subheadline)
+                .foregroundStyle(.white.opacity(0.65))
+                .multilineTextAlignment(.center)
+            Spacer()
+        }
+        .padding(.horizontal, 32)
     }
 }
 
@@ -133,8 +165,3 @@ struct SearchView: View {
     SearchView()
         .environmentObject(PhraseStore())
 }
-
-#Preview {
-    SearchView().environmentObject(PhraseStore())
-}
-

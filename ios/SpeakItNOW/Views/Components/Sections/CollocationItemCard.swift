@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CollocationItemCard: View {
     let collocation: Collocation
+    let onSpeak: (String) -> Void
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -19,6 +20,14 @@ struct CollocationItemCard: View {
                 Text(collocation.text)
                     .foregroundStyle(.black)
                     .fontWeight(.bold)
+
+                Spacer()
+
+                EnglishSpeechButton(
+                    text: collocation.text,
+                    accessibilityLabel: "\(collocation.text)を再生",
+                    onSpeak: onSpeak
+                )
             }
             Text(collocation.meaningJa)
                 .foregroundStyle(.black)
@@ -29,11 +38,13 @@ struct CollocationItemCard: View {
             
             ConversationTurnView(speaker: .a,
                                  en: collocation.conversationPair.first.en,
-                                 ja: collocation.conversationPair.first.ja)
+                                 ja: collocation.conversationPair.first.ja,
+                                 onSpeak: onSpeak)
             
             ConversationTurnView(speaker: .b,
                                  en: collocation.conversationPair.second.en,
-                                 ja: collocation.conversationPair.second.ja)
+                                 ja: collocation.conversationPair.second.ja,
+                                 onSpeak: onSpeak)
         }
         .padding(10)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -43,6 +54,7 @@ struct CollocationItemCard: View {
 
 #Preview {
     CollocationItemCard(
-        collocation: MockPhraseData.lowKey.phraseDetails.collocations[0]
+        collocation: MockPhraseData.lowKey.phraseDetails.collocations[0],
+        onSpeak: { _ in }
     )
 }

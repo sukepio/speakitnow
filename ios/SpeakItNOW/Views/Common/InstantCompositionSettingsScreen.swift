@@ -49,7 +49,7 @@ struct InstantCompositionSettingsScreen: View {
                 }
                 
                 Section("問題数") {
-                    Stepper(value: $questionCount, in: 3...20, step: 1) {
+                    Stepper(value: $questionCount, in: 1...20, step: 1) {
                         Text("\(questionCount) 問")
                     }
                 }
@@ -61,6 +61,31 @@ struct InstantCompositionSettingsScreen: View {
                         }
                     }
                     .pickerStyle(.segmented)
+
+                    VStack(alignment: .leading, spacing: 10) {
+                        ForEach(Difficulty.allCases, id: \.self) { level in
+                            VStack(alignment: .leading, spacing: 3) {
+                                HStack {
+                                    Text(level.rawValue)
+                                        .fontWeight(.semibold)
+                                    Text(level.cefrLevel)
+                                        .font(.caption.weight(.semibold))
+                                        .foregroundStyle(.blue)
+                                }
+                                Text(level.levelDescription)
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(10)
+                            .background(
+                                selectedDifficulty == level
+                                    ? Color.blue.opacity(0.1)
+                                    : Color.clear
+                            )
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                        }
+                    }
                 }
                 
                 Section("シーン") {

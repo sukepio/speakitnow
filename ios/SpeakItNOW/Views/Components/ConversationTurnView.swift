@@ -11,6 +11,7 @@ struct ConversationTurnView: View {
     let speaker: Speaker
     let en: String
     let ja: String
+    let onSpeak: (String) -> Void
     
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
@@ -22,6 +23,14 @@ struct ConversationTurnView: View {
                     .font(.subheadline)
                     .foregroundStyle(.black)
                     .fontWeight(.semibold)
+
+                Spacer(minLength: 8)
+
+                EnglishSpeechButton(
+                    text: en,
+                    accessibilityLabel: "話者\(speaker.label)の英文を再生",
+                    onSpeak: onSpeak
+                )
             }
             Text(ja)
                 .font(.caption)
@@ -32,5 +41,10 @@ struct ConversationTurnView: View {
 }
 
 #Preview {
-    ConversationTurnView(speaker: Speaker.a, en: "this is English", ja: "これは英語です")
+    ConversationTurnView(
+        speaker: Speaker.a,
+        en: "this is English",
+        ja: "これは英語です",
+        onSpeak: { _ in }
+    )
 }

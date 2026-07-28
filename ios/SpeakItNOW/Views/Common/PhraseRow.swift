@@ -11,27 +11,29 @@ struct PhraseRow<Item:PhraseDisplayable>: View {
     let item : Item
     
     var body: some View {
-        HStack {
-            VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(alignment: .top, spacing: 12) {
                 Text(item.displayText)
-                    .font(.system(size: 20))
-                    .foregroundStyle(.black)
-                    .fontWeight(.bold)
-                    .padding(.bottom, 2)
-                
-                Text(item.displayMeaningJa)
-                    .font(.system(size: 14))
-                    .foregroundStyle(.black)
-                    .fontWeight(.medium)
+                    .font(.headline)
+                    .foregroundStyle(.white)
+                    .lineLimit(2)
+
+                Spacer()
+
+                Image(systemName: "chevron.right")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.white.opacity(0.45))
             }
-            Spacer()
-            
+
+            Text(item.displayMeaningJa)
+                .font(.subheadline)
+                .foregroundStyle(.white.opacity(0.7))
+                .lineLimit(3)
         }
-        .padding(12)
+        .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.white)
-        .clipShape(RoundedRectangle(cornerRadius: 12))
-        
+        .background(Color.white.opacity(0.1))
+        .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 }
 

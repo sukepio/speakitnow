@@ -9,12 +9,16 @@ import SwiftUI
 
 struct CollocationSection: View {
     let collocations: [Collocation]
+    let onSpeak: (String) -> Void
     
     var body: some View {
         SectionCard {
             SectionTitle(title: "コロケーション")
             ForEach(collocations) { collocation in
-                CollocationItemCard(collocation: collocation)
+                CollocationItemCard(
+                    collocation: collocation,
+                    onSpeak: onSpeak
+                )
             }
             
         }
@@ -22,5 +26,8 @@ struct CollocationSection: View {
 }
 
 #Preview {
-    CollocationSection(collocations:  MockPhraseData.lowKey.phraseDetails.collocations)
+    CollocationSection(
+        collocations: MockPhraseData.lowKey.phraseDetails.collocations,
+        onSpeak: { _ in }
+    )
 }

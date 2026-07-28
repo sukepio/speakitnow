@@ -10,14 +10,25 @@ import SwiftUI
 struct SimilarRowView: View {
     let phrase: String
     let meaningJa: String
+    let onSpeak: (String) -> Void
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 2) {
-            Text(phrase)
-                .fontWeight(.semibold)
-            Text(meaningJa)
-                .font(.caption)
-                .foregroundStyle(.secondary)
+        HStack {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(phrase)
+                    .fontWeight(.semibold)
+                Text(meaningJa)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            Spacer()
+
+            EnglishSpeechButton(
+                text: phrase,
+                accessibilityLabel: "\(phrase)を再生",
+                onSpeak: onSpeak
+            )
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         
@@ -25,5 +36,9 @@ struct SimilarRowView: View {
 }
 
 #Preview {
-    SimilarRowView(phrase: "subtle", meaningJa: "控えめな")
+    SimilarRowView(
+        phrase: "subtle",
+        meaningJa: "控えめな",
+        onSpeak: { _ in }
+    )
 }

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SimilarSection: View {
     let similar: [SimilarPhrase]
+    let onSpeak: (String) -> Void
     
     var body: some View {
         SectionCard {
@@ -17,7 +18,8 @@ struct SimilarSection: View {
                 ForEach(similar) { similar in
                     SimilarRowView(
                         phrase: similar.phrase,
-                        meaningJa: similar.meaningJa
+                        meaningJa: similar.meaningJa,
+                        onSpeak: onSpeak
                     
                     )
                 }
@@ -27,5 +29,8 @@ struct SimilarSection: View {
 }
 
 #Preview {
-    SimilarSection(similar: MockPhraseData.lowKey.phraseDetails.similar)
+    SimilarSection(
+        similar: MockPhraseData.lowKey.phraseDetails.similar,
+        onSpeak: { _ in }
+    )
 }
