@@ -32,16 +32,22 @@ struct CardFrontView: View {
     }
     
     private var canRecord: Bool {
-        !isFocused && speechRecognizer.state != .processing
+        !isFocused && (speechRecognizer.state == .idle || speechRecognizer.state == .recording)
     }
     
     var body: some View {
         VStack(spacing: 16) {
-            Text(log.questionJa)
-                .font(.title3.bold())
-                .foregroundStyle(.black)
-                .multilineTextAlignment(.center)
-                .padding(.vertical, 60)
+            ScrollView(.vertical, showsIndicators: false) {
+                Text(log.questionJa)
+                    .font(.title3.bold())
+                    .foregroundStyle(.black)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 24)
+            }
+            .frame(maxWidth: .infinity, minHeight: 80, maxHeight: 220)
             
             TextField("", text: $userText, axis: .vertical)
                 .padding(16)
@@ -110,6 +116,9 @@ struct CardFrontView: View {
         .background(.white)
         .cornerRadius(24)
         .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 5)
+        .onDisappear {
+            speechRecognizer.cancelRecording()
+        }
     }
     
     private func mergeSpeechToText() {
@@ -140,5 +149,26 @@ struct CardFrontView: View {
     ZStack {
         Color.black.edgesIgnoringSafeArea(.all)
         CardFrontView(viewModel: mockVM, log: mockLog, flipDegree: .constant(360.0))
+    }
+}
+
+#Preview("表面 - 長い問題文") {
+    let mockVM: InstantCompositionViewModel = {
+        let vm = InstantCompositionViewModel()
+        vm.currentState = .playing
+        return vm
+    }()
+
+    let mockLog = CompositionLog(
+        id: "mock-long-question",
+        sessionId: "session1",
+        questionIndex: 1,
+        questionJa: "明日の午後に予定されている重要な会議へ参加する前に、資料をすべて確認して担当者へ連絡しておくことになっています。",
+        modelAnswerEn: "I am supposed to review all the materials and contact the person in charge before attending the important meeting scheduled for tomorrow afternoon."
+    )
+
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        CardFrontView(viewModel: mockVM, log: mockLog, flipDegree: .constant(0))
     }
 }

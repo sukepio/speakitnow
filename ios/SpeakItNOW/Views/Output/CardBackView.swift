@@ -11,6 +11,7 @@ struct CardBackView: View {
     @ObservedObject var viewModel: InstantCompositionViewModel
     var log: CompositionLog
     @Binding var flipDegree: Double
+    @StateObject private var speaker = ConversationSpeaker()
     
     var isPerfect: Bool {
         log.isPerfect == true
@@ -28,13 +29,27 @@ struct CardBackView: View {
                     Text(log.questionJa)
                         .font(.headline)
                         .foregroundStyle(.black)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .frame(maxWidth: .infinity)
                     
                     // ユーザー回答
                     VStack(alignment: .leading) {
-                        Text("あなたの回答")
-                            .font(.subheadline)
-                            .foregroundStyle(.white.opacity(0.8))
-                            .padding(.bottom, 12)
+                        HStack {
+                            Text("あなたの回答")
+                                .font(.subheadline)
+                                .foregroundStyle(.white.opacity(0.8))
+
+                            Spacer()
+
+                            if isPerfect, let userAnswer = log.userAnswerEn {
+                                speechButton(
+                                    text: userAnswer,
+                                    accessibilityLabel: "あなたの回答を再生"
+                                )
+                            }
+                        }
+                        .padding(.bottom, 12)
                         
                         Text(log.userAnswerEn ?? "")
                             .font(.headline)
@@ -54,10 +69,19 @@ struct CardBackView: View {
                     } else {
                         // 見本回答
                         VStack(alignment: .leading) {
-                            Text("回答例")
-                                .font(.subheadline)
-                                .foregroundStyle(.white.opacity(0.8))
-                                .padding(.bottom, 12)
+                            HStack {
+                                Text("回答例")
+                                    .font(.subheadline)
+                                    .foregroundStyle(.white.opacity(0.8))
+
+                                Spacer()
+
+                                speechButton(
+                                    text: log.modelAnswerEn,
+                                    accessibilityLabel: "回答例を再生"
+                                )
+                            }
+                            .padding(.bottom, 12)
                             
                             Text(log.modelAnswerEn)
                                 .font(.headline)
@@ -104,6 +128,8 @@ struct CardBackView: View {
             VStack {
                 // 「次へ」ボタン
                 Button {
+                    speaker.stop()
+
                     if isLastQuestion {
                         withAnimation(.easeInOut(duration: 0.6)) {
                             viewModel.nextQuestion()
@@ -136,6 +162,27 @@ struct CardBackView: View {
         .background(.white)
         .cornerRadius(24)
         .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 5)
+        .onDisappear {
+            speaker.stop()
+        }
+    }
+
+    private func speechButton(
+        text: String,
+        accessibilityLabel: String
+    ) -> some View {
+        Button {
+            speaker.speak(text)
+        } label: {
+            Image(systemName: "speaker.wave.2.fill")
+                .font(.title3)
+                .foregroundStyle(.blue)
+                .padding(8)
+                .background(.white.opacity(0.12))
+                .clipShape(Circle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(accessibilityLabel)
     }
 }
 

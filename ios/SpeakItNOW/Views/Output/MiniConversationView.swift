@@ -12,9 +12,15 @@ class ConversationSpeaker: ObservableObject {
     private let synthesizer = AVSpeechSynthesizer()
     
     func speak(_ text: String, language: String = "en-US") {
+        guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            return
+        }
+
         if synthesizer.isSpeaking {
             synthesizer.stopSpeaking(at: .immediate)
         }
+
+        configurePlaybackSession()
         
         let utterance = AVSpeechUtterance(string: text)
         utterance.voice = AVSpeechSynthesisVoice(language: language)
@@ -28,6 +34,8 @@ class ConversationSpeaker: ObservableObject {
         if synthesizer.isSpeaking {
             synthesizer.stopSpeaking(at: .immediate)
         }
+
+        configurePlaybackSession()
         
         let utterance1 = AVSpeechUtterance(string: first)
         utterance1.voice = AVSpeechSynthesisVoice(language: "en-US")
@@ -38,6 +46,31 @@ class ConversationSpeaker: ObservableObject {
         
         synthesizer.speak(utterance1)
         synthesizer.speak(utterance2)
+    }
+
+    func stop() {
+        if synthesizer.isSpeaking {
+            synthesizer.stopSpeaking(at: .immediate)
+        }
+
+        try? AVAudioSession.sharedInstance().setActive(
+            false,
+            options: .notifyOthersOnDeactivation
+        )
+    }
+
+    private func configurePlaybackSession() {
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            try audioSession.setCategory(
+                .playback,
+                mode: .spokenAudio,
+                options: .duckOthers
+            )
+            try audioSession.setActive(true)
+        } catch {
+            print("音声再生用のオーディオセッション設定に失敗しました。")
+        }
     }
 }
 
@@ -168,6 +201,9 @@ struct MiniConversationView: View {
             }
             .padding(.horizontal, 10)
             .frame(maxWidth: .infinity)
+        }
+        .onDisappear {
+            speaker.stop()
         }
     }
 }

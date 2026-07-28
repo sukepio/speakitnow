@@ -30,6 +30,10 @@ struct InstantCompositionPlayView: View {
                 case .loading:
                     ProgressView("問題生成中...")
                         .scaleEffect(1.2)
+                        .tint(.white)
+                        .foregroundStyle(.white)
+                case .failed:
+                    failureView
                 case .finished:
                     InstantCompositionResultView(
                         viewModel: viewModel,
@@ -99,6 +103,44 @@ struct InstantCompositionPlayView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.bottom, 10)
     }
+
+    private var failureView: some View {
+        VStack(spacing: 20) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .font(.system(size: 48))
+                .foregroundStyle(.orange)
+
+            Text(viewModel.failureTitle)
+                .font(.title2.bold())
+                .foregroundStyle(.white)
+                .multilineTextAlignment(.center)
+
+            if let errorMessage = viewModel.errorMessage {
+                Text(errorMessage)
+                    .font(.subheadline)
+                    .foregroundStyle(.white.opacity(0.8))
+                    .multilineTextAlignment(.center)
+            }
+
+            Button {
+                viewModel.retryFailedOperation()
+            } label: {
+                Text("もう一度試す")
+                    .font(.headline)
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+            }
+            .background(.blue)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+
+            Button("終了する", role: .destructive) {
+                dismiss()
+            }
+        }
+        .padding(24)
+        .frame(maxWidth: 360)
+    }
 }
 
 
@@ -109,4 +151,3 @@ struct InstantCompositionPlayView: View {
         settings: settings
     )
 }
-

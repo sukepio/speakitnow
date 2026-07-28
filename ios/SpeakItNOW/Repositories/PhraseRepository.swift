@@ -9,10 +9,7 @@ import Foundation
 import Supabase
 
 final class PhraseRepository {
-    let supabase = SupabaseClient(
-      supabaseURL: URL(string: "https://myajfjhsmscznlknhrxh.supabase.co")!,
-      supabaseKey: "sb_publishable_bFMICOIn2u382RMOqn-QFg_6UsF4mwG"
-    )
+    private let supabase = SupabaseProvider.client
     
     func fetchPhrases(ids: [Int]) async throws -> [Phrase] {
         if ids.isEmpty { return [] }
@@ -27,7 +24,8 @@ final class PhraseRepository {
     }
     
     func searchPhrases(query: String) async throws -> [Phrase] {
-        
+        _ = try await AuthenticationService.shared.ensureAuthenticated()
+
         let normalizedQuery = normalize(query: query)
         
         // 完全一致検索

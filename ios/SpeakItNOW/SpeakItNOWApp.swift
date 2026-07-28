@@ -13,6 +13,10 @@ struct SpeakItNOWApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-        }.environmentObject(phraseStore)
+                .task {
+                    _ = try? await AuthenticationService.shared.ensureAuthenticated()
+                }
+        }
+        .environmentObject(phraseStore)
     }
 }

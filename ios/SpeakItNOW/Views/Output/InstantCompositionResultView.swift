@@ -82,6 +82,7 @@ struct ResultRowView: View {
                 Text(log.questionJa)
                     .font(.headline)
                     .foregroundStyle(.white)
+                    .fixedSize(horizontal: false, vertical: true)
             }
             
             Divider()

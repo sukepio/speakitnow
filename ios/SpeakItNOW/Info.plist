@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict/>
+<dict>
+	<key>LLM_API_BASE_URL</key>
+	<string>https://myajfjhsmscznlknhrxh.supabase.co</string>
+	<key>LLM_API_KEY</key>
+	<string>sb_publishable_bFMICOIn2u382RMOqn-QFg_6UsF4mwG</string>
+	<key>SUPABASE_URL</key>
+	<string>https://myajfjhsmscznlknhrxh.supabase.co</string>
+	<key>SUPABASE_PUBLISHABLE_KEY</key>
+	<string>sb_publishable_bFMICOIn2u382RMOqn-QFg_6UsF4mwG</string>
+</dict>
 </plist>

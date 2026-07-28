@@ -7,10 +7,31 @@
 
 
 import Foundation
-//import Supabase
-//
-//let supabase = SupabaseClient(
-//  supabaseURL: URL(string: "https://myajfjhsmscznlknhrxh.supabase.co")!,
-//  supabaseKey: "sb_publishable_bFMICOIn2u382RMOqn-QFg_6UsF4mwG"
-//)
-//        
+import Supabase
+
+enum SupabaseConfiguration {
+    static let url: URL = {
+        let value = requiredValue(forKey: "SUPABASE_URL")
+        guard let url = URL(string: value) else {
+            fatalError("SUPABASE_URLが不正です。")
+        }
+        return url
+    }()
+
+    static let publishableKey = requiredValue(forKey: "SUPABASE_PUBLISHABLE_KEY")
+
+    private static func requiredValue(forKey key: String) -> String {
+        guard let value = Bundle.main.object(forInfoDictionaryKey: key) as? String,
+              !value.isEmpty else {
+            fatalError("\(key)が設定されていません。")
+        }
+        return value
+    }
+}
+
+enum SupabaseProvider {
+    static let client = SupabaseClient(
+        supabaseURL: SupabaseConfiguration.url,
+        supabaseKey: SupabaseConfiguration.publishableKey
+    )
+}

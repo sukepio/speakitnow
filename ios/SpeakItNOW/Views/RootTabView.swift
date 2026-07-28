@@ -23,7 +23,7 @@ struct RootTabView: View {
 //            tabItemView(destination: HomeView(), imageName: "house", title: "Home", tag: Tab.home)
             tabItemView(destination: SearchView(), imageName: "magnifyingglass", title: "Search", tag: Tab.search)
             tabItemView(destination: MyPhrasesView(), imageName: "bookmark", title: "My Phrases", tag: Tab.myPhrases)
-            tabItemView(destination: Text("History"), imageName: "clock", title: "History", tag: Tab.history)
+            tabItemView(destination: HistoryView(), imageName: "clock", title: "History", tag: Tab.history)
         }
         .tint(.blue)
     }
@@ -42,4 +42,3 @@ struct RootTabView: View {
 #Preview {
     RootTabView().environmentObject(PhraseStore())
 }
-

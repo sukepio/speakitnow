@@ -7,65 +7,273 @@
 
 import Foundation
 
-enum GameState {
+enum GameState: Equatable {
     case loading
     case playing
     case evaluating
     case showingResult
+    case failed
     case finished
 }
 
 @MainActor
-class InstantCompositionViewModel: ObservableObject {
+final class InstantCompositionViewModel: ObservableObject {
+    enum FailedOperation {
+        case questionGeneration
+        case answerEvaluation
+        case sessionPersistence
+        case answerPersistence
+    }
+
     @Published var currentState: GameState = .loading
     @Published var currentQuestionIndex: Int = 0
-    @Published var logs: [CompositionLog] = [] // n問分のデータ
-    
-    // 全問題数
+    @Published var logs: [CompositionLog] = []
+    @Published var errorMessage: String?
+
     var totalQuestionCount: Int { logs.count }
-    
-    // 現在の問題データ
+
     var currentLog: CompositionLog? {
-        guard currentQuestionIndex < totalQuestionCount else { return nil }
+        guard logs.indices.contains(currentQuestionIndex) else { return nil }
         return logs[currentQuestionIndex]
     }
-    
-    // 初期化とモックデータのロード
+
+    var failureTitle: String {
+        switch failedOperation {
+        case .questionGeneration:
+            return "問題を生成できませんでした"
+        case .answerEvaluation:
+            return "回答を添削できませんでした"
+        case .sessionPersistence, .answerPersistence:
+            return "履歴を保存できませんでした"
+        case nil:
+            return "エラーが発生しました"
+        }
+    }
+
+    private let llmService: any LLMServiceProtocol
+    private let historyRepository: InstantCompositionHistoryRepository
+    private var phrase: Phrase?
+    private var settings: CompositionSession.SessionSettings?
+    private var compositionSessionId: Int?
+    private var pendingAnswerIndex: Int?
+    private var failedOperation: FailedOperation?
+    private var requestTask: Task<Void, Never>?
+
+    init(
+        llmService: any LLMServiceProtocol = LLMProvider.shared,
+        historyRepository: InstantCompositionHistoryRepository = InstantCompositionHistoryRepository()
+    ) {
+        self.llmService = llmService
+        self.historyRepository = historyRepository
+    }
+
+    deinit {
+        requestTask?.cancel()
+    }
+
     func loadQuestions(phrase: Phrase, settings: CompositionSession.SessionSettings) {
-        self.currentState = .loading
-        
-        // TODO: ここにLLMへの問題生成APIリクエストと、Firestore(CompositionSessions)への保存処理を書く
-        
-        // ▼ 現在はAPIの通信ラグ（1.5秒）をシミュレートしつつモックデータをロード
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            self.logs = MockCompositionData.generateLogs(count: settings.questionCount)
-            self.currentState = .playing
-        }
+        self.phrase = phrase
+        self.settings = settings
+        currentQuestionIndex = 0
+        logs = []
+        compositionSessionId = nil
+        pendingAnswerIndex = nil
+        generateQuestions()
     }
-    
-    // 回答の送信と添削の取得
+
     func submitAnswer(userText: String) {
-        self.currentState = .evaluating
-        logs[currentQuestionIndex].userAnswerEn = userText
-        
-        // TODO: ここにLLMへの添削APIリクエストと、Firestore(SessionLogs)への逐次保存処理を書く
-        
-        // ▼ 現在は添削APIの通信ラグ（1.0秒）をシミュレートしつつ固定のフィードバックを返す
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.logs[self.currentQuestionIndex].feedback = "文法的には正しいですが、「その場で臨機応変に決めよう」というニュアンスを出すには \"on the fly\" というイディオムが自然です。"
-            self.logs[self.currentQuestionIndex].isPerfect = true
-            self.logs[self.currentQuestionIndex].otherModelAnserEn = ["I don't know.", "Not that I know of."]
-            self.currentState = .showingResult
+        guard logs.indices.contains(currentQuestionIndex) else { return }
+
+        let trimmedAnswer = userText.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmedAnswer.isEmpty else { return }
+
+        logs[currentQuestionIndex].userAnswerEn = trimmedAnswer
+        evaluateCurrentAnswer()
+    }
+
+    func retryFailedOperation() {
+        switch failedOperation {
+        case .questionGeneration:
+            generateQuestions()
+        case .answerEvaluation:
+            evaluateCurrentAnswer()
+        case .sessionPersistence:
+            retrySessionPersistence()
+        case .answerPersistence:
+            retryAnswerPersistence()
+        case nil:
+            break
         }
     }
-    
-    // 次の問題へ進む
+
     func nextQuestion() {
+        guard currentState == .showingResult else { return }
+
         if currentQuestionIndex < totalQuestionCount - 1 {
             currentQuestionIndex += 1
             currentState = .playing
         } else {
             currentState = .finished
+        }
+    }
+
+    private func generateQuestions() {
+        guard let phrase, let settings else { return }
+
+        requestTask?.cancel()
+        currentState = .loading
+        errorMessage = nil
+        failedOperation = nil
+
+        let request = InstantCompositionGenerationRequest(
+            phraseText: phrase.text,
+            phraseMeaning: phrase.meaningJa,
+            questionCount: settings.questionCount,
+            difficulty: settings.difficulty.rawValue,
+            scene: settings.scene,
+            formalLevel: settings.formatLevel.rawValue,
+            locale: Locale.current.identifier
+        )
+
+        requestTask = Task { [weak self] in
+            guard let self else { return }
+            do {
+                let questions = try await llmService.generateInstantComposition(request: request)
+                guard !Task.isCancelled else { return }
+
+                let sessionId = UUID().uuidString
+                logs = questions.enumerated().map { index, question in
+                    CompositionLog(
+                        id: question.id,
+                        sessionId: sessionId,
+                        questionIndex: index,
+                        questionJa: question.questionJa,
+                        modelAnswerEn: question.modelAnswerEn
+                    )
+                }
+                await persistGeneratedSession()
+            } catch is CancellationError {
+                return
+            } catch {
+                guard !Task.isCancelled else { return }
+                failedOperation = .questionGeneration
+                errorMessage = error.localizedDescription
+                currentState = .failed
+            }
+        }
+    }
+
+    private func evaluateCurrentAnswer() {
+        guard let phrase,
+              let settings,
+              logs.indices.contains(currentQuestionIndex),
+              let userAnswer = logs[currentQuestionIndex].userAnswerEn else {
+            return
+        }
+
+        requestTask?.cancel()
+        currentState = .evaluating
+        errorMessage = nil
+        failedOperation = nil
+
+        let evaluatedIndex = currentQuestionIndex
+        let log = logs[evaluatedIndex]
+        let request = InstantCompositionEvaluationRequest(
+            phraseText: phrase.text,
+            phraseMeaning: phrase.meaningJa,
+            questionJa: log.questionJa,
+            modelAnswerEn: log.modelAnswerEn,
+            userAnswerEn: userAnswer,
+            difficulty: settings.difficulty.rawValue,
+            locale: Locale.current.identifier
+        )
+
+        requestTask = Task { [weak self] in
+            guard let self else { return }
+            do {
+                let evaluation = try await llmService.evaluateInstantCompositionAnswer(request: request)
+                guard !Task.isCancelled, logs.indices.contains(evaluatedIndex) else { return }
+
+                logs[evaluatedIndex].feedback = evaluation.feedback
+                logs[evaluatedIndex].otherModelAnserEn = evaluation.alternativeAnswers
+                logs[evaluatedIndex].isPerfect = evaluation.isPerfect
+                pendingAnswerIndex = evaluatedIndex
+                await persistAnswer(at: evaluatedIndex)
+            } catch is CancellationError {
+                return
+            } catch {
+                guard !Task.isCancelled else { return }
+                failedOperation = .answerEvaluation
+                errorMessage = error.localizedDescription
+                currentState = .failed
+            }
+        }
+    }
+
+    private func persistGeneratedSession() async {
+        guard let phrase, let settings else { return }
+
+        do {
+            compositionSessionId = try await historyRepository.createSession(
+                phrase: phrase,
+                settings: settings,
+                questions: logs
+            )
+            failedOperation = nil
+            errorMessage = nil
+            currentState = .playing
+        } catch {
+            guard !Task.isCancelled else { return }
+            failedOperation = .sessionPersistence
+            errorMessage = error.localizedDescription
+            currentState = .failed
+        }
+    }
+
+    private func persistAnswer(at index: Int) async {
+        guard logs.indices.contains(index) else { return }
+        guard let compositionSessionId else {
+            pendingAnswerIndex = nil
+            currentState = .showingResult
+            return
+        }
+
+        do {
+            try await historyRepository.saveAnswer(
+                compositionSessionId: compositionSessionId,
+                log: logs[index]
+            )
+            pendingAnswerIndex = nil
+            failedOperation = nil
+            errorMessage = nil
+            currentState = .showingResult
+        } catch {
+            guard !Task.isCancelled else { return }
+            failedOperation = .answerPersistence
+            errorMessage = error.localizedDescription
+            currentState = .failed
+        }
+    }
+
+    private func retrySessionPersistence() {
+        requestTask?.cancel()
+        currentState = .loading
+        errorMessage = nil
+
+        requestTask = Task { [weak self] in
+            await self?.persistGeneratedSession()
+        }
+    }
+
+    private func retryAnswerPersistence() {
+        guard let pendingAnswerIndex else { return }
+
+        requestTask?.cancel()
+        currentState = .evaluating
+        errorMessage = nil
+
+        requestTask = Task { [weak self] in
+            await self?.persistAnswer(at: pendingAnswerIndex)
         }
     }
 }

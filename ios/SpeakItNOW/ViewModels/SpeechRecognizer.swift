@@ -11,11 +11,13 @@ import AVFoundation
 
 enum SpeechState {
     case idle
+    case preparing
     case recording
     case processing
 }
 
-class SpeechRecognizer: ObservableObject {
+@MainActor
+final class SpeechRecognizer: ObservableObject {
     @Published var recognizedText: String = ""
     @Published var state: SpeechState = .idle
     
@@ -25,6 +27,7 @@ class SpeechRecognizer: ObservableObject {
     private var recognitionTask: SFSpeechRecognitionTask?
     private var audioEngine = AVAudioEngine()
     private var hasInstalledTap = false
+    private var recognitionSessionId: UUID?
     
     func requestAuthorization() {
         SFSpeechRecognizer.requestAuthorization { authStatus in
@@ -42,14 +45,21 @@ class SpeechRecognizer: ObservableObject {
     func toggleRecording() {
         switch state {
         case .idle:
+            state = .preparing
             Task {
                 await checkPermissionsAndStartRecording()
             }
         case .recording:
             stopRecording()
-        case .processing:
+        case .preparing, .processing:
             return
         }
+    }
+
+    func cancelRecording() {
+        resetSession()
+        deactivateAudioSession()
+        state = .idle
     }
     
     func clearRecognizedText() {
@@ -57,9 +67,20 @@ class SpeechRecognizer: ObservableObject {
     }
     
     private func checkPermissionsAndStartRecording() async {
-        guard await requestSpeechRecognitionPermission() else { return }
-        guard await requestMicrophonePermission() else { return }
-        guard speechRecognizer?.isAvailable == true else { return }
+        guard await requestSpeechRecognitionPermission() else {
+            state = .idle
+            return
+        }
+        guard state == .preparing else { return }
+        guard await requestMicrophonePermission() else {
+            state = .idle
+            return
+        }
+        guard state == .preparing else { return }
+        guard speechRecognizer?.isAvailable == true else {
+            state = .idle
+            return
+        }
         
         startRecording()
     }
@@ -88,7 +109,9 @@ class SpeechRecognizer: ObservableObject {
     }
     
     private func startRecording() {
+        guard state == .preparing else { return }
         resetSession()
+        audioEngine = AVAudioEngine()
         
         let audioSession = AVAudioSession.sharedInstance()
         do {
@@ -97,6 +120,7 @@ class SpeechRecognizer: ObservableObject {
             
         } catch {
             print("オーディオセッションの設定に失敗しました。")
+            state = .idle
             return
         }
         
@@ -104,25 +128,29 @@ class SpeechRecognizer: ObservableObject {
         guard let recognitionRequest = recognitionRequest else { fatalError("Unable to create an SFSpeechAudioBufferRecognitionRequest object") }
         
         recognitionRequest.shouldReportPartialResults = false
+        let recognitionSessionId = UUID()
+        self.recognitionSessionId = recognitionSessionId
         
         let inputNode = audioEngine.inputNode
         let recordingFormat = inputNode.outputFormat(forBus: 0)
         
-        inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { [weak self] buffer, _ in
-                    self?.recognitionRequest?.append(buffer)
-                }
+        inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { buffer, _ in
+            recognitionRequest.append(buffer)
+        }
         hasInstalledTap = true
         
         recognitionTask = speechRecognizer?.recognitionTask(with: recognitionRequest) { [weak self] result, error in
-            guard let self else { return }
-            
-            if let result, result.isFinal {
-                DispatchQueue.main.async {
+            guard result?.isFinal == true || error != nil else { return }
+
+            Task { @MainActor [weak self] in
+                guard let self,
+                      self.recognitionSessionId == recognitionSessionId else {
+                    return
+                }
+
+                if let result, result.isFinal {
                     self.recognizedText = result.bestTranscription.formattedString
                 }
-                self.stopAudioInput()
-                self.finishRecognition()
-            } else if error != nil {
                 self.stopAudioInput()
                 self.finishRecognition()
             }
@@ -131,10 +159,8 @@ class SpeechRecognizer: ObservableObject {
         audioEngine.prepare()
         do {
             try audioEngine.start()
-            DispatchQueue.main.async {
-                self.state = .recording
-                self.recognizedText = ""
-            }
+            state = .recording
+            recognizedText = ""
         } catch {
             print("オーディオエンジンの起動に失敗しました。")
             self.stopAudioInput()
@@ -143,6 +169,7 @@ class SpeechRecognizer: ObservableObject {
     }
     
     private func resetSession() {
+        recognitionSessionId = nil
         stopAudioInput()
         recognitionTask?.cancel()
         recognitionTask = nil
@@ -150,20 +177,16 @@ class SpeechRecognizer: ObservableObject {
     }
     
     private func stopRecording() {
-        self.stopAudioInput()
-        
-        DispatchQueue.main.async {
-            self.state = .processing
-        }
+        stopAudioInput()
+        state = .processing
     }
     
     private func finishRecognition() {
-        DispatchQueue.main.async {
-            self.state = .idle
-        }
-        
-        self.recognitionTask = nil
-        self.recognitionRequest = nil
+        recognitionSessionId = nil
+        recognitionTask = nil
+        recognitionRequest = nil
+        deactivateAudioSession()
+        state = .idle
     }
     
     private func stopAudioInput() {
@@ -177,6 +200,12 @@ class SpeechRecognizer: ObservableObject {
         if audioEngine.isRunning {
             audioEngine.stop()
         }
-        
+    }
+
+    private func deactivateAudioSession() {
+        try? AVAudioSession.sharedInstance().setActive(
+            false,
+            options: .notifyOthersOnDeactivation
+        )
     }
 }
